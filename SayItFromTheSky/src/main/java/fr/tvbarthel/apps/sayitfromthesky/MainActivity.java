@@ -54,8 +54,12 @@ public class MainActivity extends FragmentActivity
                     .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                     .commit();
         } else if (position == 3) {
+            SayItFragment sayItFragment = (SayItFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG_SAY_IT);
+            if (sayItFragment == null) {
+                sayItFragment = new SayItFragment();
+            }
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, new SayItFragment(), FRAGMENT_TAG_SAY_IT)
+                    .replace(R.id.container, sayItFragment, FRAGMENT_TAG_SAY_IT)
                     .commit();
             //TODO don't use hard coded string
             mTitle = "Say It";
