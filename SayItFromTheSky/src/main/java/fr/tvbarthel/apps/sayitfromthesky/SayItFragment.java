@@ -1,10 +1,9 @@
 package fr.tvbarthel.apps.sayitfromthesky;
 
 
-import android.app.Fragment;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,15 +24,11 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
-    private Location mLastCandidateLocation;
     private float mLastKnownZoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
-        mMapFragment = new SayItMapFragment(this);
-        getFragmentManager().beginTransaction().add(R.id.fragment_say_it_map_container, mMapFragment, "fragmentTagMap").commit();
-
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
 
         if (savedInstanceState != null) {
@@ -41,8 +36,12 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
         }
 
+        mMapFragment = new SayItMapFragment(this);
+        getChildFragmentManager().beginTransaction().add(R.id.fragment_say_it_map_container, mMapFragment, "fragmentTagMap").commit();
+
         return view;
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -51,6 +50,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (mGoogleMap != null) {
             outState.putFloat(BUNDLE_KEY_ZOOM, mGoogleMap.getCameraPosition().zoom);
         }
+
     }
 
     @Override
@@ -75,15 +75,13 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                         //first location
                         if (mLastKnownLocation == null) {
                             mLastKnownLocation = location;
-                            mLastCandidateLocation = location;
                             initMapLocation();
                         } else if (isLocationIfOutdated(location)) {
                             setNewLocation(location);
                         }
-
-                        mLastCandidateLocation = location;
                     }
                 });
+
             }
         }
     }
@@ -97,13 +95,11 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         final LatLng candidateLatLng = new LatLng(candidateLocation.getLatitude(), candidateLocation.getLongitude());
         final LatLng currentLatLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
         final double distance = SphericalUtil.computeDistanceBetween(candidateLatLng, currentLatLng);
-        Log.d("argonne", "distance : " + String.valueOf(distance));
         return distance > DELTA_DISTANCE_IN_METER;
     }
 
     private void setNewLocation(Location newLocation) {
         //TODO look at the elapsed time ?
-        Log.d("argonne", "new location set !");
         mLastKnownLocation = newLocation;
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(
                 new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude())));

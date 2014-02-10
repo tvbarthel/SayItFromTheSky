@@ -5,9 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.SupportMapFragment;
 
-public class SayItMapFragment extends MapFragment {
+public class SayItMapFragment extends SupportMapFragment {
 
     private ISayItMapFragment mInterface;
 

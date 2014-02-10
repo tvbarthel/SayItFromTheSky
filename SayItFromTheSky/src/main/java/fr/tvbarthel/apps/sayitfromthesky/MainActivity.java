@@ -2,9 +2,10 @@ package fr.tvbarthel.apps.sayitfromthesky;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    private static final String FRAGMENT_TAG_SAY_IT = "MainActivity.Fragment.Tag.SayIt";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -44,7 +47,7 @@ public class MainActivity extends Activity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         //TODO remove placeholder fragments
         if (position <= 2) {
             fragmentManager.beginTransaction()
@@ -52,7 +55,7 @@ public class MainActivity extends Activity
                     .commit();
         } else if (position == 3) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, new SayItFragment())
+                    .replace(R.id.container, new SayItFragment(), FRAGMENT_TAG_SAY_IT)
                     .commit();
             //TODO don't use hard coded string
             mTitle = "Say It";
