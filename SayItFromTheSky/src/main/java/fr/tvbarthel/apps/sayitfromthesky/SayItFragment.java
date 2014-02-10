@@ -4,6 +4,7 @@ package fr.tvbarthel.apps.sayitfromthesky;
 import android.app.Fragment;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +13,19 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.SphericalUtil;
 
 public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
     private static float DEFAULT_VALUE_ZOOM = 15f;
+    private static float DELTA_DISTANCE_IN_METER = 5f;
     private static String BUNDLE_KEY_LOCATION = "SayItFragment.Bundle.Key.Location";
     private static String BUNDLE_KEY_ZOOM = "SayItFragment.Bundle.Key.Zoom";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
+    private Location mLastCandidateLocation;
     private float mLastKnownZoom;
 
     @Override
@@ -71,8 +75,13 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                         //first location
                         if (mLastKnownLocation == null) {
                             mLastKnownLocation = location;
+                            mLastCandidateLocation = location;
                             initMapLocation();
+                        } else if (isLocationIfOutdated(location)) {
+                            setNewLocation(location);
                         }
+
+                        mLastCandidateLocation = location;
                     }
                 });
             }
@@ -82,6 +91,22 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private void initMapLocation() {
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), mLastKnownZoom));
+    }
+
+    private boolean isLocationIfOutdated(Location candidateLocation) {
+        final LatLng candidateLatLng = new LatLng(candidateLocation.getLatitude(), candidateLocation.getLongitude());
+        final LatLng currentLatLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+        final double distance = SphericalUtil.computeDistanceBetween(candidateLatLng, currentLatLng);
+        Log.d("argonne", "distance : " + String.valueOf(distance));
+        return distance > DELTA_DISTANCE_IN_METER;
+    }
+
+    private void setNewLocation(Location newLocation) {
+        //TODO look at the elapsed time ?
+        Log.d("argonne", "new location set !");
+        mLastKnownLocation = newLocation;
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(
+                new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude())));
     }
 
 }
