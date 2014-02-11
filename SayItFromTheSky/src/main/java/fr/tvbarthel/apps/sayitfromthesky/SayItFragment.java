@@ -4,6 +4,7 @@ package fr.tvbarthel.apps.sayitfromthesky;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
+    private LatLng mLastKnownLatLng;
     private float mLastKnownZoom;
 
     @Override
@@ -32,7 +34,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
 
         if (savedInstanceState != null) {
-            mLastKnownLocation = savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION);
+            setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
         }
 
@@ -74,7 +76,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                     public void onMyLocationChange(Location location) {
                         //first location
                         if (mLastKnownLocation == null) {
-                            mLastKnownLocation = location;
+                            setLastKnownLocation(location);
                             initMapLocation();
                         } else if (isLocationIfOutdated(location)) {
                             setNewLocation(location);
@@ -92,17 +94,28 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private boolean isLocationIfOutdated(Location candidateLocation) {
-        final LatLng candidateLatLng = new LatLng(candidateLocation.getLatitude(), candidateLocation.getLongitude());
-        final LatLng currentLatLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
-        final double distance = SphericalUtil.computeDistanceBetween(candidateLatLng, currentLatLng);
+        final LatLng candidateLatLng = locationToLatLng(candidateLocation);
+        final double distance = SphericalUtil.computeDistanceBetween(candidateLatLng, mLastKnownLatLng);
         return distance > DELTA_DISTANCE_IN_METER;
     }
 
     private void setNewLocation(Location newLocation) {
         //TODO look at the elapsed time ?
-        mLastKnownLocation = newLocation;
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(
-                new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude())));
+        Log.d("argonne", "set new location");
+        setLastKnownLocation(newLocation);
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(mLastKnownLatLng));
+    }
+
+    private void setLastKnownLocation(Location location) {
+        if (location != null) {
+            Log.d("argonne", "set last known location");
+            mLastKnownLocation = location;
+            mLastKnownLatLng = locationToLatLng(location);
+        }
+    }
+
+    private LatLng locationToLatLng(Location location) {
+        return new LatLng(location.getLatitude(), location.getLongitude());
     }
 
 }
