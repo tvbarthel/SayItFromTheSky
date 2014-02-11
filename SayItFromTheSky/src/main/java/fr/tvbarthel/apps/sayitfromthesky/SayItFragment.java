@@ -104,8 +104,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     private void initMapLocation() {
         mDrawButton.setVisibility(View.VISIBLE);
-        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), mLastKnownZoom));
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLatLng, mLastKnownZoom));
     }
 
     private boolean isLocationOutdated(Location candidateLocation) {
