@@ -78,7 +78,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                         if (mLastKnownLocation == null) {
                             setLastKnownLocation(location);
                             initMapLocation();
-                        } else if (isLocationIfOutdated(location)) {
+                        } else if (isLocationOutdated(location)) {
                             setNewLocation(location);
                         }
                     }
@@ -93,7 +93,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), mLastKnownZoom));
     }
 
-    private boolean isLocationIfOutdated(Location candidateLocation) {
+    private boolean isLocationOutdated(Location candidateLocation) {
         final LatLng candidateLatLng = locationToLatLng(candidateLocation);
         final double distance = SphericalUtil.computeDistanceBetween(candidateLatLng, mLastKnownLatLng);
         return distance > DELTA_DISTANCE_IN_METER;
