@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.sayitfromthesky;
 
 
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
@@ -15,7 +17,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.SphericalUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
@@ -29,26 +36,52 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private Location mLastKnownLocation;
     private LatLng mLastKnownLatLng;
     private float mLastKnownZoom;
-    private ToggleButton mDrawButton;
+    private ToggleButton mLineStateButton;
+    private Button mAddPointButton;
+    private PolylineOptions mPolylineOptionsCurrent;
+    private Polyline mCurrentPolyline;
+    private PolylineOptions mPolylineOptionsPreview;
+    private Polyline mPreviewPolyline;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
 
+        mPolylineOptionsCurrent = new PolylineOptions();
+        mPolylineOptionsCurrent.color(Color.BLUE);
+
+        mPolylineOptionsPreview = new PolylineOptions();
+        mPolylineOptionsPreview.color(Color.RED);
+
         if (savedInstanceState != null) {
             setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
         }
 
-        mDrawButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_draw_button);
-        mDrawButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_button_line_state);
+        mLineStateButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    //TODO create a new PolyLine
-                    Log.d("argonne", "checked !");
+                if (mGoogleMap != null) {
+                    if (isChecked) {
+                        mCurrentPolyline = mGoogleMap.addPolyline(mPolylineOptionsCurrent);
+                        mPreviewPolyline.setVisible(true);
+                        addPointToCurrentPolyline(mLastKnownLatLng);
+                        mAddPointButton.setVisibility(View.VISIBLE);
+                    } else {
+                        mAddPointButton.setVisibility(View.INVISIBLE);
+                        mPreviewPolyline.setVisible(false);
+                    }
                 }
+            }
+        });
+
+        mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
+        mAddPointButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPointToCurrentPolyline(mLastKnownLatLng);
             }
         });
 
@@ -80,6 +113,9 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 uiSettings.setCompassEnabled(false);
                 uiSettings.setZoomControlsEnabled(false);
 
+                //add the preview polyline
+                mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
+
                 //try to restore last known location
                 if (mLastKnownLocation != null) {
                     initMapLocation();
@@ -103,7 +139,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private void initMapLocation() {
-        mDrawButton.setVisibility(View.VISIBLE);
+        mLineStateButton.setVisibility(View.VISIBLE);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLatLng, mLastKnownZoom));
     }
 
@@ -115,21 +151,38 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     private void setNewLocation(Location newLocation) {
         //TODO look at the elapsed time ?
-        Log.d("argonne", "set new location");
+        Log.d("argonne", "new location with accuracy -> " + newLocation.getAccuracy());
         setLastKnownLocation(newLocation);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(mLastKnownLatLng));
     }
 
     private void setLastKnownLocation(Location location) {
         if (location != null) {
-            Log.d("argonne", "set last known location");
             mLastKnownLocation = location;
             mLastKnownLatLng = locationToLatLng(location);
+            updatePreviewPoints();
         }
     }
 
     private LatLng locationToLatLng(Location location) {
         return new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
+    private void addPointToCurrentPolyline(LatLng newPoint) {
+        final List<LatLng> currentPoints = mCurrentPolyline.getPoints();
+        currentPoints.add(newPoint);
+        mCurrentPolyline.setPoints(currentPoints);
+        updatePreviewPoints();
+    }
+
+    private void updatePreviewPoints() {
+        if (mCurrentPolyline != null) {
+            final List<LatLng> previewPoints = new ArrayList<LatLng>();
+            final List<LatLng> currentPoints = mCurrentPolyline.getPoints();
+            previewPoints.add(currentPoints.get(currentPoints.size() - 1));
+            previewPoints.add(mLastKnownLatLng);
+            mPreviewPolyline.setPoints(previewPoints);
+        }
     }
 
 }

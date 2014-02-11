@@ -23,14 +23,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ToggleButton
-            android:id="@+id/fragment_say_it_draw_button"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_gravity="bottom|right"
-            android:visibility="invisible"/>
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp">
 
+            <Button
+                android:id="@+id/fragment_say_it_button_add_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:visibility="invisible"
+                android:text="add"/>
+
+            <ToggleButton
+                android:id="@+id/fragment_say_it_button_line_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:visibility="invisible"
+                android:textOn="Stop"
+                android:textOff="Start"/>
+
+        </LinearLayout>
     </FrameLayout>
 </LinearLayout>
