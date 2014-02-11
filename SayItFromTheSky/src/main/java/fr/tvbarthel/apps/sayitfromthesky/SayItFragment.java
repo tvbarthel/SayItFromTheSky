@@ -57,6 +57,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (savedInstanceState != null) {
             setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
+            //TODO restore polylines
         }
 
         mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_button_line_state);
@@ -99,7 +100,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (mGoogleMap != null) {
             outState.putFloat(BUNDLE_KEY_ZOOM, mGoogleMap.getCameraPosition().zoom);
         }
-
+        //TODO save polylines
     }
 
     @Override
@@ -151,6 +152,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     private void setNewLocation(Location newLocation) {
         //TODO look at the elapsed time ?
+        //TODO look at the accuracy ?
         Log.d("argonne", "new location with accuracy -> " + newLocation.getAccuracy());
         setLastKnownLocation(newLocation);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(mLastKnownLatLng));
