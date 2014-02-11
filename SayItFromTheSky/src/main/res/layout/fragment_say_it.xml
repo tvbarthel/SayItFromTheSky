@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -15,8 +14,23 @@
         android:id="@+id/textView"
         android:layout_gravity="center_horizontal" />
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/fragment_say_it_map_container"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fragment_say_it_map_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ToggleButton
+            android:id="@+id/fragment_say_it_draw_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_gravity="bottom|right"
+            android:visibility="invisible"/>
+
+    </FrameLayout>
 </LinearLayout>

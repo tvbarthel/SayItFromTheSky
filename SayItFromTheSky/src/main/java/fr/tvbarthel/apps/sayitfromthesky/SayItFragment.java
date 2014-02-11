@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,6 +29,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private Location mLastKnownLocation;
     private LatLng mLastKnownLatLng;
     private float mLastKnownZoom;
+    private ToggleButton mDrawButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +40,17 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
         }
+
+        mDrawButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_draw_button);
+        mDrawButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    //TODO create a new PolyLine
+                    Log.d("argonne", "checked !");
+                }
+            }
+        });
 
         mMapFragment = new SayItMapFragment(this);
         getChildFragmentManager().beginTransaction().add(R.id.fragment_say_it_map_container, mMapFragment, "fragmentTagMap").commit();
@@ -89,6 +103,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private void initMapLocation() {
+        mDrawButton.setVisibility(View.VISIBLE);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                 new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), mLastKnownZoom));
     }
