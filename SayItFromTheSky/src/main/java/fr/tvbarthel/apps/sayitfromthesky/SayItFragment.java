@@ -19,6 +19,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.PolyUtil;
 import com.google.maps.android.SphericalUtil;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private static float DELTA_DISTANCE_IN_METER = 5f;
     private static String BUNDLE_KEY_LOCATION = "SayItFragment.Bundle.Key.Location";
     private static String BUNDLE_KEY_ZOOM = "SayItFragment.Bundle.Key.Zoom";
+    private static String BUNDLE_KEY_CURRENT_POLYLINE = "SayItFragment.Bundle.Key.Current.Polyline";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -42,6 +44,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private Polyline mCurrentPolyline;
     private PolylineOptions mPolylineOptionsPreview;
     private Polyline mPreviewPolyline;
+    private Bundle mLastSavedInstanceState;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,30 +57,6 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         mPolylineOptionsPreview = new PolylineOptions();
         mPolylineOptionsPreview.color(Color.RED);
 
-        if (savedInstanceState != null) {
-            setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
-            mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
-            //TODO restore polylines
-        }
-
-        mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_button_line_state);
-        mLineStateButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (mGoogleMap != null) {
-                    if (isChecked) {
-                        mCurrentPolyline = mGoogleMap.addPolyline(mPolylineOptionsCurrent);
-                        mPreviewPolyline.setVisible(true);
-                        addPointToCurrentPolyline(mLastKnownLatLng);
-                        mAddPointButton.setVisibility(View.VISIBLE);
-                    } else {
-                        mAddPointButton.setVisibility(View.INVISIBLE);
-                        mPreviewPolyline.setVisible(false);
-                    }
-                }
-            }
-        });
-
         mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
         mAddPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +64,37 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 addPointToCurrentPolyline(mLastKnownLatLng);
             }
         });
+
+        mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_button_line_state);
+        mLineStateButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mGoogleMap != null) {
+                    if (isChecked) {
+                        if (mCurrentPolyline == null) {
+                            mCurrentPolyline = mGoogleMap.addPolyline(mPolylineOptionsCurrent);
+                        }
+                        mPreviewPolyline.setVisible(true);
+                        addPointToCurrentPolyline(mLastKnownLatLng);
+                        mAddPointButton.setVisibility(View.VISIBLE);
+                    } else {
+                        if (mCurrentPolyline != null && mCurrentPolyline.getPoints().size() <= 1) {
+                            //the current polyline has no interest since it only contains one point.
+                            mCurrentPolyline.remove();
+                        }
+                        mCurrentPolyline = null;
+                        mAddPointButton.setVisibility(View.INVISIBLE);
+                        mPreviewPolyline.setVisible(false);
+                    }
+                }
+            }
+        });
+
+        if (savedInstanceState != null) {
+            mLastSavedInstanceState = savedInstanceState;
+            setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
+            mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
+        }
 
         mMapFragment = new SayItMapFragment(this);
         getChildFragmentManager().beginTransaction().add(R.id.fragment_say_it_map_container, mMapFragment, "fragmentTagMap").commit();
@@ -100,7 +110,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (mGoogleMap != null) {
             outState.putFloat(BUNDLE_KEY_ZOOM, mGoogleMap.getCameraPosition().zoom);
         }
-        //TODO save polylines
+        storeCurrentPolyline(outState);
     }
 
     @Override
@@ -116,6 +126,10 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
                 //add the preview polyline
                 mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
+
+                if (mLastSavedInstanceState != null) {
+                    restoreCurrentPolyline();
+                }
 
                 //try to restore last known location
                 if (mLastKnownLocation != null) {
@@ -139,8 +153,29 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
     }
 
+    private void storeCurrentPolyline(Bundle outState) {
+        if (mCurrentPolyline != null) {
+            outState.putString(BUNDLE_KEY_CURRENT_POLYLINE, PolyUtil.encode(mCurrentPolyline.getPoints()));
+        }
+    }
+
+    /**
+     * Restore the current polyline from the last savedInstanceState.
+     * This method should be called only after the map is ready.
+     */
+    private void restoreCurrentPolyline() {
+        final String encodedPoints = mLastSavedInstanceState.getString(BUNDLE_KEY_CURRENT_POLYLINE);
+        if (encodedPoints != null) {
+            mCurrentPolyline = mGoogleMap.addPolyline(mPolylineOptionsCurrent);
+            mCurrentPolyline.setPoints(PolyUtil.decode(encodedPoints));
+        }
+    }
+
     private void initMapLocation() {
         mLineStateButton.setVisibility(View.VISIBLE);
+        if (mLineStateButton.isChecked()) {
+            mAddPointButton.setVisibility(View.VISIBLE);
+        }
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLatLng, mLastKnownZoom));
     }
 
