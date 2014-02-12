@@ -51,12 +51,15 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
 
+        //Create the polyline used for the current path.
         mPolylineOptionsCurrent = new PolylineOptions();
         mPolylineOptionsCurrent.color(Color.BLUE);
 
+        //Create the polyline for the preview path.
         mPolylineOptionsPreview = new PolylineOptions();
         mPolylineOptionsPreview.color(Color.RED);
 
+        //Setup the button used to add a point to the current path.
         mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
         mAddPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +68,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             }
         });
 
+        //Setup the toggle button used to start and stop a path.
         mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_button_line_state);
         mLineStateButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -91,6 +95,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         });
 
         if (savedInstanceState != null) {
+            //Store savedInstanceState for future use when the map is actually ready.
             mLastSavedInstanceState = savedInstanceState;
             setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
@@ -128,6 +133,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 //add the preview polyline
                 mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
 
+                //Restore the polylines that were displayed on the amap
                 if (mLastSavedInstanceState != null) {
                     restoreCurrentPolyline();
                     //TODO restore other polylines that were displayed on the map
