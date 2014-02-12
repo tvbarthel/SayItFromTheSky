@@ -111,6 +111,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             outState.putFloat(BUNDLE_KEY_ZOOM, mGoogleMap.getCameraPosition().zoom);
         }
         storeCurrentPolyline(outState);
+        //TODO store other polylines are displayed on the map
     }
 
     @Override
@@ -129,6 +130,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
                 if (mLastSavedInstanceState != null) {
                     restoreCurrentPolyline();
+                    //TODO restore other polylines that were displayed on the map
                 }
 
                 //try to restore last known location
