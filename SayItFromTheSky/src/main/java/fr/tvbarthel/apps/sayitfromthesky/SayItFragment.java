@@ -123,8 +123,8 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (mGoogleMap != null) {
             outState.putFloat(BUNDLE_KEY_ZOOM, mGoogleMap.getCameraPosition().zoom);
         }
-        storeCurrentPolyline(outState);
-        storeEncodedPolyline(outState);
+        saveCurrentPolyline(outState);
+        saveEncodedPolyline(outState);
     }
 
     @Override
@@ -169,7 +169,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
     }
 
-    private void storeCurrentPolyline(Bundle outState) {
+    private void saveCurrentPolyline(Bundle outState) {
         if (mCurrentPolyline != null) {
             outState.putString(BUNDLE_KEY_CURRENT_POLYLINE, PolyUtil.encode(mCurrentPolyline.getPoints()));
         }
@@ -187,7 +187,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
     }
 
-    private void storeEncodedPolyline(Bundle outState) {
+    private void saveEncodedPolyline(Bundle outState) {
         if (mEncodedPolylines != null && mEncodedPolylines.size() > 0) {
             outState.putStringArrayList(BUNDLE_KEY_ENCODED_POLYLINES, mEncodedPolylines);
         }
