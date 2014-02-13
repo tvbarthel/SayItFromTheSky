@@ -32,6 +32,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private static String BUNDLE_KEY_LOCATION = "SayItFragment.Bundle.Key.Location";
     private static String BUNDLE_KEY_ZOOM = "SayItFragment.Bundle.Key.Zoom";
     private static String BUNDLE_KEY_CURRENT_POLYLINE = "SayItFragment.Bundle.Key.Current.Polyline";
+    private static String BUNDLE_KEY_ENCODED_POLYLINES = "SayItFragment.Bundle.Key.Other.Polyline";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -44,12 +45,16 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private Polyline mCurrentPolyline;
     private PolylineOptions mPolylineOptionsPreview;
     private Polyline mPreviewPolyline;
+    private ArrayList<String> mEncodedPolylines;
     private Bundle mLastSavedInstanceState;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
+
+        //Create the polyline array used to store the polylines added to the map.
+        mEncodedPolylines = new ArrayList<String>();
 
         //Create the polyline used for the current path.
         mPolylineOptionsCurrent = new PolylineOptions();
@@ -85,6 +90,9 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                         if (mCurrentPolyline != null && mCurrentPolyline.getPoints().size() <= 1) {
                             //the current polyline has no interest since it only contains one point.
                             mCurrentPolyline.remove();
+                        } else if (mCurrentPolyline != null) {
+                            //the current polyline is a part of the drawing
+                            mEncodedPolylines.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
                         }
                         mCurrentPolyline = null;
                         mAddPointButton.setVisibility(View.INVISIBLE);
@@ -116,7 +124,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             outState.putFloat(BUNDLE_KEY_ZOOM, mGoogleMap.getCameraPosition().zoom);
         }
         storeCurrentPolyline(outState);
-        //TODO store other polylines are displayed on the map
+        storeEncodedPolyline(outState);
     }
 
     @Override
@@ -133,10 +141,10 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 //add the preview polyline
                 mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
 
-                //Restore the polylines that were displayed on the amap
+                //Restore the polylines that were displayed on the map
                 if (mLastSavedInstanceState != null) {
+                    restoreEncodedPolyline();
                     restoreCurrentPolyline();
-                    //TODO restore other polylines that were displayed on the map
                 }
 
                 //try to restore last known location
@@ -176,6 +184,23 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (encodedPoints != null) {
             mCurrentPolyline = mGoogleMap.addPolyline(mPolylineOptionsCurrent);
             mCurrentPolyline.setPoints(PolyUtil.decode(encodedPoints));
+        }
+    }
+
+    private void storeEncodedPolyline(Bundle outState) {
+        if (mEncodedPolylines != null && mEncodedPolylines.size() > 0) {
+            outState.putStringArrayList(BUNDLE_KEY_ENCODED_POLYLINES, mEncodedPolylines);
+        }
+    }
+
+    private void restoreEncodedPolyline() {
+        mEncodedPolylines = mLastSavedInstanceState.getStringArrayList(BUNDLE_KEY_ENCODED_POLYLINES);
+        if (mEncodedPolylines == null) {
+            mEncodedPolylines = new ArrayList<String>();
+        } else {
+            for (String encodedPolyline : mEncodedPolylines) {
+                mGoogleMap.addPolyline(mPolylineOptionsCurrent).setPoints(PolyUtil.decode(encodedPolyline));
+            }
         }
     }
 
