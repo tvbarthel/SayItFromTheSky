@@ -137,6 +137,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 final UiSettings uiSettings = mGoogleMap.getUiSettings();
                 uiSettings.setCompassEnabled(false);
                 uiSettings.setZoomControlsEnabled(false);
+                uiSettings.setMyLocationButtonEnabled(false);
 
                 //add the preview polyline
                 mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
