@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -53,6 +56,8 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
 
+        setHasOptionsMenu(true);
+
         //Create the polyline array used to store the polylines added to the map.
         mEncodedPolylines = new ArrayList<String>();
 
@@ -63,6 +68,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         //Create the polyline for the preview path.
         mPolylineOptionsPreview = new PolylineOptions();
         mPolylineOptionsPreview.color(Color.RED);
+
 
         //Setup the button used to add a point to the current path.
         mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
@@ -125,6 +131,22 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
         saveCurrentPolyline(outState);
         saveEncodedPolyline(outState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.say_it, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int itemId = item.getItemId();
+        if (itemId == R.id.action_save) {
+            //TODO save the current work
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
