@@ -50,12 +50,12 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private Polyline mPreviewPolyline;
     private ArrayList<String> mEncodedPolylines;
     private Bundle mLastSavedInstanceState;
+    private boolean mIsCurrentPointInCurrentPath;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
-
         setHasOptionsMenu(true);
 
         //Create the polyline array used to store the polylines added to the map.
@@ -69,6 +69,8 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         mPolylineOptionsPreview = new PolylineOptions();
         mPolylineOptionsPreview.color(Color.RED);
 
+        //The current point/position is not in the current path yet.
+        mIsCurrentPointInCurrentPath = false;
 
         //Setup the button used to add a point to the current path.
         mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
@@ -103,6 +105,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                         mCurrentPolyline = null;
                         mAddPointButton.setVisibility(View.INVISIBLE);
                         mPreviewPolyline.setVisible(false);
+                        mIsCurrentPointInCurrentPath = false;
                     }
                 }
             }
@@ -253,6 +256,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (location != null) {
             mLastKnownLocation = location;
             mLastKnownLatLng = locationToLatLng(location);
+            mIsCurrentPointInCurrentPath = false;
             updatePreviewPoints();
         }
     }
@@ -262,10 +266,13 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private void addPointToCurrentPolyline(LatLng newPoint) {
-        final List<LatLng> currentPoints = mCurrentPolyline.getPoints();
-        currentPoints.add(newPoint);
-        mCurrentPolyline.setPoints(currentPoints);
-        updatePreviewPoints();
+        if(!mIsCurrentPointInCurrentPath) {
+            final List<LatLng> currentPoints = mCurrentPolyline.getPoints();
+            currentPoints.add(newPoint);
+            mCurrentPolyline.setPoints(currentPoints);
+            updatePreviewPoints();
+            mIsCurrentPointInCurrentPath = true;
+        }
     }
 
     private void updatePreviewPoints() {
