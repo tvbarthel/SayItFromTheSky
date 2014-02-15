@@ -30,20 +30,25 @@ import java.util.List;
 
 public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
+
     private static float DEFAULT_VALUE_ZOOM = 15f;
     private static float DELTA_DISTANCE_IN_METER = 5f;
+
+    // Bundle key used for saving instance state
     private static String BUNDLE_KEY_LOCATION = "SayItFragment.Bundle.Key.Location";
     private static String BUNDLE_KEY_ZOOM = "SayItFragment.Bundle.Key.Zoom";
     private static String BUNDLE_KEY_CURRENT_POLYLINE = "SayItFragment.Bundle.Key.Current.Polyline";
     private static String BUNDLE_KEY_ENCODED_POLYLINES = "SayItFragment.Bundle.Key.Other.Polyline";
 
+    // UI elements
     private SayItMapFragment mMapFragment;
+    private ToggleButton mLineStateButton;
+    private Button mAddPointButton;
+
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
     private LatLng mLastKnownLatLng;
     private float mLastKnownZoom;
-    private ToggleButton mLineStateButton;
-    private Button mAddPointButton;
     private PolylineOptions mPolylineOptionsCurrent;
     private Polyline mCurrentPolyline;
     private PolylineOptions mPolylineOptionsPreview;
@@ -58,21 +63,21 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
         setHasOptionsMenu(true);
 
-        //Create the polyline array used to store the polylines added to the map.
+        // Create the polyline array used to store the polylines added to the map.
         mEncodedPolylines = new ArrayList<String>();
 
-        //Create the polyline used for the current path.
+        // Create the polyline used for the current path.
         mPolylineOptionsCurrent = new PolylineOptions();
         mPolylineOptionsCurrent.color(Color.BLUE);
 
-        //Create the polyline for the preview path.
+        // Create the polyline for the preview path.
         mPolylineOptionsPreview = new PolylineOptions();
         mPolylineOptionsPreview.color(Color.RED);
 
-        //The current point/position is not in the current path yet.
+        // The current point/position is not in the current path yet.
         mIsCurrentPointInCurrentPath = false;
 
-        //Setup the button used to add a point to the current path.
+        // Setup the button used to add a point to the current path.
         mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
         mAddPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +86,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             }
         });
 
-        //Setup the toggle button used to start and stop a path.
+        // Setup the toggle button used to start and stop a path.
         mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_button_line_state);
         mLineStateButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -96,10 +101,10 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                         mAddPointButton.setVisibility(View.VISIBLE);
                     } else {
                         if (mCurrentPolyline != null && mCurrentPolyline.getPoints().size() <= 1) {
-                            //the current polyline has no interest since it only contains one point.
+                            // The current polyline has no interest since it only contains one point.
                             mCurrentPolyline.remove();
                         } else if (mCurrentPolyline != null) {
-                            //the current polyline is a part of the drawing
+                            // The current polyline is a part of the drawing
                             mEncodedPolylines.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
                         }
                         mCurrentPolyline = null;
@@ -112,7 +117,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         });
 
         if (savedInstanceState != null) {
-            //Store savedInstanceState for future use when the map is actually ready.
+            // Store savedInstanceState for future use, when the map will actually be ready.
             mLastSavedInstanceState = savedInstanceState;
             setLastKnownLocation((Location) savedInstanceState.getParcelable(BUNDLE_KEY_LOCATION));
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
@@ -147,7 +152,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     public boolean onOptionsItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
         if (itemId == R.id.action_save) {
-            //TODO save the current work
+            // TODO save the current work
         }
         return super.onOptionsItemSelected(item);
     }
@@ -157,23 +162,26 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (mGoogleMap == null) {
             mGoogleMap = mMapFragment.getMap();
             if (mGoogleMap != null) {
-                //the map is now active and can be manipulated
+                // The map is now active and can be manipulated
+                // Enable my location
                 mGoogleMap.setMyLocationEnabled(true);
+
+                // Setup the map UI
                 final UiSettings uiSettings = mGoogleMap.getUiSettings();
                 uiSettings.setCompassEnabled(false);
                 uiSettings.setZoomControlsEnabled(false);
                 uiSettings.setMyLocationButtonEnabled(false);
 
-                //add the preview polyline
+                // Add the preview polyline
                 mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
 
-                //Restore the polylines that were displayed on the map
+                // Restore the polylines that were displayed on the map
                 if (mLastSavedInstanceState != null) {
                     restoreEncodedPolyline();
                     restoreCurrentPolyline();
                 }
 
-                //try to restore last known location
+                // Try to restore last known location
                 if (mLastKnownLocation != null) {
                     initMapLocation();
                 }
@@ -181,11 +189,12 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 mGoogleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                     @Override
                     public void onMyLocationChange(Location location) {
-                        //first location
                         if (mLastKnownLocation == null) {
+                            // First location
                             setLastKnownLocation(location);
                             initMapLocation();
                         } else if (isLocationOutdated(location)) {
+                            // New location
                             setNewLocation(location);
                         }
                     }
@@ -266,7 +275,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private void addPointToCurrentPolyline(LatLng newPoint) {
-        if(!mIsCurrentPointInCurrentPath) {
+        if (!mIsCurrentPointInCurrentPath) {
             final List<LatLng> currentPoints = mCurrentPolyline.getPoints();
             currentPoints.add(newPoint);
             mCurrentPolyline.setPoints(currentPoints);

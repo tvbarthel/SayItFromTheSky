@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
+/**
+ * A Simple {@link SupportMapFragment} that can notify a {@link ISayItMapFragment} when its map is ready.
+ */
 public class SayItMapFragment extends SupportMapFragment {
 
     private ISayItMapFragment mInterface;
