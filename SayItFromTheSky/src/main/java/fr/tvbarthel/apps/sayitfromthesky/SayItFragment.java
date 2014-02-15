@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,6 +45,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private SayItMapFragment mMapFragment;
     private ToggleButton mLineStateButton;
     private Button mAddPointButton;
+    private Toast mTextToast;
 
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
@@ -201,6 +203,25 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 });
 
             }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        hideToast();
+    }
+
+    private void makeToast(String message) {
+        hideToast();
+        mTextToast = Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT);
+        mTextToast.show();
+    }
+
+    private void hideToast() {
+        if(mTextToast != null) {
+            mTextToast.cancel();
+            mTextToast = null;
         }
     }
 
