@@ -125,8 +125,17 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             mLastKnownZoom = savedInstanceState.getFloat(BUNDLE_KEY_ZOOM, DEFAULT_VALUE_ZOOM);
         }
 
-        mMapFragment = new SayItMapFragment(this);
-        getChildFragmentManager().beginTransaction().add(R.id.fragment_say_it_map_container, mMapFragment, "fragmentTagMap").commit();
+        mMapFragment = (SayItMapFragment) getChildFragmentManager().findFragmentByTag("fragmentTagMap");
+        if (mMapFragment == null) {
+            // Create a new map fragment.
+            mMapFragment = new SayItMapFragment(this);
+            getChildFragmentManager().beginTransaction().add(R.id.fragment_say_it_map_container, mMapFragment, "fragmentTagMap").commit();
+        } else {
+            // Re-use the old map fragment.
+            mMapFragment.setInterface(this);
+            getChildFragmentManager().beginTransaction().show(mMapFragment).commit();
+        }
+
 
         return view;
     }
@@ -164,6 +173,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onMapReady() {

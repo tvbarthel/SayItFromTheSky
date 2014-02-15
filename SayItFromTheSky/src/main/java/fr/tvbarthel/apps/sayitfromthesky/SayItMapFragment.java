@@ -32,6 +32,10 @@ public class SayItMapFragment extends SupportMapFragment {
         return v;
     }
 
+    public void setInterface(ISayItMapFragment iSayItMapFragment) {
+        mInterface = iSayItMapFragment;
+    }
+
     public interface ISayItMapFragment {
         public void onMapReady();
     }
