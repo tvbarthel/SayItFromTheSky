@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,6 +32,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     private static float DEFAULT_VALUE_ZOOM = 15f;
     private static float DELTA_DISTANCE_IN_METER = 5f;
+    private static float ACURRACY_MINIMUM_IN_METER = 400f;
 
     // Bundle key used for saving instance state
     private static String BUNDLE_KEY_LOCATION = "SayItFragment.Bundle.Key.Location";
@@ -248,15 +248,18 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private boolean isLocationOutdated(Location candidateLocation) {
-        final LatLng candidateLatLng = locationToLatLng(candidateLocation);
-        final double distance = SphericalUtil.computeDistanceBetween(candidateLatLng, mLastKnownLatLng);
-        return distance > DELTA_DISTANCE_IN_METER;
+        boolean isLocationOutdated = false;
+        if (candidateLocation.getAccuracy() < mLastKnownLocation.getAccuracy()) {
+            isLocationOutdated = true;
+        } else if (candidateLocation.getAccuracy() < ACURRACY_MINIMUM_IN_METER) {
+            final LatLng candidateLatLng = locationToLatLng(candidateLocation);
+            final double distance = SphericalUtil.computeDistanceBetween(candidateLatLng, mLastKnownLatLng);
+            isLocationOutdated = distance > DELTA_DISTANCE_IN_METER;
+        }
+        return isLocationOutdated;
     }
 
     private void setNewLocation(Location newLocation) {
-        //TODO look at the elapsed time ?
-        //TODO look at the accuracy ?
-        Log.d("argonne", "new location with accuracy -> " + newLocation.getAccuracy());
         setLastKnownLocation(newLocation);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLng(mLastKnownLatLng));
     }
