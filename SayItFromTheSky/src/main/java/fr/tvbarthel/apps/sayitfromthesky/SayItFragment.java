@@ -154,7 +154,13 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     public boolean onOptionsItemSelected(MenuItem item) {
         final int itemId = item.getItemId();
         if (itemId == R.id.action_save) {
-            // TODO save the current work
+            if ((mEncodedPolylines != null && mEncodedPolylines.size() > 0)
+                    || (mCurrentPolyline != null && mCurrentPolyline.getPoints().size() > 1)) {
+                saveCurrentDrawing();
+            } else {
+                // TODO don't use hard coded String
+                makeToast("There is nothing to save !");
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -219,10 +225,14 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private void hideToast() {
-        if(mTextToast != null) {
+        if (mTextToast != null) {
             mTextToast.cancel();
             mTextToast = null;
         }
+    }
+
+    private void saveCurrentDrawing() {
+        // TODO
     }
 
     private void saveCurrentPolyline(Bundle outState) {
