@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class MainActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, SayItFragment.Callback {
 
@@ -119,9 +121,9 @@ public class MainActivity extends FragmentActivity
     }
 
     @Override
-    public void onSavePath() {
+    public void onSavePath(ArrayList<String> encodedPaths) {
         Log.d("argonne", "save path !");
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, new PathEditFragment())
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, PathEditFragment.newInstance(encodedPaths))
                 .addToBackStack(TRANSACTION_STATE_NAME_EDIT_PATH).commit();
     }
 

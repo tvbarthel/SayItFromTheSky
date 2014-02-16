@@ -190,6 +190,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 // TODO don't use hard coded String
                 makeToast("There is nothing to save !");
             }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -221,9 +222,10 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
 
                 // Restore the polylines that were displayed on the map
+                // Add ask to draw them
                 if (mLastSavedInstanceState != null) {
-                    restoreEncodedPolyline();
-                    restoreCurrentPolyline();
+                    restoreEncodedPolyline(true);
+                    restoreCurrentPolyline(true);
                 }
 
                 // Try to restore last known location
@@ -248,6 +250,11 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
             }
         } else {
             Log.d("argonne", "onMapReady 4");
+            // Restore the polylines that were displayed on the map
+            if (mLastSavedInstanceState != null) {
+                restoreEncodedPolyline(false);
+                restoreCurrentPolyline(false);
+            }
             initCircleButtons();
         }
     }
@@ -273,7 +280,12 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     private void saveCurrentDrawing() {
         // TODO
-        mCallback.onSavePath();
+        if (mCurrentPolyline != null) {
+            // Add the current polyline
+            mEncodedPolylines.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
+        }
+        Log.d("argonne", mEncodedPolylines.toString());
+        mCallback.onSavePath(mEncodedPolylines);
     }
 
     private void saveCurrentPolyline(Bundle outState) {
@@ -286,9 +298,9 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
      * Restore the current polyline from the last savedInstanceState.
      * This method should be called only after the map is ready.
      */
-    private void restoreCurrentPolyline() {
+    private void restoreCurrentPolyline(boolean shouldDrawPolyline) {
         final String encodedPoints = mLastSavedInstanceState.getString(BUNDLE_KEY_CURRENT_POLYLINE);
-        if (encodedPoints != null) {
+        if (encodedPoints != null && shouldDrawPolyline) {
             mCurrentPolyline = mGoogleMap.addPolyline(mPolylineOptionsCurrent);
             mCurrentPolyline.setPoints(PolyUtil.decode(encodedPoints));
         }
@@ -300,11 +312,11 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
     }
 
-    private void restoreEncodedPolyline() {
+    private void restoreEncodedPolyline(boolean shouldDrawPolyline) {
         mEncodedPolylines = mLastSavedInstanceState.getStringArrayList(BUNDLE_KEY_ENCODED_POLYLINES);
         if (mEncodedPolylines == null) {
             mEncodedPolylines = new ArrayList<String>();
-        } else {
+        } else if (shouldDrawPolyline) {
             for (String encodedPolyline : mEncodedPolylines) {
                 mGoogleMap.addPolyline(mPolylineOptionsCurrent).setPoints(PolyUtil.decode(encodedPolyline));
             }
@@ -374,12 +386,12 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     public interface Callback {
-        void onSavePath();
+        void onSavePath(ArrayList<String> encodedPaths);
     }
 
     private static final SayItFragment.Callback sDummyCallback = new Callback() {
         @Override
-        public void onSavePath() {
+        public void onSavePath(ArrayList<String> encodedPaths) {
         }
     };
 }
