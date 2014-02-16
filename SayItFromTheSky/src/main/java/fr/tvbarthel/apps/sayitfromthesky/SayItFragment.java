@@ -1,11 +1,13 @@
 package fr.tvbarthel.apps.sayitfromthesky;
 
 
+import android.app.Activity;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -59,10 +61,12 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private ArrayList<String> mEncodedPolylines;
     private Bundle mLastSavedInstanceState;
     private boolean mIsCurrentPointInCurrentPath;
+    private SayItFragment.Callback mCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
+        Log.d("argonne", "create view !");
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
         setHasOptionsMenu(true);
 
@@ -141,6 +145,21 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         return view;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (!(activity instanceof SayItFragment.Callback)) {
+            throw new IllegalArgumentException(activity.toString() + " must implements SayItFragment.Callback.");
+        }
+        mCallback = (SayItFragment.Callback) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        // Reset the callback to the dummy implementation.
+        mCallback = sDummyCallback;
+        super.onDetach();
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -178,9 +197,12 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     @Override
     public void onMapReady() {
+        Log.d("argonne", "onMapReady 1");
         if (mGoogleMap == null) {
+            Log.d("argonne", "onMapReady 2");
             mGoogleMap = mMapFragment.getMap();
             if (mGoogleMap != null) {
+                Log.d("argonne", "onMapReady 3");
                 // The map is now active and can be manipulated
                 // Enable my location
                 mGoogleMap.setMyLocationEnabled(true);
@@ -216,7 +238,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                             // First location
                             setLastKnownLocation(location);
                             initMapLocation();
-                        } else if (isLocationOutdated(location)) {
+                        } else {
                             // New location
                             setNewLocation(location);
                         }
@@ -224,6 +246,9 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 });
 
             }
+        } else {
+            Log.d("argonne", "onMapReady 4");
+            initCircleButtons();
         }
     }
 
@@ -248,6 +273,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     private void saveCurrentDrawing() {
         // TODO
+        mCallback.onSavePath();
     }
 
     private void saveCurrentPolyline(Bundle outState) {
@@ -285,11 +311,15 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
     }
 
-    private void initMapLocation() {
+    private void initCircleButtons() {
         mLineStateButton.setVisibility(View.VISIBLE);
         if (mLineStateButton.isChecked()) {
             mAddPointButton.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void initMapLocation() {
+        initCircleButtons();
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLastKnownLatLng, mLastKnownZoom));
     }
 
@@ -343,4 +373,13 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
     }
 
+    public interface Callback {
+        void onSavePath();
+    }
+
+    private static final SayItFragment.Callback sDummyCallback = new Callback() {
+        @Override
+        public void onSavePath() {
+        }
+    };
 }

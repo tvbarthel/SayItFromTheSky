@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +16,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, SayItFragment.Callback {
 
     private static final String FRAGMENT_TAG_SAY_IT = "MainActivity.Fragment.Tag.SayIt";
+    private static final String TRANSACTION_STATE_NAME_EDIT_PATH = "MainActivity.Transaction.Name.EditPath";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -45,15 +47,17 @@ public class MainActivity extends FragmentActivity
     }
 
     @Override
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(int position, boolean isUserAction) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         //TODO remove placeholder fragments
         if (position <= 2) {
+            fragmentManager.popBackStack(TRANSACTION_STATE_NAME_EDIT_PATH, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                     .commit();
-        } else if (position == 3) {
+        } else if (position == 3 && isUserAction) {
+            fragmentManager.popBackStack(TRANSACTION_STATE_NAME_EDIT_PATH, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             SayItFragment sayItFragment = (SayItFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG_SAY_IT);
             if (sayItFragment == null) {
                 sayItFragment = new SayItFragment();
@@ -112,6 +116,13 @@ public class MainActivity extends FragmentActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSavePath() {
+        Log.d("argonne", "save path !");
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new PathEditFragment())
+                .addToBackStack(TRANSACTION_STATE_NAME_EDIT_PATH).commit();
     }
 
     /**
