@@ -23,20 +23,30 @@
 
             <Button
                 android:id="@+id/fragment_say_it_button_add_point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/fragment_say_it_circle_button_size"
+                android:layout_height="@dimen/fragment_say_it_circle_button_size"
                 android:layout_gravity="bottom|right"
                 android:visibility="invisible"
-                android:text="add"/>
+                android:background="@drawable/red_circle_button"
+                android:textAppearance="?android:textAppearanceButton"
+                android:textColor="@color/grey_light"
+                android:layout_marginRight="@dimen/fragment_say_it_circle_button_margin"
+                android:fontFamily="sans-serif-light"
+                android:text="Add" />
 
             <ToggleButton
                 android:id="@+id/fragment_say_it_button_line_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/fragment_say_it_circle_button_size"
+                android:layout_height="@dimen/fragment_say_it_circle_button_size"
                 android:layout_gravity="bottom|right"
                 android:visibility="invisible"
                 android:textOn="Stop"
-                android:textOff="Start"/>
+                android:textOff="Start"
+                android:layout_marginLeft="@dimen/fragment_say_it_circle_button_margin"
+                android:textColor="@color/grey_light"
+                android:textAppearance="?android:textAppearanceButton"
+                android:fontFamily="sans-serif-light"
+                android:background="@drawable/red_circle_button" />
 
         </LinearLayout>
     </FrameLayout>
