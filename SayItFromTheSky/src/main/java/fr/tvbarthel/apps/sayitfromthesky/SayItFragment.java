@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.sayitfromthesky;
 
 
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -188,7 +189,11 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 final UiSettings uiSettings = mGoogleMap.getUiSettings();
                 uiSettings.setCompassEnabled(false);
                 uiSettings.setZoomControlsEnabled(false);
-                uiSettings.setMyLocationButtonEnabled(false);
+                uiSettings.setMyLocationButtonEnabled(true);
+                final TypedArray styledAttributes = getActivity().getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+                final int actionBarSize = (int) styledAttributes.getDimension(0, 0);
+                styledAttributes.recycle();
+                mGoogleMap.setPadding(0, actionBarSize, 0, 0);
 
                 // Add the preview polyline
                 mPreviewPolyline = mGoogleMap.addPolyline(mPolylineOptionsPreview);
