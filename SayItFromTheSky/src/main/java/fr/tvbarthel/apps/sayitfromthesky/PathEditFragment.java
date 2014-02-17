@@ -1,16 +1,19 @@
 package fr.tvbarthel.apps.sayitfromthesky;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
@@ -80,24 +83,41 @@ public class PathEditFragment extends Fragment implements SayItMapFragment.ISayI
 
                 // Draw the paths
                 if (!mEncodedPaths.isEmpty()) {
-                    double averageLat = 0;
-                    double averageLng = 0;
-                    int nbrOfPoints = 0;
+                    final LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
                     for (String encodedPath : mEncodedPaths) {
                         Polyline path = mGoogleMap.addPolyline(mPathOptions);
                         List<LatLng> pathPoints = PolyUtil.decode(encodedPath);
-                        nbrOfPoints += pathPoints.size();
-                        for (LatLng latLng : pathPoints) {
-                            averageLat += latLng.latitude;
-                            averageLng += latLng.longitude;
+                        for (LatLng point : pathPoints) {
+                            boundsBuilder.include(point);
                         }
                         path.setPoints(PolyUtil.decode(encodedPath));
                     }
-                    averageLat /= nbrOfPoints;
-                    averageLng /= nbrOfPoints;
-                    // TODO compute the zoom according to the points
-                    mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(averageLat, averageLng), 15));
+                    animateCameraToBounds(boundsBuilder.build());
                 }
+            }
+        }
+    }
+
+    private void animateCameraToBounds(final LatLngBounds bounds) {
+        try {
+            mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+        } catch (IllegalStateException e) {
+            // layout not yet initialized
+            final View mapView = mMapFragment.getView();
+            if (mapView.getViewTreeObserver().isAlive()) {
+                mapView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @SuppressWarnings("deprecation")
+                    // We check which build version we are using.
+                    @Override
+                    public void onGlobalLayout() {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                            mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        } else {
+                            mapView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
+                    }
+                });
             }
         }
     }

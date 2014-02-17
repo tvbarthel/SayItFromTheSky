@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -64,9 +63,8 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private SayItFragment.Callback mCallback;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
-        Log.d("argonne", "create view !");
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
         setHasOptionsMenu(true);
 
@@ -84,6 +82,11 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         // The current point/position is not in the current path yet.
         mIsCurrentPointInCurrentPath = false;
 
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
         // Setup the button used to add a point to the current path.
         mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
         mAddPointButton.setOnClickListener(new View.OnClickListener() {
@@ -198,12 +201,9 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     @Override
     public void onMapReady() {
-        Log.d("argonne", "onMapReady 1");
         if (mGoogleMap == null) {
-            Log.d("argonne", "onMapReady 2");
             mGoogleMap = mMapFragment.getMap();
             if (mGoogleMap != null) {
-                Log.d("argonne", "onMapReady 3");
                 // The map is now active and can be manipulated
                 // Enable my location
                 mGoogleMap.setMyLocationEnabled(true);
@@ -249,12 +249,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
             }
         } else {
-            Log.d("argonne", "onMapReady 4");
-            // Restore the polylines that were displayed on the map
-            if (mLastSavedInstanceState != null) {
-                restoreEncodedPolyline(false);
-                restoreCurrentPolyline(false);
-            }
+            // Setup the circle buttons
             initCircleButtons();
         }
     }
@@ -279,13 +274,13 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private void saveCurrentDrawing() {
-        // TODO
+        final ArrayList<String> drawing = new ArrayList<String>();
+        drawing.addAll(mEncodedPolylines);
         if (mCurrentPolyline != null) {
             // Add the current polyline
-            mEncodedPolylines.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
+            drawing.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
         }
-        Log.d("argonne", mEncodedPolylines.toString());
-        mCallback.onSavePath(mEncodedPolylines);
+        mCallback.onSavePath(drawing);
     }
 
     private void saveCurrentPolyline(Bundle outState) {

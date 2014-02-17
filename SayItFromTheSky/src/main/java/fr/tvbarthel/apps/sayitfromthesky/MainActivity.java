@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,10 +62,14 @@ public class MainActivity extends FragmentActivity
             SayItFragment sayItFragment = (SayItFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG_SAY_IT);
             if (sayItFragment == null) {
                 sayItFragment = new SayItFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, sayItFragment, FRAGMENT_TAG_SAY_IT)
+                        .commit();
+            } else {
+                fragmentManager.beginTransaction()
+                        .show(sayItFragment).commit();
             }
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, sayItFragment, FRAGMENT_TAG_SAY_IT)
-                    .commit();
+
             //TODO don't use hard coded string
             mTitle = "Say It";
         }
@@ -122,7 +125,6 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onSavePath(ArrayList<String> encodedPaths) {
-        Log.d("argonne", "save path !");
         getSupportFragmentManager().beginTransaction().replace(R.id.container, PathEditFragment.newInstance(encodedPaths))
                 .addToBackStack(TRANSACTION_STATE_NAME_EDIT_PATH).commit();
     }
