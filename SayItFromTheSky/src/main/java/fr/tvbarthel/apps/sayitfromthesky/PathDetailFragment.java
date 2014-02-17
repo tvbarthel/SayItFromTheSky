@@ -21,29 +21,29 @@ import com.google.maps.android.PolyUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PathEditFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
+public class PathDetailFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
-    private static final String BUNDLE_KEY_ENCODED_PATHS = "PathEditFragment.Bundle.Key.EncodedPaths";
+    private static final String BUNDLE_KEY_ENCODED_PATHS = "PathDetailFragment.Bundle.Key.EncodedPaths";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
     private ArrayList<String> mEncodedPaths;
 
-    public static PathEditFragment newInstance(ArrayList<String> encodedPaths) {
-        final PathEditFragment instance = new PathEditFragment();
+    public static PathDetailFragment newInstance(ArrayList<String> encodedPaths) {
+        final PathDetailFragment instance = new PathDetailFragment();
         final Bundle arguments = new Bundle();
         arguments.putStringArrayList(BUNDLE_KEY_ENCODED_PATHS, encodedPaths);
         instance.setArguments(arguments);
         return instance;
     }
 
-    public PathEditFragment() {
+    public PathDetailFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_path_edit, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_path_detail, container, false);
 
         // Create a PolylineOptions to draw the paths
         mPathOptions = new PolylineOptions();
@@ -61,7 +61,7 @@ public class PathEditFragment extends Fragment implements SayItMapFragment.ISayI
         if (mMapFragment == null) {
             // Create a new map fragment.
             mMapFragment = new SayItMapFragment(this);
-            getChildFragmentManager().beginTransaction().add(R.id.fragment_path_edit_map, mMapFragment, "fragmentTagMap").commit();
+            getChildFragmentManager().beginTransaction().add(R.id.fragment_path_detail_map, mMapFragment, "fragmentTagMap").commit();
         } else {
             // Re-use the old map fragment.
             mMapFragment.setInterface(this);

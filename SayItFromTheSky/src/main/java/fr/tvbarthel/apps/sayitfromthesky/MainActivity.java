@@ -20,7 +20,7 @@ public class MainActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, SayItFragment.Callback {
 
     private static final String FRAGMENT_TAG_SAY_IT = "MainActivity.Fragment.Tag.SayIt";
-    private static final String TRANSACTION_STATE_NAME_EDIT_PATH = "MainActivity.Transaction.Name.EditPath";
+    private static final String TRANSACTION_STATE_NAME_PATH_DETAIL = "MainActivity.Transaction.Name.PathDetail";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -53,12 +53,12 @@ public class MainActivity extends FragmentActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         //TODO remove placeholder fragments
         if (position <= 2) {
-            fragmentManager.popBackStack(TRANSACTION_STATE_NAME_EDIT_PATH, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.popBackStack(TRANSACTION_STATE_NAME_PATH_DETAIL, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.beginTransaction()
                     .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                     .commit();
         } else if (position == 3 && isUserAction) {
-            fragmentManager.popBackStack(TRANSACTION_STATE_NAME_EDIT_PATH, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.popBackStack(TRANSACTION_STATE_NAME_PATH_DETAIL, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             SayItFragment sayItFragment = (SayItFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG_SAY_IT);
             if (sayItFragment == null) {
                 sayItFragment = new SayItFragment();
@@ -125,8 +125,8 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onSavePath(ArrayList<String> encodedPaths) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, PathEditFragment.newInstance(encodedPaths))
-                .addToBackStack(TRANSACTION_STATE_NAME_EDIT_PATH).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, PathDetailFragment.newInstance(encodedPaths))
+                .addToBackStack(TRANSACTION_STATE_NAME_PATH_DETAIL).commit();
     }
 
     /**
