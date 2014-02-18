@@ -7,7 +7,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fragment_path_detail_map"
+        android:id="@+id/activity_path_detail_map"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/textView"/>
 

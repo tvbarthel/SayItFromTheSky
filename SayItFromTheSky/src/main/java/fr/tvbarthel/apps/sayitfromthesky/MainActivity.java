@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.sayitfromthesky;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -57,7 +58,7 @@ public class MainActivity extends FragmentActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
                     .commit();
-        } else if (position == 3 && isUserAction) {
+        } else if (position == 3) {
             fragmentManager.popBackStack(TRANSACTION_STATE_NAME_PATH_DETAIL, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             SayItFragment sayItFragment = (SayItFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG_SAY_IT);
             if (sayItFragment == null) {
@@ -69,7 +70,6 @@ public class MainActivity extends FragmentActivity
                 fragmentManager.beginTransaction()
                         .show(sayItFragment).commit();
             }
-
             //TODO don't use hard coded string
             mTitle = "Say It";
         }
@@ -125,8 +125,9 @@ public class MainActivity extends FragmentActivity
 
     @Override
     public void onSavePath(ArrayList<String> encodedPaths) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, PathDetailFragment.newInstance(encodedPaths))
-                .addToBackStack(TRANSACTION_STATE_NAME_PATH_DETAIL).commit();
+        final Intent intent = new Intent(this, PathDetailActivity.class);
+        intent.putExtra(PathDetailActivity.EXTRA_KEY_ENCODED_PATHS, encodedPaths);
+        startActivity(intent);
     }
 
     /**

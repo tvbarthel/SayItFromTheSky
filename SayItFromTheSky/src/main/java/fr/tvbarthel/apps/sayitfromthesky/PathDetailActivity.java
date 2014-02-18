@@ -3,10 +3,8 @@ package fr.tvbarthel.apps.sayitfromthesky;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,54 +19,42 @@ import com.google.maps.android.PolyUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PathDetailFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
-    private static final String BUNDLE_KEY_ENCODED_PATHS = "PathDetailFragment.Bundle.Key.EncodedPaths";
+public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
+
+    public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
     private ArrayList<String> mEncodedPaths;
 
-    public static PathDetailFragment newInstance(ArrayList<String> encodedPaths) {
-        final PathDetailFragment instance = new PathDetailFragment();
-        final Bundle arguments = new Bundle();
-        arguments.putStringArrayList(BUNDLE_KEY_ENCODED_PATHS, encodedPaths);
-        instance.setArguments(arguments);
-        return instance;
-    }
-
-    public PathDetailFragment() {
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_path_detail, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_path_detail);
 
         // Create a PolylineOptions to draw the paths
         mPathOptions = new PolylineOptions();
         mPathOptions.color(Color.BLUE);
 
         // Get the encoded paths
-        final Bundle arguments = getArguments();
-        if (arguments.containsKey(BUNDLE_KEY_ENCODED_PATHS)) {
-            mEncodedPaths = arguments.getStringArrayList(BUNDLE_KEY_ENCODED_PATHS);
+        final Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(EXTRA_KEY_ENCODED_PATHS)) {
+            mEncodedPaths = extras.getStringArrayList(EXTRA_KEY_ENCODED_PATHS);
         } else {
             mEncodedPaths = new ArrayList<String>();
         }
 
-        mMapFragment = (SayItMapFragment) getChildFragmentManager().findFragmentByTag("fragmentTagMap");
+        mMapFragment = (SayItMapFragment) getSupportFragmentManager().findFragmentByTag("fragmentTagMap");
         if (mMapFragment == null) {
             // Create a new map fragment.
             mMapFragment = new SayItMapFragment(this);
-            getChildFragmentManager().beginTransaction().add(R.id.fragment_path_detail_map, mMapFragment, "fragmentTagMap").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_path_detail_map, mMapFragment, "fragmentTagMap").commit();
         } else {
             // Re-use the old map fragment.
             mMapFragment.setInterface(this);
-            getChildFragmentManager().beginTransaction().show(mMapFragment).commit();
+            getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
         }
-
-        return rootView;
     }
 
     @Override
@@ -121,4 +107,5 @@ public class PathDetailFragment extends Fragment implements SayItMapFragment.ISa
             }
         }
     }
+
 }
