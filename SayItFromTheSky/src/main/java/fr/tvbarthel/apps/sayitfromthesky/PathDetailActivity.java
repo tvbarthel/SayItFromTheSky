@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -55,6 +56,11 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
             mMapFragment.setInterface(this);
             getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

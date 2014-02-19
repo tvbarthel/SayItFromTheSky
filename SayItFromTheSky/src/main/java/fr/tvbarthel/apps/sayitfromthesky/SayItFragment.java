@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.sayitfromthesky;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.location.Location;
@@ -36,6 +37,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private static float DEFAULT_VALUE_ZOOM = 15f;
     private static float DELTA_DISTANCE_IN_METER = 5f;
     private static float ACURRACY_MINIMUM_IN_METER = 400f;
+    private static final int REQUEST_CODE_SAVE_PATH = 1;
 
     // Bundle key used for saving instance state
     private static String BUNDLE_KEY_LOCATION = "SayItFragment.Bundle.Key.Location";
@@ -60,7 +62,6 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private ArrayList<String> mEncodedPolylines;
     private Bundle mLastSavedInstanceState;
     private boolean mIsCurrentPointInCurrentPath;
-    private SayItFragment.Callback mCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,21 +149,6 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         return view;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (!(activity instanceof SayItFragment.Callback)) {
-            throw new IllegalArgumentException(activity.toString() + " must implements SayItFragment.Callback.");
-        }
-        mCallback = (SayItFragment.Callback) activity;
-    }
-
-    @Override
-    public void onDetach() {
-        // Reset the callback to the dummy implementation.
-        mCallback = sDummyCallback;
-        super.onDetach();
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -198,6 +184,14 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SAVE_PATH && resultCode == Activity.RESULT_OK) {
+            // The save path request has been done.
+            // TODO reset the current path and the other paths after
+        }
+    }
 
     @Override
     public void onMapReady() {
@@ -274,13 +268,15 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     }
 
     private void saveCurrentDrawing() {
-        final ArrayList<String> drawing = new ArrayList<String>();
-        drawing.addAll(mEncodedPolylines);
+        final ArrayList<String> encodedPaths = new ArrayList<String>();
+        encodedPaths.addAll(mEncodedPolylines);
         if (mCurrentPolyline != null) {
             // Add the current polyline
-            drawing.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
+            encodedPaths.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
         }
-        mCallback.onSavePath(drawing);
+        final Intent intent = new Intent(getActivity(), PathDetailActivity.class);
+        intent.putExtra(PathDetailActivity.EXTRA_KEY_ENCODED_PATHS, encodedPaths);
+        startActivityForResult(intent, REQUEST_CODE_SAVE_PATH);
     }
 
     private void saveCurrentPolyline(Bundle outState) {
@@ -380,13 +376,4 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         }
     }
 
-    public interface Callback {
-        void onSavePath(ArrayList<String> encodedPaths);
-    }
-
-    private static final SayItFragment.Callback sDummyCallback = new Callback() {
-        @Override
-        public void onSavePath(ArrayList<String> encodedPaths) {
-        }
-    };
 }

@@ -2,7 +2,6 @@ package fr.tvbarthel.apps.sayitfromthesky;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,10 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 public class MainActivity extends FragmentActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, SayItFragment.Callback {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String FRAGMENT_TAG_SAY_IT = "MainActivity.Fragment.Tag.SayIt";
     private static final String TRANSACTION_STATE_NAME_PATH_DETAIL = "MainActivity.Transaction.Name.PathDetail";
@@ -121,13 +118,6 @@ public class MainActivity extends FragmentActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSavePath(ArrayList<String> encodedPaths) {
-        final Intent intent = new Intent(this, PathDetailActivity.class);
-        intent.putExtra(PathDetailActivity.EXTRA_KEY_ENCODED_PATHS, encodedPaths);
-        startActivity(intent);
     }
 
     /**
