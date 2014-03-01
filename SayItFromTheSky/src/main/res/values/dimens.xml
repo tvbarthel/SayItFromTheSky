@@ -11,4 +11,7 @@
     <dimen name="fragment_say_it_circle_button_size">60dp</dimen>
     <dimen name="fragment_say_it_circle_button_margin">5dp</dimen>
 
+    <!-- Activity path detail -->
+    <dimen name="map_height">300dp</dimen>
+
 </resources>
