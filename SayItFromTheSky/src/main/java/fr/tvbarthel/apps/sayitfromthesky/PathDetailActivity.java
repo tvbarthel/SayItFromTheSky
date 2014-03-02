@@ -1,12 +1,14 @@
 package fr.tvbarthel.apps.sayitfromthesky;
 
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,6 +26,7 @@ import java.util.List;
 public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
 
     public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
+    private static final float MAP_HEIGHT_PROPORTION = 0.70f; // the map height is about 70% of the screen height.
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -46,11 +49,25 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
             mEncodedPaths = new ArrayList<String>();
         }
 
+        // Get the window size
+        Point windowSize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(windowSize);
+        int mapHeight = (int) (windowSize.y * MAP_HEIGHT_PROPORTION);
+
+        // Set the map container height
+        View mapContainer = findViewById(R.id.activity_path_detail_map_container);
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mapContainer.getLayoutParams();
+        layoutParams.height = mapHeight;
+        mapContainer.setLayoutParams(layoutParams);
+
+        // Set the top padding of the scroll view
+        findViewById(R.id.activity_path_detail_scroll_view).setPadding(0, mapHeight, 0, 0);
+
         mMapFragment = (SayItMapFragment) getSupportFragmentManager().findFragmentByTag("fragmentTagMap");
         if (mMapFragment == null) {
             // Create a new map fragment.
             mMapFragment = new SayItMapFragment(this);
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_path_detail_map, mMapFragment, "fragmentTagMap").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_path_detail_map_container, mMapFragment, "fragmentTagMap").commit();
         } else {
             // Re-use the old map fragment.
             mMapFragment.setInterface(this);

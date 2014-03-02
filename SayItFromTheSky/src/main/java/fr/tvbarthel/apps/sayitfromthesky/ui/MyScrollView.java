@@ -17,12 +17,12 @@ public class MyScrollView extends ScrollView {
 
     public MyScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
-		mPaddingTop = getPaddingTop();
+        mPaddingTop = getPaddingTop();
     }
 
     public MyScrollView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-		mPaddingTop = getPaddingTop();
+        mPaddingTop = getPaddingTop();
     }
 
     @Override
@@ -34,4 +34,9 @@ public class MyScrollView extends ScrollView {
         }
     }
 
+    @Override
+    public void setPadding(int left, int top, int right, int bottom) {
+        super.setPadding(left, top, right, bottom);
+        mPaddingTop = top;
+    }
 }
