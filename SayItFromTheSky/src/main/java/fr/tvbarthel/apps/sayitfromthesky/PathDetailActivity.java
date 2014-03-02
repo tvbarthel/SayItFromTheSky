@@ -26,6 +26,7 @@ import java.util.List;
 public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
 
     public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
+    private static final String FRAGMENT_TAG_MAP = "PathDetailActivity.Fragment.Tag.Map";
     private static final float MAP_HEIGHT_PROPORTION = 0.70f; // the map height is about 70% of the screen height.
 
     private SayItMapFragment mMapFragment;
@@ -41,38 +42,9 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         mPathOptions = new PolylineOptions();
         mPathOptions.color(Color.BLUE);
 
-        // Get the encoded paths
-        final Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(EXTRA_KEY_ENCODED_PATHS)) {
-            mEncodedPaths = extras.getStringArrayList(EXTRA_KEY_ENCODED_PATHS);
-        } else {
-            mEncodedPaths = new ArrayList<String>();
-        }
-
-        // Get the window size
-        Point windowSize = new Point();
-        getWindowManager().getDefaultDisplay().getSize(windowSize);
-        int mapHeight = (int) (windowSize.y * MAP_HEIGHT_PROPORTION);
-
-        // Set the map container height
-        View mapContainer = findViewById(R.id.activity_path_detail_map_container);
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mapContainer.getLayoutParams();
-        layoutParams.height = mapHeight;
-        mapContainer.setLayoutParams(layoutParams);
-
-        // Set the top padding of the scroll view
-        findViewById(R.id.activity_path_detail_scroll_view).setPadding(0, mapHeight, 0, 0);
-
-        mMapFragment = (SayItMapFragment) getSupportFragmentManager().findFragmentByTag("fragmentTagMap");
-        if (mMapFragment == null) {
-            // Create a new map fragment.
-            mMapFragment = new SayItMapFragment(this);
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_path_detail_map_container, mMapFragment, "fragmentTagMap").commit();
-        } else {
-            // Re-use the old map fragment.
-            mMapFragment.setInterface(this);
-            getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
-        }
+        mEncodedPaths = getEncodedPaths();
+        initMapContainer();
+        createMapFragment();
     }
 
     @Override
@@ -104,6 +76,45 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
                     animateCameraToBounds(boundsBuilder.build());
                 }
             }
+        }
+    }
+
+    private ArrayList<String> getEncodedPaths() {
+        ArrayList<String> encodedPaths = new ArrayList<String>();
+        final Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(EXTRA_KEY_ENCODED_PATHS)) {
+            encodedPaths = extras.getStringArrayList(EXTRA_KEY_ENCODED_PATHS);
+        }
+        return encodedPaths;
+    }
+
+    private void initMapContainer() {
+        // Get the window size
+        Point windowSize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(windowSize);
+        int mapHeight = (int) (windowSize.y * MAP_HEIGHT_PROPORTION);
+
+        // Set the map container height
+        View mapContainer = findViewById(R.id.activity_path_detail_map_container);
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mapContainer.getLayoutParams();
+        layoutParams.height = mapHeight;
+        mapContainer.setLayoutParams(layoutParams);
+
+        // Set the top padding of the scroll view
+        findViewById(R.id.activity_path_detail_scroll_view).setPadding(0, mapHeight, 0, 0);
+    }
+
+    private void createMapFragment() {
+        mMapFragment = (SayItMapFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_MAP);
+        if (mMapFragment == null) {
+            // Create a new map fragment.
+            mMapFragment = new SayItMapFragment(this);
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_path_detail_map_container, mMapFragment,
+                    FRAGMENT_TAG_MAP).commit();
+        } else {
+            // Re-use the old map fragment.
+            mMapFragment.setInterface(this);
+            getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
         }
     }
 
