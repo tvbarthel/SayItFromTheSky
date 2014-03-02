@@ -29,6 +29,12 @@ public class SayItMapFragment extends SupportMapFragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mInterface = null;
+    }
+
     public void setInterface(ISayItMapFragment iSayItMapFragment) {
         mInterface = iSayItMapFragment;
     }
