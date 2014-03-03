@@ -10,4 +10,11 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Activity path detail -->
+    <string name="activity_path_detail_content_description_expand_image">Expand image</string>
+    <string name="activity_path_detail_add_tag_label">Add tags</string>
+    <string name="activity_path_detail_tag_edit_hint">myTag</string>
+    <string name="activity_path_detail_cancel_path">Cancel</string>
+    <string name="activity_path_detail_save_path">Save</string>
+
 </resources>

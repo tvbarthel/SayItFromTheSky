@@ -12,7 +12,12 @@
     <dimen name="fragment_say_it_circle_button_margin">5dp</dimen>
 
     <!-- Activity path detail -->
-    <dimen name="map_height">300dp</dimen>
     <dimen name="expand_container_height">45dp</dimen>
+    <dimen name="tag_section_margin_top">8dp</dimen>
+    <dimen name="tag_section_margin_bottom">24dp</dimen>
+    <dimen name="tag_section_padding">8dp</dimen>
+    <dimen name="tag_section_margin_right">8dp</dimen>
+    <dimen name="expand_section_margin_top">4dp</dimen>
+    <dimen name="expand_section_margin_horizontal">5dp</dimen>
 
 </resources>

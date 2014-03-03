@@ -40,7 +40,6 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
     private ArrayList<String> mEncodedPaths;
-    private EditText mAddTag;
     private LinearLayout mTagContainer;
     private LinearLayout.LayoutParams mTagLayoutParams;
 
@@ -100,13 +99,13 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
     }
 
     private void initTagContainer() {
-        mAddTag = (EditText) findViewById(R.id.activity_path_detail_map_add_tag);
+        final EditText editTextAddTag = (EditText) findViewById(R.id.activity_path_detail_add_tag);
         mTagContainer = (LinearLayout) findViewById(R.id.activity_path_detail_tag_container);
         mTagLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         mTagLayoutParams.setMargins(8, 0, 8, 0);
 
-        mAddTag.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        editTextAddTag.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -130,7 +129,7 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         getWindowManager().getDefaultDisplay().getSize(windowSize);
         final TypedArray styledAttributes = getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
         final int actionBarSize = styledAttributes.getDimensionPixelSize(0, 0);
-        int mapHeight = (int) (windowSize.y - actionBarSize - getResources().getDimensionPixelSize(R.dimen.expand_container_height));
+        int mapHeight = (windowSize.y - actionBarSize - getResources().getDimensionPixelSize(R.dimen.expand_container_height));
 
         // Set the map container height
         View mapContainer = findViewById(R.id.activity_path_detail_map_container);
