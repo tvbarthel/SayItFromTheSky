@@ -20,4 +20,10 @@
     <dimen name="expand_section_margin_top">4dp</dimen>
     <dimen name="expand_section_margin_horizontal">5dp</dimen>
 
+    <!-- Tag entry -->
+    <dimen name="tag_entry_height">48dp</dimen>
+    <dimen name="tag_entry_delete_button_size">32dp</dimen>
+    <dimen name="tag_entry_tag_icon_text_size">40sp</dimen>
+
+
 </resources>

@@ -38,4 +38,8 @@ public class TagEntry extends RelativeLayout {
     public void setTag(String tag) {
         mTag.setText(tag.replace(" ", ""));
     }
+
+    public String getTag() {
+        return mTag.getText().toString();
+    }
 }

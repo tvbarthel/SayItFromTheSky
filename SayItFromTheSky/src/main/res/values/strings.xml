@@ -17,4 +17,8 @@
     <string name="activity_path_detail_cancel_path">Cancel</string>
     <string name="activity_path_detail_save_path">Save</string>
 
+    <!-- Tag entry -->
+    <string name="tag_entry_tag_icon">#</string>
+    <string name="tag_entry_delete">-</string>
+
 </resources>
