@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="#"
+        android:textColor="@color/red_light_translucent"
+        android:textSize="38dp"
+        android:id="@+id/textView"
+        android:fontFamily="sans-serif-light"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="test de tag"
+        android:fontFamily="sans-serif-light"
+        android:id="@+id/tag_entry_tag"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_centerInParent="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_centerInParent="true"
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_menu_delete"/>
+</merge>

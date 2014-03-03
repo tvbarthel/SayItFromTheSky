@@ -13,5 +13,6 @@
 
     <!-- Activity path detail -->
     <dimen name="map_height">300dp</dimen>
+    <dimen name="expand_container_height">45dp</dimen>
 
 </resources>

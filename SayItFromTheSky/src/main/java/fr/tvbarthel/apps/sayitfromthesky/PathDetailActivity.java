@@ -1,14 +1,20 @@
 package fr.tvbarthel.apps.sayitfromthesky;
 
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -22,17 +28,21 @@ import com.google.maps.android.PolyUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tvbarthel.apps.sayitfromthesky.ui.TagEntry;
+
 
 public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
 
     public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
     private static final String FRAGMENT_TAG_MAP = "PathDetailActivity.Fragment.Tag.Map";
-    private static final float MAP_HEIGHT_PROPORTION = 0.70f; // the map height is about 70% of the screen height.
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
     private ArrayList<String> mEncodedPaths;
+    private EditText mAddTag;
+    private LinearLayout mTagContainer;
+    private LinearLayout.LayoutParams mTagLayoutParams;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +54,7 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
 
         mEncodedPaths = getEncodedPaths();
         initMapContainer();
+        initTagContainer();
         createMapFragment();
     }
 
@@ -88,11 +99,38 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         return encodedPaths;
     }
 
+    private void initTagContainer() {
+        mAddTag = (EditText) findViewById(R.id.activity_path_detail_map_add_tag);
+        mTagContainer = (LinearLayout) findViewById(R.id.activity_path_detail_tag_container);
+        mTagLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        mTagLayoutParams.setMargins(8, 0, 8, 0);
+
+        mAddTag.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String tagContent = v.getText().toString();
+                    if (!tagContent.isEmpty()) {
+                        final TagEntry newTagEntry = new TagEntry(PathDetailActivity.this);
+                        newTagEntry.setTag(tagContent);
+                        mTagContainer.addView(newTagEntry, mTagLayoutParams);
+                        v.setText("");
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     private void initMapContainer() {
         // Get the window size
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        int mapHeight = (int) (windowSize.y * MAP_HEIGHT_PROPORTION);
+        final TypedArray styledAttributes = getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+        final int actionBarSize = styledAttributes.getDimensionPixelSize(0, 0);
+        int mapHeight = (int) (windowSize.y - actionBarSize - getResources().getDimensionPixelSize(R.dimen.expand_container_height));
 
         // Set the map container height
         View mapContainer = findViewById(R.id.activity_path_detail_map_container);

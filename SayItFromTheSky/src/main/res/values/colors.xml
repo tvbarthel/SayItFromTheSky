@@ -5,4 +5,5 @@
     <color name="grey_light">#FFCECECE</color>
     <color name="red_light">#FFE87162</color>
     <color name="red_light_translucent">#BBE87162</color>
+    <color name="white_translucent">#CCFFFFFF</color>
 </resources>

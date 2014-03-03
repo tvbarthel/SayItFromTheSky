@@ -5,6 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
         <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:buttonBarStyle">@android:style/Holo.Light.ButtonBar.AlertDialog</item>
+        <item name="android:borderlessButtonStyle">@android:style/Widget.Holo.Light.Button.Borderless.Small</item>
     </style>
 
     <style name="AppTheme.ActionBar" parent="android:Widget.ActionBar">
@@ -14,6 +16,10 @@
 
     <style name="AppTheme.ActionBar.TitleText" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@color/grey_light</item>
+    </style>
+
+    <style name="test" parent="android:Theme.Holo.Light.Dialog">
+
     </style>
 
 </resources>

@@ -7,35 +7,108 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/map_height"
-        android:id="@+id/activity_path_detail_map_container" />
+        android:id="@+id/activity_path_detail_map_container"
+        android:focusableInTouchMode="true" />
 
     <fr.tvbarthel.apps.sayitfromthesky.ui.MyScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/activity_path_detail_scroll_view"
-        android:fillViewport="true"
         android:paddingTop="@dimen/map_height"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/white_translucent">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Path Edit"
-                android:id="@+id/textViewTest"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="@dimen/expand_container_height"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
 
-            <TextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_navigation_expand" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_navigation_expand" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="4dp"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_navigation_expand" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Path Edit"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/activity_path_detail_tag_container" />
+
+            <LinearLayout
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Add tags"
+                    android:layout_marginRight="8dp"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/activity_path_detail_map_add_tag"
+                    android:hint="myTag"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:minLines="1"
+                    android:fontFamily="sans-serif-light" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                style="?android:attr/buttonBarStyle"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:measureWithLargestChild="true">
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel" />
+
+                <Button
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save" />
+            </LinearLayout>
 
         </LinearLayout>
     </fr.tvbarthel.apps.sayitfromthesky.ui.MyScrollView>
