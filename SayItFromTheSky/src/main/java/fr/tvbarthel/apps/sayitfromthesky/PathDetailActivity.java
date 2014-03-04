@@ -35,6 +35,7 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
 
     public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
     private static final String FRAGMENT_TAG_MAP = "PathDetailActivity.Fragment.Tag.Map";
+    private static final String BUNDLE_KEY_TAG_LIST = "PathDetailActivity.Bundle.Key.TagList";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -42,7 +43,9 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
     private ArrayList<String> mEncodedPaths;
     private LinearLayout mTagContainer;
     private LinearLayout.LayoutParams mTagLayoutParams;
+    private ArrayList<String> mTagList;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_detail);
@@ -52,6 +55,7 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         mPathOptions.color(Color.BLUE);
 
         mEncodedPaths = getEncodedPaths();
+        restoreTagList(savedInstanceState);
         initMapContainer();
         initTagContainer();
         createMapFragment();
@@ -60,6 +64,12 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(BUNDLE_KEY_TAG_LIST, mTagList);
     }
 
     @Override
@@ -98,6 +108,14 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         return encodedPaths;
     }
 
+    private void restoreTagList(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.containsKey(BUNDLE_KEY_TAG_LIST)) {
+            mTagList = savedInstanceState.getStringArrayList(BUNDLE_KEY_TAG_LIST);
+        } else {
+            mTagList = new ArrayList<String>();
+        }
+    }
+
     private void initTagContainer() {
         final EditText editTextAddTag = (EditText) findViewById(R.id.activity_path_detail_add_tag);
         mTagContainer = (LinearLayout) findViewById(R.id.activity_path_detail_tag_container);
@@ -110,11 +128,10 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String tagContent = v.getText().toString();
-                    if (!tagContent.isEmpty()) {
-                        final TagEntry newTagEntry = new TagEntry(PathDetailActivity.this);
-                        newTagEntry.setTag(tagContent);
-                        newTagEntry.setCallback(PathDetailActivity.this);
+                    if (!tagContent.isEmpty() && !mTagList.contains(tagContent)) {
+                        final TagEntry newTagEntry = createTagEntry(tagContent);
                         mTagContainer.addView(newTagEntry, mTagLayoutParams);
+                        mTagList.add(newTagEntry.getTag());
                         v.setText("");
                     }
                     return true;
@@ -122,6 +139,22 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
                 return false;
             }
         });
+
+        // Restore the tag entries
+        restoreTagEntries();
+    }
+
+    private TagEntry createTagEntry(String tagContent) {
+        final TagEntry tagEntry = new TagEntry(PathDetailActivity.this);
+        tagEntry.setTag(tagContent);
+        tagEntry.setCallback(PathDetailActivity.this);
+        return tagEntry;
+    }
+
+    private void restoreTagEntries() {
+        for (String tagContent : mTagList) {
+            mTagContainer.addView(createTagEntry(tagContent), mTagLayoutParams);
+        }
     }
 
     private void initMapContainer() {
@@ -182,6 +215,7 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
 
     @Override
     public void onTagDeletion(TagEntry tag) {
+        mTagList.remove(tag.getTag());
         mTagContainer.removeView(tag);
     }
 }
