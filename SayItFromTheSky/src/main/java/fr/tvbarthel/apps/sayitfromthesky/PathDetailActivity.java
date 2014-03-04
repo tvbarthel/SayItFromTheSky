@@ -31,7 +31,7 @@ import java.util.List;
 import fr.tvbarthel.apps.sayitfromthesky.ui.TagEntry;
 
 
-public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
+public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment, TagEntry.Callback {
 
     public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
     private static final String FRAGMENT_TAG_MAP = "PathDetailActivity.Fragment.Tag.Map";
@@ -113,6 +113,7 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
                     if (!tagContent.isEmpty()) {
                         final TagEntry newTagEntry = new TagEntry(PathDetailActivity.this);
                         newTagEntry.setTag(tagContent);
+                        newTagEntry.setCallback(PathDetailActivity.this);
                         mTagContainer.addView(newTagEntry, mTagLayoutParams);
                         v.setText("");
                     }
@@ -179,4 +180,8 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         }
     }
 
+    @Override
+    public void onTagDeletion(TagEntry tag) {
+        mTagContainer.removeView(tag);
+    }
 }
