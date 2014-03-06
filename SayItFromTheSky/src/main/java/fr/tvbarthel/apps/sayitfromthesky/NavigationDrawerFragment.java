@@ -107,6 +107,8 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section3),
                         //TODO don't use hard coded string
                         "Say It",
+                        //TODO don't use hard coded string
+                        "My Paths"
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;

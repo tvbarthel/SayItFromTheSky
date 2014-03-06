@@ -18,6 +18,7 @@ public class MainActivity extends FragmentActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String FRAGMENT_TAG_SAY_IT = "MainActivity.Fragment.Tag.SayIt";
+    private static final String FRAGMENT_TAG_MY_PATHS = "MainActivity.Fragment.Tag.MyPaths";
     private static final String TRANSACTION_STATE_NAME_PATH_DETAIL = "MainActivity.Transaction.Name.PathDetail";
 
     /**
@@ -69,6 +70,20 @@ public class MainActivity extends FragmentActivity
             }
             //TODO don't use hard coded string
             mTitle = "Say It";
+        } else if (position == 4) {
+
+            MyPathFragment myPathFragment = (MyPathFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG_MY_PATHS);
+            if (myPathFragment == null) {
+                myPathFragment = new MyPathFragment();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, myPathFragment, FRAGMENT_TAG_MY_PATHS)
+                        .commit();
+            } else {
+                fragmentManager.beginTransaction()
+                        .show(myPathFragment).commit();
+            }
+            //TODO don't use hard coded string
+            mTitle = "My Paths";
         }
 
     }
