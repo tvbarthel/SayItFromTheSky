@@ -100,6 +100,7 @@
                 android:measureWithLargestChild="true">
 
                 <Button
+                    android:id="@+id/activity_path_detail_cancel"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -107,6 +108,7 @@
                     android:text="@string/activity_path_detail_cancel_path" />
 
                 <Button
+                    android:id="@+id/activity_path_detail_save"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

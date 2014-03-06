@@ -31,7 +31,7 @@ import java.util.List;
 import fr.tvbarthel.apps.sayitfromthesky.ui.TagEntry;
 
 
-public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment, TagEntry.Callback {
+public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment, TagEntry.Callback, View.OnClickListener {
 
     public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
     private static final String FRAGMENT_TAG_MAP = "PathDetailActivity.Fragment.Tag.Map";
@@ -53,6 +53,9 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         // Create a PolylineOptions to draw the paths
         mPathOptions = new PolylineOptions();
         mPathOptions.color(Color.BLUE);
+
+        findViewById(R.id.activity_path_detail_cancel).setOnClickListener(this);
+        findViewById(R.id.activity_path_detail_save).setOnClickListener(this);
 
         mEncodedPaths = getEncodedPaths();
         restoreTagList(savedInstanceState);
@@ -96,6 +99,24 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
                     animateCameraToBounds(boundsBuilder.build());
                 }
             }
+        }
+    }
+
+    @Override
+    public void onTagDeletion(TagEntry tag) {
+        mTagList.remove(tag.getTag());
+        mTagContainer.removeView(tag);
+    }
+
+    @Override
+    public void onClick(View v) {
+        final int viewId = v.getId();
+        if (viewId == R.id.activity_path_detail_cancel) {
+            setResult(RESULT_CANCELED);
+            finish();
+        } else if (viewId == R.id.activity_path_detail_save) {
+            // TODO save work
+            // TODO and finish with the right result code
         }
     }
 
@@ -213,9 +234,4 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         }
     }
 
-    @Override
-    public void onTagDeletion(TagEntry tag) {
-        mTagList.remove(tag.getTag());
-        mTagContainer.removeView(tag);
-    }
 }
