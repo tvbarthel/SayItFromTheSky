@@ -13,7 +13,7 @@ public class PathTable {
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_ENCODED_PATHS = "encoded_paths";
     public static final String COLUMN_TITLE = "title";
-    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_TAGS = "tag";
 
     // Database creation SQL statement
     private static final String SQL_DATABASE_CREATE = "create table "
@@ -22,7 +22,7 @@ public class PathTable {
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_ENCODED_PATHS + " text not null, "
             + COLUMN_TITLE + " text, "
-            + COLUMN_DESCRIPTION + "text "
+            + COLUMN_TAGS + "text "
             + ");";
 
     public static void onCreate(SQLiteDatabase database) {

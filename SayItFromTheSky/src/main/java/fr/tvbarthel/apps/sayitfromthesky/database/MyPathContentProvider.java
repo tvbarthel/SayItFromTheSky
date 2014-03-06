@@ -161,7 +161,7 @@ public class MyPathContentProvider extends ContentProvider {
     }
 
     private void checkColumns(final String[] projection) {
-        String[] available = {PathTable.COLUMN_DESCRIPTION, PathTable.COLUMN_ENCODED_PATHS,
+        String[] available = {PathTable.COLUMN_TAGS, PathTable.COLUMN_ENCODED_PATHS,
                 PathTable.COLUMN_TITLE, PathTable.COLUMN_ID};
         if (projection != null && projection.length > 0) {
             final HashSet<String> requestColumns = new HashSet<String>(Arrays.asList(projection));
