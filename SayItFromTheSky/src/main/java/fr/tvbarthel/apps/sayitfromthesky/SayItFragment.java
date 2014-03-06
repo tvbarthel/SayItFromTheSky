@@ -31,6 +31,8 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tvbarthel.apps.sayitfromthesky.utils.ActionBarUtils;
+
 public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
 
@@ -207,9 +209,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
                 uiSettings.setCompassEnabled(false);
                 uiSettings.setZoomControlsEnabled(false);
                 uiSettings.setMyLocationButtonEnabled(true);
-                final TypedArray styledAttributes = getActivity().getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
-                final int actionBarSize = (int) styledAttributes.getDimension(0, 0);
-                styledAttributes.recycle();
+                int actionBarSize = ActionBarUtils.getActionBarSize(getActivity());
                 mGoogleMap.setPadding(0, actionBarSize, 0, 0);
 
                 // Add the preview polyline

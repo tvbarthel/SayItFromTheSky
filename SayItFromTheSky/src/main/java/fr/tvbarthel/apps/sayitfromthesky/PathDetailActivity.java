@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.tvbarthel.apps.sayitfromthesky.ui.TagEntry;
+import fr.tvbarthel.apps.sayitfromthesky.utils.ActionBarUtils;
 
 
 public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment, TagEntry.Callback, View.OnClickListener {
@@ -182,8 +183,7 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         // Get the window size
         Point windowSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(windowSize);
-        final TypedArray styledAttributes = getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
-        final int actionBarSize = styledAttributes.getDimensionPixelSize(0, 0);
+        int actionBarSize = ActionBarUtils.getActionBarSize(this);
         int mapHeight = (windowSize.y - actionBarSize - getResources().getDimensionPixelSize(R.dimen.expand_container_height));
 
         // Set the map container height
