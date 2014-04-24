@@ -1,9 +1,8 @@
-package fr.tvbarthel.apps.sayitfromthesky;
+package fr.tvbarthel.apps.sayitfromthesky.fragments;
 
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -31,6 +30,8 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tvbarthel.apps.sayitfromthesky.R;
+import fr.tvbarthel.apps.sayitfromthesky.activities.PathDetailActivity;
 import fr.tvbarthel.apps.sayitfromthesky.utils.ActionBarUtils;
 
 public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {

@@ -10,6 +10,7 @@ public class ActionBarUtils {
 
     /**
      * Get the action bar size in pixel.
+     *
      * @param context the {@link android.content.Context} used to retrieve the theme.
      * @return
      */

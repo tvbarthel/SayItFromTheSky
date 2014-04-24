@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.sayitfromthesky;
+package fr.tvbarthel.apps.sayitfromthesky.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.utils.ActionBarUtils;
 
 /**

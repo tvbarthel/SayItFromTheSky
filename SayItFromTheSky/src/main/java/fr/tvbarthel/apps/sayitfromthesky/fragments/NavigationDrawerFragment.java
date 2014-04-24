@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.sayitfromthesky;
+package fr.tvbarthel.apps.sayitfromthesky.fragments;
 
 
 import android.app.ActionBar;
@@ -21,6 +21,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import fr.tvbarthel.apps.sayitfromthesky.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -109,7 +111,8 @@ public class NavigationDrawerFragment extends Fragment {
                         "Say It",
                         //TODO don't use hard coded string
                         "My Paths"
-                }));
+                }
+        ));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }

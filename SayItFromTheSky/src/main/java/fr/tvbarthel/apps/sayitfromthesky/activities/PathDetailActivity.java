@@ -1,6 +1,5 @@
-package fr.tvbarthel.apps.sayitfromthesky;
+package fr.tvbarthel.apps.sayitfromthesky.activities;
 
-import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
@@ -28,6 +27,8 @@ import com.google.maps.android.PolyUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tvbarthel.apps.sayitfromthesky.R;
+import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
 import fr.tvbarthel.apps.sayitfromthesky.ui.TagEntry;
 import fr.tvbarthel.apps.sayitfromthesky.utils.ActionBarUtils;
 

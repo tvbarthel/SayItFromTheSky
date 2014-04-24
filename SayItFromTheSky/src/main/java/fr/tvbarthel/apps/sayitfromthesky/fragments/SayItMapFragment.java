@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.sayitfromthesky;
+package fr.tvbarthel.apps.sayitfromthesky.fragments;
 
 import android.os.Bundle;
 import android.view.View;
