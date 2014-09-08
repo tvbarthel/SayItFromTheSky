@@ -1,15 +1,17 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    compileSdkVersion 20
+    buildToolsVersion '20.0.0'
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
     }
+
+
     buildTypes {
         release {
             runProguard false
@@ -17,25 +19,10 @@ android {
         }
     }
 
-    android.applicationVariants.all{ variant ->
-        // This is an annoying hack to get around the fact that the Gradle plugin does not support
-        // having libraries with different minSdkVersions. Play Services has a min version of 9 (Gingerbread)
-        // but Android Maps Utils supports 8 (Froyo) still
-        variant.processManifest.doFirst {
-            File manifestFile = file("${buildDir}/exploded-aar/com.google.maps.android/android-maps-utils/0.3/AndroidManifest.xml")
-            if (manifestFile.exists()) {
-                println("Replacing minSdkVersion in Android Maps Utils")
-                String content = manifestFile.getText('UTF-8')
-                content = content.replaceAll(/minSdkVersion="8"/, 'minSdkVersion=\"9\"')
-                manifestFile.write(content, 'UTF-8')
-                println(content)
-            }
-        }
-    }
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:+'
-    compile 'com.google.android.gms:play-services:4.3.23'
-    compile 'com.google.maps.android:android-maps-utils:0.3+'
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.google.android.gms:play-services:5.0.89'
+    compile 'com.google.maps.android:android-maps-utils:0.3.1'
 }

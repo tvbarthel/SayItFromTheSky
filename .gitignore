@@ -34,3 +34,5 @@ proguard/
 /.idea/workspace.xml
 .DS_Store
 
+# gradle plugin 11+
+/build
