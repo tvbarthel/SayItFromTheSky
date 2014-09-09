@@ -14,7 +14,9 @@ import android.widget.ListView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
+import fr.tvbarthel.apps.sayitfromthesky.adapters.DrawingAdapter;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
+import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 public class MainActivity extends Activity {
 
@@ -115,23 +117,22 @@ public class MainActivity extends Activity {
      * test purpose only.
      */
     private void fakeListViewData() {
-        mObservableListView.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1,
-                java.util.Arrays.asList("string 1",
-                        "string 2",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 3",
-                        "string 4")));
+        mObservableListView.setAdapter(new DrawingAdapter(this,
+                java.util.Arrays.asList(new Drawing("drawing 1"),
+                        new Drawing("drawing 2"),
+                        new Drawing("drawing 3"),
+                        new Drawing("drawing 4"),
+                        new Drawing("drawing 5"),
+                        new Drawing("drawing 6"),
+                        new Drawing("drawing 7"),
+                        new Drawing("drawing 8"),
+                        new Drawing("drawing 9"),
+                        new Drawing("drawing 10"),
+                        new Drawing("drawing 11"),
+                        new Drawing("drawing 12"),
+                        new Drawing("drawing 13"),
+                        new Drawing("drawing 14"),
+                        new Drawing("drawing 15"))));
     }
 
 
