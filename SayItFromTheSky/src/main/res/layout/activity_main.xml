@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/activity_main_header_logo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_launcher"/>
     </FrameLayout>
@@ -26,8 +26,8 @@
         android:id="@+id/activity_main_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/activity_main_header_container">
-
-    </ListView>
+        android:listSelector="@android:color/white"
+        android:paddingTop="180dp"
+        android:clipToPadding="false"/>
 
 </RelativeLayout>
