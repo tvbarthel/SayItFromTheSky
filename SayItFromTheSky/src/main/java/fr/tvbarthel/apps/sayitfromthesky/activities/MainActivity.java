@@ -1,17 +1,47 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 
 public class MainActivity extends Activity {
+
+    @InjectView(R.id.activity_main_root)
+    View mRootView;
+
+    @InjectView(R.id.activity_main_header_container)
+    View mHeaderContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
+
+        // Set the height of the header container to 1/3.5 of the root height.
+        ViewTreeObserver vto = mRootView.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                final int rootHeight = mRootView.getHeight();
+                mHeaderContainer.getLayoutParams().height = (int) (rootHeight / 3.5);
+                ViewTreeObserver obs = mRootView.getViewTreeObserver();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    obs.removeOnGlobalLayoutListener(this);
+                } else {
+                    obs.removeGlobalOnLayoutListener(this);
+                }
+            }
+
+        });
     }
 
 
@@ -33,4 +63,6 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
