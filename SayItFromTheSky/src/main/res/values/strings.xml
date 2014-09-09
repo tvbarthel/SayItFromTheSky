@@ -10,6 +10,9 @@
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
 
+    <!-- Main activity -->
+    <string name="activity_main_btn_new_drawing">+</string>
+
     <!-- Activity path detail -->
     <string name="activity_path_detail_content_description_expand_image">Expand image</string>
     <string name="activity_path_detail_add_tag_label">Add tags</string>

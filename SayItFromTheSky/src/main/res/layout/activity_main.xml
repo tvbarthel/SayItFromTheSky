@@ -26,9 +26,25 @@
         android:id="@+id/activity_main_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         android:divider="@color/material_grey_50"
         android:dividerHeight="0dp"
-        android:paddingTop="180dp"
-        android:clipToPadding="false"/>
+        android:paddingTop="180dp"/>
+
+    <Button
+        android:id="@+id/activity_main_btn_new_drawing"
+        android:layout_width="@dimen/circular_button_size"
+        android:layout_height="@dimen/circular_button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:background="@drawable/bg_btn_circle_accent"
+        android:text="@string/activity_main_btn_new_drawing"
+        android:textSize="24sp"
+
+        android:textColor="@color/material_grey_50"/>
 
 </RelativeLayout>

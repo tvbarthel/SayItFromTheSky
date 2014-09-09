@@ -3,8 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="default_margin">16dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="minimum_list_height">72dp</dimen>
+    <dimen name="circular_button_size">56dp</dimen>
 
     <!-- Fragment say it -->
     <dimen name="fragment_say_it_circle_button_size">60dp</dimen>
