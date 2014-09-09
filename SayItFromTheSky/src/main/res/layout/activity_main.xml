@@ -44,7 +44,6 @@
         android:background="@drawable/bg_btn_circle_accent"
         android:text="@string/activity_main_btn_new_drawing"
         android:textSize="24sp"
-
         android:textColor="@color/material_grey_50"/>
 
 </RelativeLayout>

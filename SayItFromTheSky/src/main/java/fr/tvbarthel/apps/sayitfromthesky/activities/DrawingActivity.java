@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -19,6 +20,7 @@ public class DrawingActivity extends FragmentActivity {
                     .add(R.id.container, new SayItFragment())
                     .commit();
         }
+        getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_color)));
     }
 
 

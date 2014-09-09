@@ -90,7 +90,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_say_it, container, false);
+        final View view = inflater.inflate(R.layout.fragment_drawing, container, false);
         // Setup the button used to add a point to the current path.
         mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
         mAddPointButton.setOnClickListener(new View.OnClickListener() {

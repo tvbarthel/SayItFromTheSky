@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -12,41 +12,42 @@
         <FrameLayout
             android:id="@+id/fragment_say_it_map_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp">
 
             <Button
                 android:id="@+id/fragment_say_it_button_add_point"
                 android:layout_width="@dimen/fragment_say_it_circle_button_size"
                 android:layout_height="@dimen/fragment_say_it_circle_button_size"
-                android:layout_gravity="bottom|right"
-                android:visibility="invisible"
-                android:background="@drawable/grey_circle_button"
-                android:textAppearance="?android:textAppearanceButton"
-                android:textColor="@color/grey_light"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/fragment_say_it_circle_button_margin"
                 android:layout_marginRight="@dimen/fragment_say_it_circle_button_margin"
-                android:fontFamily="sans-serif-light"
-                android:text="Add" />
+                android:background="@drawable/bg_btn_circle_accent"
+                android:text="Add"
+                android:textAppearance="?android:textAppearanceButton"
+                android:textColor="@color/material_grey_50"
+                android:visibility="invisible"/>
 
             <ToggleButton
                 android:id="@+id/fragment_say_it_button_line_state"
                 android:layout_width="@dimen/fragment_say_it_circle_button_size"
                 android:layout_height="@dimen/fragment_say_it_circle_button_size"
-                android:layout_gravity="bottom|right"
-                android:visibility="invisible"
-                android:textOn="Stop"
-                android:textOff="Start"
+                android:layout_gravity="bottom|end"
                 android:layout_marginLeft="@dimen/fragment_say_it_circle_button_margin"
-                android:textColor="@color/grey_light"
+                android:layout_marginStart="@dimen/fragment_say_it_circle_button_margin"
+                android:background="@drawable/bg_btn_circle_accent"
                 android:textAppearance="?android:textAppearanceButton"
-                android:fontFamily="sans-serif-light"
-                android:background="@drawable/grey_circle_button" />
+                android:textColor="@color/material_grey_50"
+                android:textOff="Start"
+                android:textOn="Stop"
+                android:visibility="invisible"/>
 
         </LinearLayout>
     </FrameLayout>
