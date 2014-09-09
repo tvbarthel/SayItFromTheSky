@@ -7,6 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -19,6 +21,9 @@ public class MainActivity extends Activity {
 
     @InjectView(R.id.activity_main_header_container)
     View mHeaderContainer;
+
+    @InjectView(R.id.activity_main_list_view)
+    ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,8 @@ public class MainActivity extends Activity {
             }
 
         });
+
+        fakeListViewData();
     }
 
 
@@ -62,6 +69,30 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * TODO remove
+     * test purpose only.
+     */
+    private void fakeListViewData() {
+        mListView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1,
+                java.util.Arrays.asList("string 1",
+                        "string 2",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 3",
+                        "string 4")));
     }
 
 
