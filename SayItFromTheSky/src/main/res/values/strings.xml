@@ -23,7 +23,5 @@
     <!-- Tag entry -->
     <string name="tag_entry_tag_icon">#</string>
     <string name="tag_entry_delete">-</string>
-    <string name="title_activity_my">MyActivity</string>
-    <string name="hello_world">Hello world!</string>
 
 </resources>

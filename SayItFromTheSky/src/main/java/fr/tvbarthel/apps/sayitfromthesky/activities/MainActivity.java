@@ -1,6 +1,7 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.adapters.DrawingAdapter;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
@@ -87,6 +89,11 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick({R.id.activity_main_btn_new_drawing})
+    public void startNewDrawing() {
+        startActivity(new Intent(this, DrawingActivity.class));
     }
 
     /**
