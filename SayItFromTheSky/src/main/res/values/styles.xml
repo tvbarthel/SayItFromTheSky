@@ -18,8 +18,4 @@
         <item name="android:textColor">@color/grey_light</item>
     </style>
 
-    <style name="test" parent="android:Theme.Holo.Light.Dialog">
-
-    </style>
-
 </resources>
