@@ -16,7 +16,9 @@ public final class ActionBarHelper {
      */
     public static int getActionBarSize(Context context) {
         final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
-        return (int) styledAttributes.getDimension(0, 0);
+        final int actionBarSize = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+        return actionBarSize;
     }
 
     // Non-instantiable class.
