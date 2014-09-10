@@ -19,8 +19,8 @@
 
         <Button
             android:id="@+id/fragment_drawing_button_add_point"
-            android:layout_width="@dimen/fragment_drawing_circle_button_size"
-            android:layout_height="@dimen/fragment_drawing_circle_button_size"
+            android:layout_width="@dimen/circular_button_size"
+            android:layout_height="@dimen/circular_button_size"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginRight="@dimen/default_margin"
@@ -32,8 +32,8 @@
 
         <ToggleButton
             android:id="@+id/fragment_drawing_button_line_state"
-            android:layout_width="@dimen/fragment_drawing_circle_button_size"
-            android:layout_height="@dimen/fragment_drawing_circle_button_size"
+            android:layout_width="@dimen/circular_button_size"
+            android:layout_height="@dimen/circular_button_size"
             android:layout_gravity="bottom|end"
             android:background="@drawable/bg_btn_circle_accent"
             android:textAppearance="?android:textAppearanceButton"

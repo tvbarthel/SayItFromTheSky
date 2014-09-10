@@ -8,9 +8,6 @@
     <dimen name="minimum_list_height">72dp</dimen>
     <dimen name="circular_button_size">56dp</dimen>
 
-    <!-- Fragment drawing -->
-    <dimen name="fragment_drawing_circle_button_size">60dp</dimen>
-
     <!-- Activity path detail -->
     <dimen name="expand_container_height">45dp</dimen>
     <dimen name="tag_section_margin_top">8dp</dimen>
