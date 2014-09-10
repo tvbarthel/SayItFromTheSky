@@ -33,6 +33,9 @@ public class MainActivity extends Activity {
     @InjectView(R.id.activity_main_list_view)
     ListView mListView;
 
+    @InjectView(R.id.activity_main_empty_view)
+    View mEmptyView;
+
     /**
      * Private attributes
      */
@@ -66,7 +69,6 @@ public class MainActivity extends Activity {
 
         });
 
-        fakeListViewData();
         initListView();
     }
 
@@ -99,6 +101,7 @@ public class MainActivity extends Activity {
      * Initialize the ListView.
      * <p/>
      * Set the onScrollListener.
+     * Set the empty view.
      */
     private void initListView() {
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
@@ -116,6 +119,7 @@ public class MainActivity extends Activity {
             }
         });
 
+        mListView.setEmptyView(mEmptyView);
     }
 
     /**

@@ -22,6 +22,20 @@
             android:src="@drawable/ic_launcher"/>
     </FrameLayout>
 
+    <TextView
+        android:id="@+id/activity_main_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/activity_main_header_container"
+        android:gravity="center"
+        android:padding="@dimen/default_padding"
+        android:text="@string/activity_main_empty_view"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_black_secondary"
+        android:textStyle="italic"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/activity_main_list_view"
         android:layout_width="match_parent"
