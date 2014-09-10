@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import butterknife.ButterKnife;
@@ -56,7 +55,7 @@ public class MainActivity extends Activity {
             public void onGlobalLayout() {
                 final int headerHeight = (int) (mRootView.getHeight() / 3.5);
                 mHeaderContainer.getLayoutParams().height = headerHeight;
-                mObservableListView.setPadding(0, headerHeight, 0, 0);
+                mObservableListView.setPadding(0, headerHeight - mActionBarSize, 0, 0);
                 ViewTreeObserver obs = mRootView.getViewTreeObserver();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     obs.removeOnGlobalLayoutListener(this);

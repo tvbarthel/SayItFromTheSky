@@ -26,10 +26,15 @@
         android:id="@+id/activity_main_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="?android:attr/actionBarSize"
         android:clipToPadding="false"
         android:divider="@color/material_grey_50"
         android:dividerHeight="0dp"
-        android:paddingTop="180dp"/>
+        android:fadingEdge="none"
+        android:fadingEdgeLength="0dp"
+        android:overScrollMode="never"
+        android:paddingTop="180dp"
+        android:requiresFadingEdge="none"/>
 
     <Button
         android:id="@+id/activity_main_btn_new_drawing"
@@ -43,7 +48,7 @@
         android:layout_marginRight="@dimen/default_margin"
         android:background="@drawable/bg_btn_circle_accent"
         android:text="@string/activity_main_btn_new_drawing"
-        android:textSize="24sp"
-        android:textColor="@color/material_grey_50"/>
+        android:textColor="@color/material_grey_50"
+        android:textSize="24sp"/>
 
 </RelativeLayout>
