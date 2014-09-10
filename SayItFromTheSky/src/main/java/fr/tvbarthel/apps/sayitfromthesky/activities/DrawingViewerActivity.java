@@ -1,19 +1,12 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,40 +22,31 @@ import java.util.List;
 
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
-import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
-import fr.tvbarthel.apps.sayitfromthesky.ui.TagEntry;
 
 
-public class PathDetailActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment, TagEntry.Callback, View.OnClickListener {
+public class DrawingViewerActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
 
-    public static final String EXTRA_KEY_ENCODED_PATHS = "PathDetailActivity.Extra.Key.EncodedPaths";
-    private static final String FRAGMENT_TAG_MAP = "PathDetailActivity.Fragment.Tag.Map";
-    private static final String BUNDLE_KEY_TAG_LIST = "PathDetailActivity.Bundle.Key.TagList";
+    public static final String EXTRA_KEY_ENCODED_PATHS = "DrawingViewerActivity.Extra.Key.EncodedPaths";
+    private static final String FRAGMENT_TAG_MAP = "DrawingViewerActivity.Fragment.Tag.Map";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
     private ArrayList<String> mEncodedPaths;
-    private LinearLayout mTagContainer;
-    private LinearLayout.LayoutParams mTagLayoutParams;
-    private ArrayList<String> mTagList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_path_detail);
 
+        // hide the title in the action bar
+        getActionBar().setDisplayShowTitleEnabled(false);
+
         // Create a PolylineOptions to draw the paths
         mPathOptions = new PolylineOptions();
         mPathOptions.color(Color.BLUE);
 
-        findViewById(R.id.activity_path_detail_cancel).setOnClickListener(this);
-        findViewById(R.id.activity_path_detail_save).setOnClickListener(this);
-
         mEncodedPaths = getEncodedPaths();
-        restoreTagList(savedInstanceState);
-        initMapContainer();
-        initTagContainer();
         createMapFragment();
     }
 
@@ -74,7 +58,6 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList(BUNDLE_KEY_TAG_LIST, mTagList);
     }
 
     @Override
@@ -104,23 +87,6 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
         }
     }
 
-    @Override
-    public void onTagDeletion(TagEntry tag) {
-        mTagList.remove(tag.getTag());
-        mTagContainer.removeView(tag);
-    }
-
-    @Override
-    public void onClick(View v) {
-        final int viewId = v.getId();
-        if (viewId == R.id.activity_path_detail_cancel) {
-            setResult(RESULT_CANCELED);
-            finish();
-        } else if (viewId == R.id.activity_path_detail_save) {
-            // TODO save work
-            // TODO and finish with the right result code
-        }
-    }
 
     private ArrayList<String> getEncodedPaths() {
         ArrayList<String> encodedPaths = new ArrayList<String>();
@@ -129,72 +95,6 @@ public class PathDetailActivity extends FragmentActivity implements SayItMapFrag
             encodedPaths = extras.getStringArrayList(EXTRA_KEY_ENCODED_PATHS);
         }
         return encodedPaths;
-    }
-
-    private void restoreTagList(Bundle savedInstanceState) {
-        if (savedInstanceState != null && savedInstanceState.containsKey(BUNDLE_KEY_TAG_LIST)) {
-            mTagList = savedInstanceState.getStringArrayList(BUNDLE_KEY_TAG_LIST);
-        } else {
-            mTagList = new ArrayList<String>();
-        }
-    }
-
-    private void initTagContainer() {
-        final EditText editTextAddTag = (EditText) findViewById(R.id.activity_path_detail_add_tag);
-        mTagContainer = (LinearLayout) findViewById(R.id.activity_path_detail_tag_container);
-        mTagLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        mTagLayoutParams.setMargins(8, 0, 8, 0);
-
-        editTextAddTag.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    String tagContent = v.getText().toString();
-                    if (!tagContent.isEmpty() && !mTagList.contains(tagContent)) {
-                        final TagEntry newTagEntry = createTagEntry(tagContent);
-                        mTagContainer.addView(newTagEntry, mTagLayoutParams);
-                        mTagList.add(newTagEntry.getTag());
-                        v.setText("");
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        // Restore the tag entries
-        restoreTagEntries();
-    }
-
-    private TagEntry createTagEntry(String tagContent) {
-        final TagEntry tagEntry = new TagEntry(PathDetailActivity.this);
-        tagEntry.setTag(tagContent);
-        tagEntry.setCallback(PathDetailActivity.this);
-        return tagEntry;
-    }
-
-    private void restoreTagEntries() {
-        for (String tagContent : mTagList) {
-            mTagContainer.addView(createTagEntry(tagContent), mTagLayoutParams);
-        }
-    }
-
-    private void initMapContainer() {
-        // Get the window size
-        Point windowSize = new Point();
-        getWindowManager().getDefaultDisplay().getSize(windowSize);
-        int actionBarSize = ActionBarHelper.getActionBarSize(this);
-        int mapHeight = (windowSize.y - actionBarSize - getResources().getDimensionPixelSize(R.dimen.expand_container_height));
-
-        // Set the map container height
-        View mapContainer = findViewById(R.id.activity_path_detail_map_container);
-        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) mapContainer.getLayoutParams();
-        layoutParams.height = mapHeight;
-        mapContainer.setLayoutParams(layoutParams);
-
-        // Set the top padding of the scroll view
-        findViewById(R.id.activity_path_detail_scroll_view).setPadding(0, mapHeight, 0, 0);
     }
 
     private void createMapFragment() {

@@ -20,12 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.PathDetailActivity"
-            android:parentActivityName=".activities.MainActivity"
+            android:name=".activities.DrawingViewerActivity"
             android:windowSoftInputMode="stateUnchanged">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
         </activity>
 
         <meta-data

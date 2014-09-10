@@ -5,6 +5,7 @@
 
     <dimen name="default_margin">16dp</dimen>
     <dimen name="default_padding">16dp</dimen>
+    <dimen name="default_padding_half">8dp</dimen>
     <dimen name="minimum_list_height">72dp</dimen>
     <dimen name="circular_button_size">56dp</dimen>
 

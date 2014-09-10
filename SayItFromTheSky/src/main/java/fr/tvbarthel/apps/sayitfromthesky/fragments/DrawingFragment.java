@@ -31,11 +31,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.tvbarthel.apps.sayitfromthesky.R;
-import fr.tvbarthel.apps.sayitfromthesky.activities.PathDetailActivity;
+import fr.tvbarthel.apps.sayitfromthesky.activities.DrawingViewerActivity;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} for drawing a path while walking.
+ * <p/>
+ * Test purpose : example of an encoded polyline : qixvGyhqFKRs@P
  */
 public class DrawingFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
@@ -77,6 +79,8 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
 
         // Create the polyline array used to store the polylines added to the map.
         mEncodedPolylines = new ArrayList<String>();
+        // Fake a polyline
+        mEncodedPolylines.add("qixvGyhqFKRs@P");
 
         // Create the polyline used for the current path.
         mPolylineOptionsCurrent = new PolylineOptions();
@@ -278,8 +282,8 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
             // Add the current polyline
             encodedPaths.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
         }
-        final Intent intent = new Intent(getActivity(), PathDetailActivity.class);
-        intent.putExtra(PathDetailActivity.EXTRA_KEY_ENCODED_PATHS, encodedPaths);
+        final Intent intent = new Intent(getActivity(), DrawingViewerActivity.class);
+        intent.putExtra(DrawingViewerActivity.EXTRA_KEY_ENCODED_PATHS, encodedPaths);
         startActivityForResult(intent, REQUEST_CODE_SAVE_PATH);
     }
 
