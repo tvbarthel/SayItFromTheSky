@@ -92,7 +92,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_drawing, container, false);
         // Setup the button used to add a point to the current path.
-        mAddPointButton = (Button) view.findViewById(R.id.fragment_say_it_button_add_point);
+        mAddPointButton = (Button) view.findViewById(R.id.fragment_drawing_button_add_point);
         mAddPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +101,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         });
 
         // Setup the toggle button used to start and stop a path.
-        mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_say_it_button_line_state);
+        mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_drawing_button_line_state);
         mLineStateButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -141,7 +141,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
         if (mMapFragment == null) {
             // Create a new map fragment.
             mMapFragment = new SayItMapFragment(this);
-            getChildFragmentManager().beginTransaction().add(R.id.fragment_say_it_map_container, mMapFragment, "fragmentTagMap").commit();
+            getChildFragmentManager().beginTransaction().add(R.id.fragment_drawing_map_container, mMapFragment, "fragmentTagMap").commit();
         } else {
             // Re-use the old map fragment.
             mMapFragment.setInterface(this);
