@@ -18,17 +18,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp">
+            android:layout_marginBottom="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginRight="@dimen/default_margin">
 
             <Button
                 android:id="@+id/fragment_say_it_button_add_point"
                 android:layout_width="@dimen/fragment_say_it_circle_button_size"
                 android:layout_height="@dimen/fragment_say_it_circle_button_size"
                 android:layout_gravity="bottom|end"
-                android:layout_marginEnd="@dimen/fragment_say_it_circle_button_margin"
-                android:layout_marginRight="@dimen/fragment_say_it_circle_button_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
                 android:background="@drawable/bg_btn_circle_accent"
                 android:text="Add"
                 android:textAppearance="?android:textAppearanceButton"
@@ -40,8 +40,6 @@
                 android:layout_width="@dimen/fragment_say_it_circle_button_size"
                 android:layout_height="@dimen/fragment_say_it_circle_button_size"
                 android:layout_gravity="bottom|end"
-                android:layout_marginLeft="@dimen/fragment_say_it_circle_button_margin"
-                android:layout_marginStart="@dimen/fragment_say_it_circle_button_margin"
                 android:background="@drawable/bg_btn_circle_accent"
                 android:textAppearance="?android:textAppearanceButton"
                 android:textColor="@color/material_grey_50"
