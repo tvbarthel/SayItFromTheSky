@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fr.tvbarthel.apps.sayitfromthesky.R;
-import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItFragment;
+import fr.tvbarthel.apps.sayitfromthesky.fragments.DrawingFragment;
 
 public class DrawingActivity extends FragmentActivity {
 
@@ -17,7 +17,7 @@ public class DrawingActivity extends FragmentActivity {
         setContentView(R.layout.activity_drawing);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new SayItFragment())
+                    .add(R.id.container, new DrawingFragment())
                     .commit();
         }
         getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_color)));

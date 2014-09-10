@@ -34,7 +34,10 @@ import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.activities.PathDetailActivity;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
 
-public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
+/**
+ * A simple {@link android.support.v4.app.Fragment} for drawing a path while walking.
+ */
+public class DrawingFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
 
 
     private static float DEFAULT_VALUE_ZOOM = 15f;
@@ -43,10 +46,10 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     private static final int REQUEST_CODE_SAVE_PATH = 1;
 
     // Bundle key used for saving instance state
-    private static String BUNDLE_KEY_LOCATION = "SayItFragment.Bundle.Key.Location";
-    private static String BUNDLE_KEY_ZOOM = "SayItFragment.Bundle.Key.Zoom";
-    private static String BUNDLE_KEY_CURRENT_POLYLINE = "SayItFragment.Bundle.Key.Current.Polyline";
-    private static String BUNDLE_KEY_ENCODED_POLYLINES = "SayItFragment.Bundle.Key.Other.Polyline";
+    private static String BUNDLE_KEY_LOCATION = "DrawingFragment.Bundle.Key.Location";
+    private static String BUNDLE_KEY_ZOOM = "DrawingFragment.Bundle.Key.Zoom";
+    private static String BUNDLE_KEY_CURRENT_POLYLINE = "DrawingFragment.Bundle.Key.Current.Polyline";
+    private static String BUNDLE_KEY_ENCODED_POLYLINES = "DrawingFragment.Bundle.Key.Other.Polylines";
 
     // UI elements
     private SayItMapFragment mMapFragment;
@@ -167,7 +170,7 @@ public class SayItFragment extends Fragment implements SayItMapFragment.ISayItMa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        inflater.inflate(R.menu.say_it, menu);
+        inflater.inflate(R.menu.drawing, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
