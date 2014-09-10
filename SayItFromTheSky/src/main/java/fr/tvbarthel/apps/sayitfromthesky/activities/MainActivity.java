@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     View mHeaderContainer;
 
     @InjectView(R.id.activity_main_list_view)
-    ListView mObservableListView;
+    ListView mListView;
 
     /**
      * Private attributes
@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
             public void onGlobalLayout() {
                 final int headerHeight = (int) (mRootView.getHeight() / 3.5);
                 mHeaderContainer.getLayoutParams().height = headerHeight;
-                mObservableListView.setPadding(0, headerHeight - mActionBarSize, 0, 0);
+                mListView.setPadding(0, headerHeight - mActionBarSize, 0, 0);
                 ViewTreeObserver obs = mRootView.getViewTreeObserver();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     obs.removeOnGlobalLayoutListener(this);
@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
      * Set the onScrollListener.
      */
     private void initListView() {
-        mObservableListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
             }
@@ -109,8 +109,8 @@ public class MainActivity extends Activity {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (visibleItemCount > 0 && firstVisibleItem == 0) {
-                    final int visibleTop = mObservableListView.getPaddingTop() - mObservableListView.getChildAt(0).getTop();
-                    final int translationY = Math.max(-visibleTop / 2, -mActionBarSize);
+                    final int realTop = Math.max(mListView.getChildAt(0).getTop(), 0);
+                    final int translationY = (realTop - mListView.getPaddingTop()) / 2;
                     mHeaderContainer.setTranslationY(translationY);
                 }
             }
@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
      * test purpose only.
      */
     private void fakeListViewData() {
-        mObservableListView.setAdapter(new DrawingAdapter(this,
+        mListView.setAdapter(new DrawingAdapter(this,
                 java.util.Arrays.asList(new Drawing("drawing 1"),
                         new Drawing("drawing 2"),
                         new Drawing("drawing 3"),
