@@ -73,7 +73,7 @@ public final class DrawingTable {
      * @param newVersion an int representing the new version of the table.
      */
     public static void upgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        Log.w(PathTable.class.getCanonicalName(), "Upgrading database from version" + oldVersion + " to version "
+        Log.w(DrawingTable.class.getCanonicalName(), "Upgrading database from version" + oldVersion + " to version "
                 + newVersion + ", which will destroy all old data");
         database.execSQL("drop table if exists " + TABLE_NAME);
         create(database);
