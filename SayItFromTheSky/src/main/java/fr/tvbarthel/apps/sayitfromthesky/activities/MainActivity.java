@@ -38,7 +38,6 @@ public class MainActivity extends Activity {
      * Private attributes
      */
     private int mActionBarSize;
-    private int mMaxHeaderTranslationY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
