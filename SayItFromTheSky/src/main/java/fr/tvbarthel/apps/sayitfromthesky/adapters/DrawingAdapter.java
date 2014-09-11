@@ -1,47 +1,47 @@
 package fr.tvbarthel.apps.sayitfromthesky.adapters;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
+import fr.tvbarthel.apps.sayitfromthesky.database.DrawingTable;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 /**
  * A simple {@link android.widget.ArrayAdapter} for {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}.
  */
-public class DrawingAdapter extends ArrayAdapter<Drawing> {
+public class DrawingAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
 
-    public DrawingAdapter(Context context, List<Drawing> objects) {
-        super(context, R.layout.drawing_entry, objects);
-        mInflater = LayoutInflater.from(context);
+    public DrawingAdapter(Context context) {
+        super(context, null, false);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final Drawing drawing = getItem(position);
-        ViewHolder viewHolder;
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        final View view = mInflater.inflate(R.layout.drawing_entry, parent, false);
+        final ViewHolder holder = new ViewHolder(view);
+        view.setTag(holder);
+        bind(holder, cursor);
+        return view;
+    }
 
-        if (convertView != null) {
-            viewHolder = (ViewHolder) convertView.getTag();
-        } else {
-            convertView = mInflater.inflate(R.layout.drawing_entry, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        }
+    @Override
+    public void bindView(View view, Context context, Cursor cursor) {
+        bind((ViewHolder) view.getTag(), cursor);
+    }
 
-        viewHolder.mTitle.setText(drawing.getTitle());
-
-        return convertView;
+    private void bind(ViewHolder holder, Cursor cursor) {
+        final Drawing drawing = DrawingTable.convertCursorToDrawing(cursor);
+        holder.mTitle.setText(drawing.getTitle());
     }
 
     static class ViewHolder {

@@ -1,7 +1,11 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,9 +19,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import fr.tvbarthel.apps.sayitfromthesky.R;
+import fr.tvbarthel.apps.sayitfromthesky.adapters.DrawingAdapter;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
+import fr.tvbarthel.apps.sayitfromthesky.providers.SayItContentProvider;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int LOADER_ID_DRAWINGS = 10;
 
     /**
      * Injected Views
@@ -38,6 +46,7 @@ public class MainActivity extends Activity {
      * Private attributes
      */
     private int mActionBarSize;
+    private DrawingAdapter mDrawingAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +75,9 @@ public class MainActivity extends Activity {
 
         });
 
+        mDrawingAdapter = new DrawingAdapter(this);
         initListView();
+        getLoaderManager().initLoader(LOADER_ID_DRAWINGS, null, this);
     }
 
 
@@ -98,6 +109,7 @@ public class MainActivity extends Activity {
      * Initialize the ListView.
      * <p/>
      * Set the onScrollListener.
+     * Set the Adapter.
      * Set the empty view.
      */
     private void initListView() {
@@ -115,9 +127,52 @@ public class MainActivity extends Activity {
                 }
             }
         });
-
+        mListView.setAdapter(mDrawingAdapter);
         mListView.setEmptyView(mEmptyView);
     }
 
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
+        if (loaderId == LOADER_ID_DRAWINGS) return createDrawingLoader();
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        final int loaderId = cursorLoader.getId();
+        if (loaderId == LOADER_ID_DRAWINGS) finishDrawingLoading(cursor);
+    }
+
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        final int loaderId = cursorLoader.getId();
+        if (loaderId == LOADER_ID_DRAWINGS) resetDrawingLoader();
+    }
+
+    /**
+     * Create a {@link android.support.v4.content.Loader} for the drawings.
+     *
+     * @return a Loader<Cursor>
+     */
+    private Loader<Cursor> createDrawingLoader() {
+        return new CursorLoader(this, SayItContentProvider.CONTENT_URI_DRAWING, null, null, null, null);
+    }
+
+    /**
+     * Finish to load the drawings.
+     *
+     * @param cursor a {@link android.database.Cursor} that represents the drawings to be loaded.
+     */
+    private void finishDrawingLoading(Cursor cursor) {
+        mDrawingAdapter.swapCursor(cursor);
+    }
+
+    /**
+     * Reset the loader of the drawings.
+     */
+    private void resetDrawingLoader() {
+        mDrawingAdapter.swapCursor(null);
+    }
 }
