@@ -27,6 +27,8 @@ public class SayItContentProvider extends ContentProvider {
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
+    public static final Uri CONTENT_URI_DRAWING = Uri.parse("content://" + AUTHORITY + "/" + BASE_DRAWING);
+
     static {
         URI_MATCHER.addURI(AUTHORITY, BASE_DRAWING, DRAWINGS);
         URI_MATCHER.addURI(AUTHORITY, BASE_DRAWING + "/#", DRAWING_ID);
@@ -45,7 +47,6 @@ public class SayItContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         // Using SQLiteQueryBuilder instead of query() methods.
         final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-
         int uriType = URI_MATCHER.match(uri);
 
         switch (uriType) {
@@ -61,10 +62,9 @@ public class SayItContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
 
-        SQLiteDatabase writableDatabase = mDatabaseHelper.getWritableDatabase();
-        Cursor cursorResult = queryBuilder.query(writableDatabase, projection, selection, selectionArgs, null, null, sortOrder);
+        SQLiteDatabase readableDatabase = mDatabaseHelper.getReadableDatabase();
+        Cursor cursorResult = queryBuilder.query(readableDatabase, projection, selection, selectionArgs, null, null, sortOrder);
         cursorResult.setNotificationUri(getContext().getContentResolver(), uri);
-        writableDatabase.close();
 
         return cursorResult;
     }
@@ -90,7 +90,6 @@ public class SayItContentProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
-        writableDatabase.close();
         getContext().getContentResolver().notifyChange(uri, null);
         return result;
     }
@@ -120,7 +119,7 @@ public class SayItContentProvider extends ContentProvider {
                 throw new IllegalArgumentException("Unknown Uri: " + uri);
         }
         getContext().getContentResolver().notifyChange(uri, null);
-        writableDatabase.close();
+
         return rowsDeleted;
     }
 
