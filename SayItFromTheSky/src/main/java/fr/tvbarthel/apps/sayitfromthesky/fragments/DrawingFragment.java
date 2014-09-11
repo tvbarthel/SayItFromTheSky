@@ -30,6 +30,8 @@ import com.google.maps.android.SphericalUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.activities.DrawingViewerActivity;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
@@ -55,9 +57,11 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
 
     // UI elements
     private SayItMapFragment mMapFragment;
-    private ToggleButton mLineStateButton;
-    private Button mAddPointButton;
     private Toast mTextToast;
+    @InjectView(R.id.fragment_drawing_button_line_state)
+    ToggleButton mLineStateButton;
+    @InjectView(R.id.fragment_drawing_button_add_point)
+    Button mAddPointButton;
 
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
@@ -98,8 +102,8 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_drawing, container, false);
+        ButterKnife.inject(this, view);
         // Setup the button used to add a point to the current path.
-        mAddPointButton = (Button) view.findViewById(R.id.fragment_drawing_button_add_point);
         mAddPointButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,7 +112,6 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
         });
 
         // Setup the toggle button used to start and stop a path.
-        mLineStateButton = (ToggleButton) view.findViewById(R.id.fragment_drawing_button_line_state);
         mLineStateButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
