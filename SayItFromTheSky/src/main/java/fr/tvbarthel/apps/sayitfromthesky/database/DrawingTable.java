@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.sayitfromthesky.database;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -55,7 +56,7 @@ public final class DrawingTable {
             + COLUMN_ID + " integer primary key autoincrement, "
             + COLUMN_TITLE + " text not null, "
             + COLUMN_CREATION_TIME + " integer not null,"
-            + COLUMN_ENCODED_POLYLINES + "text not null"
+            + COLUMN_ENCODED_POLYLINES + " text not null"
             + ");";
 
     // Non-instantiability
@@ -108,5 +109,13 @@ public final class DrawingTable {
         final String encodedPolylines = CursorHelper.getString(cursor, COLUMN_ENCODED_POLYLINES, "");
         final String[] polylines = GSON.fromJson(encodedPolylines, String[].class);
         return new Drawing(title, creationTime, Arrays.asList(polylines));
+    }
+
+    public static ContentValues drawingToContentValue(Drawing drawing) {
+        final ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_TITLE, drawing.getTitle());
+        contentValues.put(COLUMN_CREATION_TIME, drawing.getCreationTimeInMillis());
+        contentValues.put(COLUMN_ENCODED_POLYLINES, GSON.toJson(drawing.getEncodedPolylines().toArray()));
+        return contentValues;
     }
 }

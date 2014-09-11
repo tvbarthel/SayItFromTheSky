@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import fr.tvbarthel.apps.sayitfromthesky.R;
+import fr.tvbarthel.apps.sayitfromthesky.database.DrawingTable;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.DrawingFragment;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
+import fr.tvbarthel.apps.sayitfromthesky.providers.SayItContentProvider;
 
 public class DrawingActivity extends FragmentActivity implements DrawingFragment.Callback {
 
@@ -48,6 +50,7 @@ public class DrawingActivity extends FragmentActivity implements DrawingFragment
     @Override
     public void saveDrawing(Drawing drawingToSave) {
         // TODO save the drawing into a the database.
+        getContentResolver().insert(SayItContentProvider.CONTENT_URI_DRAWING, DrawingTable.drawingToContentValue(drawingToSave));
         final Intent intent = new Intent(this, DrawingViewerActivity.class);
         intent.putExtra(DrawingViewerActivity.EXTRA_KEY_DRAWING, drawingToSave);
         startActivity(intent);
