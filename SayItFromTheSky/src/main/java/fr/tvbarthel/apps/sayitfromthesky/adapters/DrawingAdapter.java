@@ -23,6 +23,7 @@ public class DrawingAdapter extends CursorAdapter {
 
     public DrawingAdapter(Context context) {
         super(context, null, false);
+        mInflater = LayoutInflater.from(context);
     }
 
     @Override
