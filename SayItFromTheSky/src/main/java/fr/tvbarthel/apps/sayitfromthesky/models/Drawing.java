@@ -12,10 +12,10 @@ import java.util.List;
 public final class Drawing implements Parcelable {
 
     private String mTitle;
-    private int mCreationTimeInMillis;
+    private long mCreationTimeInMillis;
     private List<String> mEncodedPolylines;
 
-    public Drawing(String title, int creationTimeInMillis, List<String> encodedPolylines) {
+    public Drawing(String title, long creationTimeInMillis, List<String> encodedPolylines) {
         mTitle = title;
         mCreationTimeInMillis = creationTimeInMillis;
         mEncodedPolylines = encodedPolylines;
@@ -29,7 +29,7 @@ public final class Drawing implements Parcelable {
         return mTitle;
     }
 
-    public int getCreationTimeInMillis() {
+    public long getCreationTimeInMillis() {
         return mCreationTimeInMillis;
     }
 
@@ -46,13 +46,13 @@ public final class Drawing implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mTitle);
-        dest.writeInt(mCreationTimeInMillis);
+        dest.writeLong(mCreationTimeInMillis);
         dest.writeStringList(mEncodedPolylines);
     }
 
     public void readFromParcel(Parcel in) {
         mTitle = in.readString();
-        mCreationTimeInMillis = in.readInt();
+        mCreationTimeInMillis = in.readLong();
         mEncodedPolylines = new ArrayList<String>();
         in.readStringList(mEncodedPolylines);
     }
