@@ -1,10 +1,16 @@
 package fr.tvbarthel.apps.sayitfromthesky.database;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.util.Arrays;
 import java.util.HashSet;
+
+import fr.tvbarthel.apps.sayitfromthesky.helpers.CursorHelper;
+import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 /**
  * A simple class that represents a SQL table of {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}
@@ -37,6 +43,8 @@ public final class DrawingTable {
      * An array of all the columns available.
      */
     public static final String[] COLUMNS_AVAILABLE = {COLUMN_ID, COLUMN_TITLE, COLUMN_CREATION_TIME, COLUMN_ENCODED_POLYLINES};
+
+    private static final Gson GSON = new Gson();
 
     /**
      * Database creation SQL statement
@@ -94,5 +102,11 @@ public final class DrawingTable {
         }
     }
 
-
+    public static Drawing convertCursorToDrawing(Cursor cursor) {
+        final String title = CursorHelper.getString(cursor, COLUMN_TITLE, "");
+        final long creationTime = CursorHelper.getLong(cursor, COLUMN_CREATION_TIME, 0l);
+        final String encodedPolylines = CursorHelper.getString(cursor, COLUMN_ENCODED_POLYLINES, "");
+        final String[] polylines = GSON.fromJson(encodedPolylines, String[].class);
+        return new Drawing(title, creationTime, Arrays.asList(polylines));
+    }
 }
