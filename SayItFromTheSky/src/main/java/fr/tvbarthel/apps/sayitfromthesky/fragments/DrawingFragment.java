@@ -33,8 +33,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
-import fr.tvbarthel.apps.sayitfromthesky.activities.DrawingViewerActivity;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
+import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} for drawing a path while walking.
@@ -74,6 +74,23 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
     private ArrayList<String> mEncodedPolylines;
     private Bundle mLastSavedInstanceState;
     private boolean mIsCurrentPointInCurrentPath;
+    private Callback mCallback;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (activity instanceof Callback) {
+            mCallback = (Callback) activity;
+        } else {
+            throw new ClassCastException(activity.toString() + "must implement DrawingFragment.Callback");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -285,9 +302,8 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
             // Add the current polyline
             encodedPaths.add(PolyUtil.encode(mCurrentPolyline.getPoints()));
         }
-        final Intent intent = new Intent(getActivity(), DrawingViewerActivity.class);
-        intent.putExtra(DrawingViewerActivity.EXTRA_KEY_ENCODED_PATHS, encodedPaths);
-        startActivityForResult(intent, REQUEST_CODE_SAVE_PATH);
+        final Drawing drawingToSave = new Drawing("Default title", System.currentTimeMillis(), encodedPaths);
+        mCallback.saveDrawing(drawingToSave);
     }
 
     private void saveCurrentPolyline(Bundle outState) {
@@ -385,6 +401,18 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
             previewPoints.add(mLastKnownLatLng);
             mPreviewPolyline.setPoints(previewPoints);
         }
+    }
+
+    /**
+     * Interface definition for a callback.
+     */
+    public static interface Callback {
+        /**
+         * Called when a {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing} has to be saved.
+         *
+         * @param drawingToSave the drawing to save.
+         */
+        void saveDrawing(Drawing drawingToSave);
     }
 
 }

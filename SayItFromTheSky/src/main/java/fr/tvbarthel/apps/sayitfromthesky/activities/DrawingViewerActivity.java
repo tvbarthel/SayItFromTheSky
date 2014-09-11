@@ -17,22 +17,22 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
+import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 
 public class DrawingViewerActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
 
-    public static final String EXTRA_KEY_ENCODED_PATHS = "DrawingViewerActivity.Extra.Key.EncodedPaths";
+    public static final String EXTRA_KEY_DRAWING = "DrawingViewerActivity.Extra.Key.Drawing";
     private static final String FRAGMENT_TAG_MAP = "DrawingViewerActivity.Fragment.Tag.Map";
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
-    private ArrayList<String> mEncodedPaths;
+    private Drawing mDrawing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         mPathOptions = new PolylineOptions();
         mPathOptions.color(Color.BLUE);
 
-        mEncodedPaths = getEncodedPaths();
+        mDrawing = getDrawing();
         createMapFragment();
     }
 
@@ -71,9 +71,9 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
                 uiSettings.setZoomControlsEnabled(false);
 
                 // Draw the paths
-                if (!mEncodedPaths.isEmpty()) {
+                if (!mDrawing.getEncodedPolylines().isEmpty()) {
                     final LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
-                    for (String encodedPath : mEncodedPaths) {
+                    for (String encodedPath : mDrawing.getEncodedPolylines()) {
                         Polyline path = mGoogleMap.addPolyline(mPathOptions);
                         List<LatLng> pathPoints = PolyUtil.decode(encodedPath);
                         for (LatLng point : pathPoints) {
@@ -87,14 +87,13 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         }
     }
 
-
-    private ArrayList<String> getEncodedPaths() {
-        ArrayList<String> encodedPaths = new ArrayList<String>();
+    private Drawing getDrawing() {
+        Drawing drawing = Drawing.EMPTY;
         final Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(EXTRA_KEY_ENCODED_PATHS)) {
-            encodedPaths = extras.getStringArrayList(EXTRA_KEY_ENCODED_PATHS);
+        if (extras != null && extras.containsKey(EXTRA_KEY_DRAWING)) {
+            drawing = extras.getParcelable(EXTRA_KEY_DRAWING);
         }
-        return encodedPaths;
+        return drawing;
     }
 
     private void createMapFragment() {

@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -8,8 +9,9 @@ import android.view.MenuItem;
 
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.DrawingFragment;
+import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
-public class DrawingActivity extends FragmentActivity {
+public class DrawingActivity extends FragmentActivity implements DrawingFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,4 +45,12 @@ public class DrawingActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void saveDrawing(Drawing drawingToSave) {
+        // TODO save the drawing into a the database.
+        final Intent intent = new Intent(this, DrawingViewerActivity.class);
+        intent.putExtra(DrawingViewerActivity.EXTRA_KEY_DRAWING, drawingToSave);
+        startActivity(intent);
+        finish();
+    }
 }

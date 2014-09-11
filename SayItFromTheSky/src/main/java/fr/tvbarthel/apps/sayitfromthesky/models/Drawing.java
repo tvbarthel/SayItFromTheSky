@@ -11,6 +11,8 @@ import java.util.List;
  */
 public final class Drawing implements Parcelable {
 
+    public static final Drawing EMPTY = new Drawing("empty_drawing", 0, new ArrayList<String>());
+
     private String mTitle;
     private long mCreationTimeInMillis;
     private List<String> mEncodedPolylines;
