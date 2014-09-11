@@ -37,7 +37,7 @@
         </activity>
 
         <provider
-            android:name=".database.SayItContentProvider"
+            android:name=".providers.SayItContentProvider"
             android:authorities="fr.tvbarthel.apps.sayitfromthesky.contentprovider"
             android:enabled="true"
             android:exported="false"/>

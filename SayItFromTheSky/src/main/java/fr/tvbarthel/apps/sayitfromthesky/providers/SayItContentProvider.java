@@ -1,4 +1,4 @@
-package fr.tvbarthel.apps.sayitfromthesky.database;
+package fr.tvbarthel.apps.sayitfromthesky.providers;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
+
+import fr.tvbarthel.apps.sayitfromthesky.database.DatabaseHelper;
+import fr.tvbarthel.apps.sayitfromthesky.database.DrawingTable;
 
 /**
  * A simple {@link android.content.ContentProvider} used to access data of this application.
