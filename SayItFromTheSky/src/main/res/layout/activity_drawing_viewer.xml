@@ -27,7 +27,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/activity_path_detail_map_container"
+        android:id="@+id/activity_drawing_viewer_map_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/activity_drawing_viewer_header_container"

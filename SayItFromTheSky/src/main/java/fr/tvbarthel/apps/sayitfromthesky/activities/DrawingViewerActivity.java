@@ -37,7 +37,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_path_detail);
+        setContentView(R.layout.activity_drawing_viewer);
 
         // hide the title in the action bar
         getActionBar().setDisplayShowTitleEnabled(false);
@@ -101,7 +101,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         if (mMapFragment == null) {
             // Create a new map fragment.
             mMapFragment = new SayItMapFragment(this);
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_path_detail_map_container, mMapFragment,
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_drawing_viewer_map_container, mMapFragment,
                     FRAGMENT_TAG_MAP).commit();
         } else {
             // Re-use the old map fragment.
