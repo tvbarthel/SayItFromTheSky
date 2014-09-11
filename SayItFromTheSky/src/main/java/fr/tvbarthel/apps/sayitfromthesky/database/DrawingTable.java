@@ -3,8 +3,13 @@ package fr.tvbarthel.apps.sayitfromthesky.database;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 /**
  * A simple class that represents a SQL table of {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}
+ * <p/>
+ * Inspiration from : http://www.vogella.com/tutorials/AndroidSQLite/article.html.
  */
 public final class DrawingTable {
 
@@ -28,6 +33,10 @@ public final class DrawingTable {
      * The name of the encoded polylines column
      */
     public static final String COLUMN_ENCODED_POLYLINES = "encoded_polylines";
+    /**
+     * An array of all the columns available.
+     */
+    public static final String[] COLUMNS_AVAILABLE = {COLUMN_ID, COLUMN_TITLE, COLUMN_CREATION_TIME, COLUMN_ENCODED_POLYLINES};
 
     /**
      * Database creation SQL statement
@@ -68,6 +77,21 @@ public final class DrawingTable {
                 + newVersion + ", which will destroy all old data");
         database.execSQL("drop table if exists " + TABLE_NAME);
         create(database);
+    }
+
+    /**
+     * Check if the columns in the projection are actual columns.
+     *
+     * @param projection the columns to check
+     */
+    public static void checkColumns(final String[] projection) {
+        if (projection != null && projection.length > 0) {
+            final HashSet<String> requestColumns = new HashSet<String>(Arrays.asList(projection));
+            final HashSet<String> availableColumns = new HashSet<String>(Arrays.asList(COLUMNS_AVAILABLE));
+            if (!availableColumns.containsAll(requestColumns)) {
+                throw new IllegalArgumentException("Unknown columns in projection.");
+            }
+        }
     }
 
 
