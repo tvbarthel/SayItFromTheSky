@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +20,8 @@ import com.google.maps.android.PolyUtil;
 
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
@@ -34,10 +37,14 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
     private PolylineOptions mPathOptions;
     private Drawing mDrawing;
 
+    @InjectView(R.id.activity_drawing_viewer_title)
+    EditText mTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing_viewer);
+        ButterKnife.inject(this);
 
         // hide the title in the action bar
         getActionBar().setDisplayShowTitleEnabled(false);
@@ -48,6 +55,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
 
         mDrawing = getDrawing();
         createMapFragment();
+        mTitle.setText(mDrawing.getTitle());
     }
 
     @Override
