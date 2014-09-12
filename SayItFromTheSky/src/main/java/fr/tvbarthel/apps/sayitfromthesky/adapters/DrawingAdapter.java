@@ -11,8 +11,8 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
-import fr.tvbarthel.apps.sayitfromthesky.database.DrawingTable;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
+import fr.tvbarthel.apps.sayitfromthesky.providers.contracts.DrawingContract;
 
 /**
  * A simple {@link android.widget.ArrayAdapter} for {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}.
@@ -41,7 +41,7 @@ public class DrawingAdapter extends CursorAdapter {
     }
 
     private void bind(ViewHolder holder, Cursor cursor) {
-        final Drawing drawing = DrawingTable.convertCursorToDrawing(cursor);
+        final Drawing drawing = DrawingContract.convertCursorToDrawing(cursor);
         holder.mTitle.setText(drawing.getTitle());
     }
 

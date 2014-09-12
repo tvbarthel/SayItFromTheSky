@@ -21,7 +21,7 @@ import butterknife.OnClick;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.adapters.DrawingAdapter;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
-import fr.tvbarthel.apps.sayitfromthesky.providers.SayItContentProvider;
+import fr.tvbarthel.apps.sayitfromthesky.providers.contracts.DrawingContract;
 
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -157,7 +157,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
      * @return a Loader<Cursor>
      */
     private Loader<Cursor> createDrawingLoader() {
-        return new CursorLoader(this, SayItContentProvider.CONTENT_URI_DRAWING, null, null, null, null);
+        return new CursorLoader(this, DrawingContract.CONTENT_URI, null, null, null, null);
     }
 
     /**

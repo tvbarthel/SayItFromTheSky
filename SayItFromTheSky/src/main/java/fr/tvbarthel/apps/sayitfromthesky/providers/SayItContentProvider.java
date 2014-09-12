@@ -11,6 +11,7 @@ import android.text.TextUtils;
 
 import fr.tvbarthel.apps.sayitfromthesky.database.DatabaseHelper;
 import fr.tvbarthel.apps.sayitfromthesky.database.DrawingTable;
+import fr.tvbarthel.apps.sayitfromthesky.providers.contracts.DrawingContract;
 
 /**
  * A simple {@link android.content.ContentProvider} used to access data of this application.
@@ -22,16 +23,12 @@ public class SayItContentProvider extends ContentProvider {
     // Used for the UriMatcher
     private static final int DRAWINGS = 10;
     private static final int DRAWING_ID = 20;
-    private static final String AUTHORITY = "fr.tvbarthel.apps.sayitfromthesky.contentprovider";
-    private static final String BASE_DRAWING = "drawing";
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
-    public static final Uri CONTENT_URI_DRAWING = Uri.parse("content://" + AUTHORITY + "/" + BASE_DRAWING);
-
     static {
-        URI_MATCHER.addURI(AUTHORITY, BASE_DRAWING, DRAWINGS);
-        URI_MATCHER.addURI(AUTHORITY, BASE_DRAWING + "/#", DRAWING_ID);
+        URI_MATCHER.addURI(DrawingContract.AUTHORITY, DrawingContract.PATH, DRAWINGS);
+        URI_MATCHER.addURI(DrawingContract.AUTHORITY, DrawingContract.PATH + "/#", DRAWING_ID);
     }
 
     // database
@@ -52,10 +49,10 @@ public class SayItContentProvider extends ContentProvider {
         switch (uriType) {
 
             case DRAWING_ID:
-                queryBuilder.appendWhere(DrawingTable.COLUMN_ID + " = " + uri.getLastPathSegment());
+                queryBuilder.appendWhere(DrawingContract.Columns.COLUMN_ID + " = " + uri.getLastPathSegment());
             case DRAWINGS:
                 queryBuilder.setTables(DrawingTable.TABLE_NAME);
-                DrawingTable.checkColumns(projection);
+                DrawingContract.Columns.checkColumns(projection);
                 break;
 
             default:
@@ -84,7 +81,7 @@ public class SayItContentProvider extends ContentProvider {
         switch (uriType) {
             case DRAWINGS:
                 id = writableDatabase.insert(DrawingTable.TABLE_NAME, null, values);
-                result = Uri.parse(BASE_DRAWING + "/" + id);
+                result = Uri.parse(DrawingContract.PATH + "/" + id);
                 break;
 
             default:
@@ -108,9 +105,9 @@ public class SayItContentProvider extends ContentProvider {
             case DRAWING_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsDeleted = writableDatabase.delete(DrawingTable.TABLE_NAME, DrawingTable.COLUMN_ID + "=" + id, null);
+                    rowsDeleted = writableDatabase.delete(DrawingTable.TABLE_NAME, DrawingContract.Columns.COLUMN_ID + "=" + id, null);
                 } else {
-                    rowsDeleted = writableDatabase.delete(DrawingTable.TABLE_NAME, DrawingTable.COLUMN_ID + "=" + id + " and "
+                    rowsDeleted = writableDatabase.delete(DrawingTable.TABLE_NAME, DrawingContract.Columns.COLUMN_ID + "=" + id + " and "
                             + selection, selectionArgs);
                 }
                 break;
@@ -137,10 +134,10 @@ public class SayItContentProvider extends ContentProvider {
             case DRAWING_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsUpdated = writableDatabase.update(DrawingTable.TABLE_NAME, values, DrawingTable.COLUMN_ID + "="
+                    rowsUpdated = writableDatabase.update(DrawingTable.TABLE_NAME, values, DrawingContract.Columns.COLUMN_ID + "="
                             + id, null);
                 } else {
-                    rowsUpdated = writableDatabase.update(DrawingTable.TABLE_NAME, values, DrawingTable.COLUMN_ID + "="
+                    rowsUpdated = writableDatabase.update(DrawingTable.TABLE_NAME, values, DrawingContract.Columns.COLUMN_ID + "="
                             + id + " and " + selection, selectionArgs);
                 }
                 break;
