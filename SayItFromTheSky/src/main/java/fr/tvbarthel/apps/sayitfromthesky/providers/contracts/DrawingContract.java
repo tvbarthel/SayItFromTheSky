@@ -1,7 +1,6 @@
 package fr.tvbarthel.apps.sayitfromthesky.providers.contracts;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.net.Uri;
 
 import com.google.gson.Gson;
@@ -9,7 +8,6 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import fr.tvbarthel.apps.sayitfromthesky.helpers.CursorHelper;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 /**
@@ -71,15 +69,6 @@ public final class DrawingContract {
                 }
             }
         }
-    }
-
-
-    public static Drawing convertCursorToDrawing(Cursor cursor) {
-        final String title = CursorHelper.getString(cursor, Columns.COLUMN_TITLE, "");
-        final long creationTime = CursorHelper.getLong(cursor, Columns.COLUMN_CREATION_TIME, 0l);
-        final String encodedPolylines = CursorHelper.getString(cursor, Columns.COLUMN_ENCODED_POLYLINES, "");
-        final String[] polylines = GSON.fromJson(encodedPolylines, String[].class);
-        return new Drawing(title, creationTime, Arrays.asList(polylines));
     }
 
     public static ContentValues drawingToContentValue(Drawing drawing) {
