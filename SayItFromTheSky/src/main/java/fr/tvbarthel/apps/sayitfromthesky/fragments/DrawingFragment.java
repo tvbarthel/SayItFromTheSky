@@ -41,7 +41,7 @@ import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
  * <p/>
  * Test purpose : example of an encoded polyline : qixvGyhqFKRs@P
  */
-public class DrawingFragment extends Fragment implements SayItMapFragment.ISayItMapFragment {
+public class DrawingFragment extends Fragment implements SayItMapFragment.Callback {
 
 
     private static float DEFAULT_VALUE_ZOOM = 15f;
@@ -167,11 +167,9 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.ISayIt
         mMapFragment = (SayItMapFragment) getChildFragmentManager().findFragmentByTag("fragmentTagMap");
         if (mMapFragment == null) {
             // Create a new map fragment.
-            mMapFragment = new SayItMapFragment(this);
+            mMapFragment = new SayItMapFragment();
             getChildFragmentManager().beginTransaction().add(R.id.fragment_drawing_map_container, mMapFragment, "fragmentTagMap").commit();
         } else {
-            // Re-use the old map fragment.
-            mMapFragment.setInterface(this);
             getChildFragmentManager().beginTransaction().show(mMapFragment).commit();
         }
 

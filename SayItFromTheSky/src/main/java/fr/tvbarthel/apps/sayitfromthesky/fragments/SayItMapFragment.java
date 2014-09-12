@@ -1,45 +1,51 @@
 package fr.tvbarthel.apps.sayitfromthesky.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.google.android.gms.maps.SupportMapFragment;
 
 /**
- * A Simple {@link SupportMapFragment} that can notify a {@link ISayItMapFragment} when its map is ready.
+ * A Simple {@link SupportMapFragment} that can notify its parent fragment and its activity when its map is ready.
+ * <p/>
+ * Note that the parent fragment and the activity have to implement {@link fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment.Callback} to get the notification.
  */
 public class SayItMapFragment extends SupportMapFragment {
-
-    private ISayItMapFragment mInterface;
 
     public SayItMapFragment() {
         super();
     }
 
-    public SayItMapFragment(ISayItMapFragment iSayItMapFragment) {
-        super();
-        mInterface = iSayItMapFragment;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (mInterface != null) {
-            mInterface.onMapReady();
+        final Fragment parentFragment = getParentFragment();
+        final Activity activity = getActivity();
+
+        if (parentFragment instanceof Callback) {
+            ((Callback) parentFragment).onMapReady();
+        }
+
+        if (activity instanceof Callback) {
+            ((Callback) activity).onMapReady();
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mInterface = null;
-    }
-
-    public void setInterface(ISayItMapFragment iSayItMapFragment) {
-        mInterface = iSayItMapFragment;
-    }
-
-    public interface ISayItMapFragment {
+    /**
+     * Interface definition for a callback.
+     */
+    public interface Callback {
+        /**
+         * Called when the map is ready to be manipulated.
+         */
         public void onMapReady();
     }
 }

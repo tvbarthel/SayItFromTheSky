@@ -27,7 +27,7 @@ import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 
-public class DrawingViewerActivity extends FragmentActivity implements SayItMapFragment.ISayItMapFragment {
+public class DrawingViewerActivity extends FragmentActivity implements SayItMapFragment.Callback {
 
     public static final String EXTRA_KEY_DRAWING = "DrawingViewerActivity.Extra.Key.Drawing";
     private static final String FRAGMENT_TAG_MAP = "DrawingViewerActivity.Fragment.Tag.Map";
@@ -108,12 +108,11 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         mMapFragment = (SayItMapFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_MAP);
         if (mMapFragment == null) {
             // Create a new map fragment.
-            mMapFragment = new SayItMapFragment(this);
+            mMapFragment = new SayItMapFragment();
             getSupportFragmentManager().beginTransaction().add(R.id.activity_drawing_viewer_map_container, mMapFragment,
                     FRAGMENT_TAG_MAP).commit();
         } else {
             // Re-use the old map fragment.
-            mMapFragment.setInterface(this);
             getSupportFragmentManager().beginTransaction().show(mMapFragment).commit();
         }
     }
