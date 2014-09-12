@@ -6,7 +6,6 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +20,7 @@ import butterknife.OnClick;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.adapters.DrawingAdapter;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
+import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
 import fr.tvbarthel.apps.sayitfromthesky.providers.contracts.DrawingContract;
 
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -59,21 +59,19 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
         // Set the height of the header container to 1/3.5 of the root height.
         ViewTreeObserver vto = mRootView.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                final int headerHeight = (int) (mRootView.getHeight() / 3.5);
-                mHeaderContainer.getLayoutParams().height = headerHeight;
-                mListView.setPadding(0, headerHeight - mActionBarSize, 0, 0);
-                ViewTreeObserver obs = mRootView.getViewTreeObserver();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    obs.removeOnGlobalLayoutListener(this);
-                } else {
-                    obs.removeGlobalOnLayoutListener(this);
+        if (vto.isAlive()) {
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    final int headerHeight = (int) (mRootView.getHeight() / 3.5);
+                    mHeaderContainer.getLayoutParams().height = headerHeight;
+                    mListView.setPadding(0, headerHeight - mActionBarSize, 0, 0);
+                    ViewHelper.removeOnGlobalLayoutListener(mRootView, this);
                 }
-            }
 
-        });
+            });
+        }
+
 
         mDrawingAdapter = new DrawingAdapter(this);
         initListView();

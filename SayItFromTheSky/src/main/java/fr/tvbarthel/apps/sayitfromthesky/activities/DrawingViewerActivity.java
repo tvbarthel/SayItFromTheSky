@@ -1,7 +1,6 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -24,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
+import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 
@@ -126,15 +126,9 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
             final View mapView = mMapFragment.getView();
             if (mapView.getViewTreeObserver().isAlive()) {
                 mapView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @SuppressWarnings("deprecation")
-                    // We check which build version we are using.
                     @Override
                     public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                            mapView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                        } else {
-                            mapView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                        }
+                        ViewHelper.removeOnGlobalLayoutListener(mapView, this);
                         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 50));
                     }
                 });
