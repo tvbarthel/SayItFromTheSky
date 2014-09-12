@@ -1,14 +1,11 @@
 package fr.tvbarthel.apps.sayitfromthesky.providers.contracts;
 
-import android.content.ContentValues;
 import android.net.Uri;
 
 import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.HashSet;
-
-import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 /**
  * The contract between the drawing provider and applications.
@@ -71,11 +68,4 @@ public final class DrawingContract {
         }
     }
 
-    public static ContentValues drawingToContentValue(Drawing drawing) {
-        final ContentValues contentValues = new ContentValues();
-        contentValues.put(Columns.COLUMN_TITLE, drawing.getTitle());
-        contentValues.put(Columns.COLUMN_CREATION_TIME, drawing.getCreationTimeInMillis());
-        contentValues.put(Columns.COLUMN_ENCODED_POLYLINES, GSON.toJson(drawing.getEncodedPolylines().toArray()));
-        return contentValues;
-    }
 }
