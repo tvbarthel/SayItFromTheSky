@@ -16,6 +16,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/text_black_primary"
         tools:text="First Drawing"/>
+
+    <TextView
+        android:id="@+id/drawing_entry_creation_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/text_black_secondary"
+        tools:text="13/09/2014 15:00"/>
 
 </LinearLayout>

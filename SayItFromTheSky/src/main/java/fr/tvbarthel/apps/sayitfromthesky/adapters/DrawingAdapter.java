@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Locale;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
@@ -20,10 +23,12 @@ import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 public class DrawingAdapter extends CursorAdapter {
 
     private LayoutInflater mInflater;
+    private DateFormat mDateFormat;
 
     public DrawingAdapter(Context context) {
         super(context, null, false);
         mInflater = LayoutInflater.from(context);
+        mDateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
     }
 
     @Override
@@ -42,12 +47,15 @@ public class DrawingAdapter extends CursorAdapter {
 
     private void bind(ViewHolder holder, Cursor cursor) {
         final Drawing drawing = CursorHelper.cursorToDrawing(cursor);
-        holder.mTitle.setText(drawing.getTitle());
+        holder.title.setText(drawing.getTitle());
+        holder.creationTime.setText(mDateFormat.format(drawing.getCreationTimeInMillis()));
     }
 
     static class ViewHolder {
         @InjectView(R.id.drawing_entry_title)
-        TextView mTitle;
+        TextView title;
+        @InjectView(R.id.drawing_entry_creation_time)
+        TextView creationTime;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
