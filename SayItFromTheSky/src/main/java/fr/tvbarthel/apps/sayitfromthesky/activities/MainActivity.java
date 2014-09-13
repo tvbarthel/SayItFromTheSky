@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import butterknife.ButterKnife;
@@ -20,7 +21,9 @@ import butterknife.OnClick;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.adapters.DrawingAdapter;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
+import fr.tvbarthel.apps.sayitfromthesky.helpers.CursorHelper;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
+import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 import fr.tvbarthel.apps.sayitfromthesky.providers.contracts.DrawingContract;
 
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -123,6 +126,19 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     final int translationY = (realTop - mListView.getPaddingTop()) / 2;
                     mHeaderContainer.setTranslationY(translationY);
                 }
+            }
+        });
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Cursor cursor = (Cursor) mDrawingAdapter.getItem(position);
+                if (cursor != null) {
+                    final Drawing drawingClicked = CursorHelper.cursorToDrawing(cursor);
+                    final Intent intent = new Intent(MainActivity.this, DrawingViewerActivity.class);
+                    intent.putExtra(DrawingViewerActivity.EXTRA_KEY_DRAWING, drawingClicked);
+                    startActivity(intent);
+                }
+
             }
         });
         mListView.setAdapter(mDrawingAdapter);
