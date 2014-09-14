@@ -9,6 +9,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -59,7 +60,17 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.drawing_viewer, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        final int id = item.getItemId();
+        if (R.id.action_share == id) {
+            return handleShareAction();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -132,6 +143,16 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
                 });
             }
         }
+    }
+
+    /**
+     * Handle the share action.
+     *
+     * @return true to consume the action, false otherwise.
+     */
+    private boolean handleShareAction() {
+        // TODO
+        return true;
     }
 
     /**
