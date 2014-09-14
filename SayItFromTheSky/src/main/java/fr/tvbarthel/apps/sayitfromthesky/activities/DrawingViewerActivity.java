@@ -1,13 +1,20 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.FileProvider;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +29,10 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +48,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
 
     public static final String EXTRA_KEY_DRAWING = "DrawingViewerActivity.Extra.Key.Drawing";
     private static final String FRAGMENT_TAG_MAP = "DrawingViewerActivity.Fragment.Tag.Map";
+    private static final String TAG = DrawingViewerActivity.class.getSimpleName();
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -152,6 +164,31 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
      */
     private boolean handleShareAction() {
         // TODO
+        if (mGoogleMap != null) {
+            mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                @Override
+                public void onSnapshotReady(Bitmap bitmap) {
+                    final Uri snapshotUri = saveSnapshotToTempFile(bitmap);
+                    if (snapshotUri != null) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_STREAM, snapshotUri);
+                        intent.setType("image/jpeg");
+
+                        // Grant permissions to all apps that can handle this intent
+                        // thanks to this answer http://stackoverflow.com/a/18332000
+                        List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                        for (ResolveInfo resolveInfo : resInfoList) {
+                            final String packageName = resolveInfo.activityInfo.packageName;
+                            grantUriPermission(packageName, snapshotUri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        }
+
+                        // And start
+                        startActivity(Intent.createChooser(intent, getString(R.string.activity_drawing_viewer_chooser_title_snapshots)));
+                    }
+                }
+            });
+        }
         return true;
     }
 
@@ -194,6 +231,29 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         final SpannableString spannableStringDate = new SpannableString(subtitle);
         spannableStringDate.setSpan(colorSpanMaterialGrey500, 0, spannableStringDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         actionbar.setSubtitle(spannableStringDate);
+    }
+
+    /**
+     * Save a snapshot to temporary file in internal storage.
+     *
+     * @param bitmap the {@link android.graphics.Bitmap} that will be saved.
+     * @return a Content URI that can be served to another app {@see http://developer.android.com/reference/android/support/v4/content/FileProvider.html}
+     */
+    private Uri saveSnapshotToTempFile(Bitmap bitmap) {
+        final ByteArrayOutputStream bytesStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytesStream);
+        try {
+            final File snapshotPath = new File(getFilesDir(), "snapshots");
+            if (!snapshotPath.isDirectory()) snapshotPath.mkdirs();
+            final File file = new File(snapshotPath, "temp_snapshot.jpg");
+            final FileOutputStream outputStream = new FileOutputStream(file);
+            outputStream.write(bytesStream.toByteArray());
+            outputStream.close();
+            return FileProvider.getUriForFile(this, "fr.tvbarthel.apps.sayitfromthesky.fileprovider", file);
+        } catch (IOException e) {
+            Log.e(TAG, "saveSnapshotToTempFile error", e);
+            return null;
+        }
     }
 
 }
