@@ -5,36 +5,10 @@
                 android:orientation="vertical">
 
     <FrameLayout
-        android:id="@+id/activity_drawing_viewer_header_container"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@color/primary_color"
-        android:paddingBottom="@dimen/default_padding_half"
-        android:paddingLeft="@dimen/default_padding"
-        android:paddingRight="@dimen/default_padding">
-
-        <EditText
-            android:id="@+id/activity_drawing_viewer_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:maxLines="1"
-            android:minLines="1"
-            android:singleLine="true"
-            android:text="Walk &amp; draw"
-            android:textColor="@color/accent_color"/>
-
-    </FrameLayout>
-
-    <FrameLayout
         android:id="@+id/activity_drawing_viewer_map_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/activity_drawing_viewer_header_container"
-        android:focusableInTouchMode="true">
-
-
-    </FrameLayout>
+        android:focusableInTouchMode="true"/>
 
 </RelativeLayout>
 

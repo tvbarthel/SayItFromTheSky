@@ -2,7 +2,7 @@
 <manifest
     package="fr.tvbarthel.apps.sayitfromthesky"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -32,6 +32,7 @@
         </activity>
         <activity
             android:name=".activities.DrawingViewerActivity"
+            android:logo="@drawable/ic_launcher"
             android:windowSoftInputMode="stateUnchanged">
         </activity>
 

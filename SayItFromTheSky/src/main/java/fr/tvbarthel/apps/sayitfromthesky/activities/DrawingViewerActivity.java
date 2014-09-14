@@ -1,12 +1,16 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
+import android.app.ActionBar;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.EditText;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,10 +21,11 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
+import java.text.DateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
@@ -37,17 +42,11 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
     private PolylineOptions mPathOptions;
     private Drawing mDrawing;
 
-    @InjectView(R.id.activity_drawing_viewer_title)
-    EditText mTitle;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing_viewer);
         ButterKnife.inject(this);
-
-        // hide the title in the action bar
-        getActionBar().setDisplayShowTitleEnabled(false);
 
         // Create a PolylineOptions to draw the paths
         mPathOptions = new PolylineOptions();
@@ -55,7 +54,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
 
         mDrawing = getDrawing();
         createMapFragment();
-        mTitle.setText(mDrawing.getTitle());
+        initActionBar(mDrawing);
     }
 
     @Override
@@ -133,6 +132,47 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
                 });
             }
         }
+    }
+
+    /**
+     * Init the action bar with a {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}
+     *
+     * @param drawing the {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing} used to init the action bar.
+     */
+    private void initActionBar(Drawing drawing) {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_color)));
+            setActionBarTitle(actionBar, drawing.getTitle());
+            final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
+            setActionBarSubtitle(actionBar, dateFormat.format(drawing.getCreationTimeInMillis()));
+        }
+    }
+
+    /**
+     * Set the title of an action bar.
+     *
+     * @param actionBar the {@link android.app.ActionBar} the action bar whose title will be set.
+     * @param title     the title to be set.
+     */
+    private void setActionBarTitle(ActionBar actionBar, String title) {
+        final ForegroundColorSpan colorSpanMaterialGrey300 = new ForegroundColorSpan(getResources().getColor(R.color.material_grey_300));
+        final SpannableString spannableStringTitle = new SpannableString(title);
+        spannableStringTitle.setSpan(colorSpanMaterialGrey300, 0, spannableStringTitle.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        actionBar.setTitle(spannableStringTitle);
+    }
+
+    /**
+     * Set the subtitle of an action bar.
+     *
+     * @param actionbar the {@link android.app.ActionBar} the action bar whose subtitle will be set.
+     * @param subtitle  the subtitle to be set.
+     */
+    private void setActionBarSubtitle(ActionBar actionbar, String subtitle) {
+        final ForegroundColorSpan colorSpanMaterialGrey500 = new ForegroundColorSpan(getResources().getColor(R.color.material_grey_500));
+        final SpannableString spannableStringDate = new SpannableString(subtitle);
+        spannableStringDate.setSpan(colorSpanMaterialGrey500, 0, spannableStringDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        actionbar.setSubtitle(spannableStringDate);
     }
 
 }
