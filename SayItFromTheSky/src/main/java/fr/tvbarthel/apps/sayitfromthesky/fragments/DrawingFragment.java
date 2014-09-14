@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -62,6 +63,8 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
     ToggleButton mLineStateButton;
     @InjectView(R.id.fragment_drawing_button_add_point)
     Button mAddPointButton;
+    @InjectView(R.id.fragment_drawing_progress_bar)
+    ProgressBar mProgressBar;
 
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
@@ -256,6 +259,10 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
                 mGoogleMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
                     @Override
                     public void onMyLocationChange(Location location) {
+                        if (mProgressBar.getVisibility() != View.GONE) {
+                            mProgressBar.setVisibility(View.GONE);
+                        }
+
                         if (mLastKnownLocation == null) {
                             // First location
                             setLastKnownLocation(location);
