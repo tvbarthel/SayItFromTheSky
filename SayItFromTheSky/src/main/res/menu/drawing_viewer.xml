@@ -2,12 +2,19 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
+    <item
+        android:id="@+id/action_edit"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_drawing_viewer_title_edit"/>
+
     <item
         android:id="@+id/action_share"
         android:icon="@android:drawable/ic_menu_share"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:showAsAction="ifRoom"
         android:title="@string/menu_drawing_viewer_title_share"/>
-
 
 </menu>

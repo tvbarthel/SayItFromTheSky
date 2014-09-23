@@ -40,11 +40,12 @@ import java.util.Locale;
 import butterknife.ButterKnife;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
+import fr.tvbarthel.apps.sayitfromthesky.fragments.dialogs.EditDrawingDialog;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 
-public class DrawingViewerActivity extends FragmentActivity implements SayItMapFragment.Callback {
+public class DrawingViewerActivity extends FragmentActivity implements SayItMapFragment.Callback, EditDrawingDialog.Callback {
 
     public static final String EXTRA_KEY_DRAWING = "DrawingViewerActivity.Extra.Key.Drawing";
     private static final String FRAGMENT_TAG_MAP = "DrawingViewerActivity.Fragment.Tag.Map";
@@ -81,6 +82,9 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         final int id = item.getItemId();
         if (R.id.action_share == id) {
             return handleShareAction();
+        }
+        if (R.id.action_edit == id) {
+            return handleEditAction();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -193,6 +197,16 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
     }
 
     /**
+     * Handle the edit action.
+     *
+     * @return true to consume the action, false otherwise.
+     */
+    private boolean handleEditAction() {
+        EditDrawingDialog.newInstance(mDrawing).show(getSupportFragmentManager(), null);
+        return true;
+    }
+
+    /**
      * Init the action bar with a {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}
      *
      * @param drawing the {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing} used to init the action bar.
@@ -256,4 +270,11 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         }
     }
 
+    @Override
+    public void onDrawingEdited(Drawing drawing) {
+        // At the moment, only the title can be edited.
+        // So we only change the title in the action bar.
+        mDrawing = drawing;
+        setActionBarTitle(getActionBar(), mDrawing.getTitle());
+    }
 }

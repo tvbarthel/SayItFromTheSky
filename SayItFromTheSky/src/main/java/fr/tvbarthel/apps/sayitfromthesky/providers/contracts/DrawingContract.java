@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
+
 /**
  * The contract between the drawing provider and applications.
  */
@@ -20,6 +22,17 @@ public final class DrawingContract {
 
     // Non-instantiability
     private DrawingContract() {
+    }
+
+
+    /**
+     * Get the content uri of a {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}.
+     *
+     * @param drawing the {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing} that the content uri will describe.
+     * @return a {@link android.net.Uri} that refers to the {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}.
+     */
+    public static Uri getContentUri(Drawing drawing) {
+        return Uri.parse(CONTENT_URI + "/" + drawing.getId());
     }
 
     /**
