@@ -26,7 +26,7 @@
     <string name="menu_drawing_viewer_title_edit">Edit</string>
 
     <!-- Edit Drawing Dialog -->
-    <string name="dialog_edit_drawing_title">Edit Drawing</string>
+    <string name="dialog_edit_drawing_title">Edit Title</string>
 
     <!-- Drawing Viewer Activity -->
     <string name="activity_drawing_viewer_chooser_title_snapshots">Share</string>

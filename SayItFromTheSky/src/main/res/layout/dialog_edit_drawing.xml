@@ -1,18 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="@dimen/default_padding">
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/dialog_edit_drawing_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_padding_dialog"
+        android:text="@string/dialog_edit_drawing_title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/text_black_primary"/>
 
     <EditText
-        android:id="@+id/dialog_edit_drawing_title"
+        android:id="@+id/dialog_edit_drawing_title_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_padding_dialog"
+        android:layout_marginLeft="@dimen/default_padding_dialog"
+        android:layout_marginRight="@dimen/default_padding_dialog"
         android:inputType="text"
         android:maxLines="1"
         android:minLines="1"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:textColor="@color/text_black_secondary"
+        tools:text="Default title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/default_padding"
+        android:paddingLeft="@dimen/default_padding"
+        android:paddingRight="@dimen/default_padding">
+
+        <Button
+            android:id="@+id/dialog_edit_drawing_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_dialog_height"
+            android:background="@drawable/bg_btn_flat"
+            android:minWidth="@dimen/btn_dialog_min_width"
+            android:paddingLeft="@dimen/default_padding"
+            android:paddingRight="@dimen/default_padding"
+            android:text="@android:string/cancel"
+            android:textAllCaps="true"
+            android:textColor="@color/text_black_primary"/>
+
+        <Button
+            android:id="@+id/dialog_edit_drawing_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/btn_dialog_height"
+            android:background="@drawable/bg_btn_flat"
+            android:minWidth="@dimen/btn_dialog_min_width"
+            android:paddingLeft="@dimen/default_padding"
+            android:paddingRight="@dimen/default_padding"
+            android:text="@android:string/ok"
+            android:textAllCaps="true"
+            android:textColor="@color/accent_color"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

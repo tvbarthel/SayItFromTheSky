@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.DialogFragment;
@@ -59,20 +58,22 @@ public class EditDrawingDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mDrawing = getArguments().getParcelable(ARGS_DRAWING);
         final View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_drawing, null);
-        final EditText editText = ButterKnife.findById(view, R.id.dialog_edit_drawing_title);
+        final EditText editText = ButterKnife.findById(view, R.id.dialog_edit_drawing_title_edit);
+        final View btnOk = ButterKnife.findById(view, R.id.dialog_edit_drawing_ok);
+        final View btnCancel = ButterKnife.findById(view, R.id.dialog_edit_drawing_cancel);
         editText.setText(mDrawing.getTitle());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getString(R.string.dialog_edit_drawing_title));
         builder.setView(view);
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+        btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 hideSoftKeyboard(editText.getWindowToken());
+                EditDrawingDialog.this.dismiss();
             }
         });
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 final String newTitle = editText.getText().toString();
                 if (!newTitle.equals(mDrawing.getTitle())) {
                     final Drawing newDrawing = new Drawing(newTitle,
@@ -85,6 +86,7 @@ public class EditDrawingDialog extends DialogFragment {
                     }
                 }
                 hideSoftKeyboard(editText.getWindowToken());
+                EditDrawingDialog.this.dismiss();
             }
         });
         return builder.create();

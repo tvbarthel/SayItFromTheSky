@@ -18,4 +18,5 @@
     <color name="text_black_primary">#d6000000</color>
     <color name="text_black_secondary">#89000000</color>
 
+    <color name="bg_btn_flat_pressed">#66999999</color>
 </resources>

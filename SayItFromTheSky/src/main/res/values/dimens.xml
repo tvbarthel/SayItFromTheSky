@@ -6,8 +6,12 @@
     <dimen name="default_margin">16dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
+    <dimen name="default_padding_dialog">24dp</dimen>
     <dimen name="minimum_list_height">72dp</dimen>
     <dimen name="circular_button_size">56dp</dimen>
+
+    <dimen name="btn_dialog_min_width">88dp</dimen>
+    <dimen name="btn_dialog_height">36dp</dimen>
 
     <!-- Activity path detail -->
     <dimen name="expand_container_height">45dp</dimen>
