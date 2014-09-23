@@ -2,6 +2,7 @@ package fr.tvbarthel.apps.sayitfromthesky.activities;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -50,7 +51,8 @@ public class DrawingActivity extends FragmentActivity implements DrawingFragment
     @Override
     public void saveDrawing(Drawing drawingToSave) {
         // TODO save the drawing into a the database.
-        getContentResolver().insert(DrawingContract.CONTENT_URI, ContentValuesHelper.drawingToContentValues(drawingToSave));
+        final Uri uri = getContentResolver().insert(DrawingContract.CONTENT_URI, ContentValuesHelper.drawingToContentValues(drawingToSave));
+        drawingToSave.setId(Integer.valueOf(uri.getLastPathSegment()));
         final Intent intent = new Intent(this, DrawingViewerActivity.class);
         intent.putExtra(DrawingViewerActivity.EXTRA_KEY_DRAWING, drawingToSave);
         startActivity(intent);

@@ -12,12 +12,15 @@ import java.util.List;
 public final class Drawing implements Parcelable {
 
     public static final Drawing EMPTY = new Drawing("empty_drawing", 0, new ArrayList<String>());
+    public static final int NON_VALID_ID = -1;
 
+    private int mId;
     private String mTitle;
     private long mCreationTimeInMillis;
     private List<String> mEncodedPolylines;
 
     public Drawing(String title, long creationTimeInMillis, List<String> encodedPolylines) {
+        mId = NON_VALID_ID;
         mTitle = title;
         mCreationTimeInMillis = creationTimeInMillis;
         mEncodedPolylines = encodedPolylines;
@@ -39,6 +42,14 @@ public final class Drawing implements Parcelable {
         return mEncodedPolylines;
     }
 
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
 
     @Override
     public int describeContents() {
@@ -47,12 +58,14 @@ public final class Drawing implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
         dest.writeString(mTitle);
         dest.writeLong(mCreationTimeInMillis);
         dest.writeStringList(mEncodedPolylines);
     }
 
     public void readFromParcel(Parcel in) {
+        mId = in.readInt();
         mTitle = in.readString();
         mCreationTimeInMillis = in.readLong();
         mEncodedPolylines = new ArrayList<String>();

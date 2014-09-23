@@ -49,17 +49,34 @@ public final class CursorHelper {
     }
 
     /**
+     * Get an int from a {@link android.database.Cursor}.
+     *
+     * @param cursor       the {@link android.database.Cursor} from which the int will be extracted.
+     * @param columnName   the column name of the int value.
+     * @param defaultValue the default int value to use if the column name does not exist.
+     * @return an int value
+     */
+    public static int getInt(Cursor cursor, String columnName, int defaultValue) {
+        final int columnIndex = cursor.getColumnIndex(columnName);
+        if (columnIndex == -1) return defaultValue;
+        return cursor.getInt(columnIndex);
+    }
+
+    /**
      * Convert a {@link android.database.Cursor} to a {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}
      *
      * @param cursor the {@link android.database.Cursor} to be converted.
      * @return a new {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}
      */
     public static Drawing cursorToDrawing(Cursor cursor) {
+        final int id = CursorHelper.getInt(cursor, DrawingContract.Columns.COLUMN_ID, Drawing.NON_VALID_ID);
         final String title = CursorHelper.getString(cursor, DrawingContract.Columns.COLUMN_TITLE, "");
         final long creationTime = CursorHelper.getLong(cursor, DrawingContract.Columns.COLUMN_CREATION_TIME, 0l);
         final String encodedPolylines = CursorHelper.getString(cursor, DrawingContract.Columns.COLUMN_ENCODED_POLYLINES, "");
         final String[] polylines = GSON.fromJson(encodedPolylines, String[].class);
-        return new Drawing(title, creationTime, Arrays.asList(polylines));
+        final Drawing drawing = new Drawing(title, creationTime, Arrays.asList(polylines));
+        drawing.setId(id);
+        return drawing;
     }
 
 }
