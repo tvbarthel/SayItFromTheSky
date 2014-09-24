@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="grey_dark">#FF615E59</color>
-    <color name="grey_dark_translucent">#BB615E59</color>
-    <color name="grey_light">#FFCECECE</color>
-    <color name="red_light">#FFE87162</color>
-    <color name="red_light_translucent">#BBE87162</color>
-    <color name="white_translucent">#CCFFFFFF</color>
-
     <color name="material_grey_50">#fafafa</color>
     <color name="material_grey_300">#e0e0e0</color>
     <color name="material_grey_500">#9e9e9e</color>
@@ -14,7 +7,7 @@
     <color name="primary_color">#ff05254b</color>
     <color name="accent_color">#FFE87162</color>
     <color name="accent_color_light">#ffffa07b</color>
-    
+
     <color name="text_black_primary">#d6000000</color>
     <color name="text_black_secondary">#89000000</color>
 

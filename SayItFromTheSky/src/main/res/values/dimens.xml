@@ -13,19 +13,4 @@
     <dimen name="btn_dialog_min_width">88dp</dimen>
     <dimen name="btn_dialog_height">36dp</dimen>
 
-    <!-- Activity path detail -->
-    <dimen name="expand_container_height">45dp</dimen>
-    <dimen name="tag_section_margin_top">8dp</dimen>
-    <dimen name="tag_section_margin_bottom">24dp</dimen>
-    <dimen name="tag_section_padding">8dp</dimen>
-    <dimen name="tag_section_margin_right">8dp</dimen>
-    <dimen name="expand_section_margin_top">4dp</dimen>
-    <dimen name="expand_section_margin_horizontal">5dp</dimen>
-
-    <!-- Tag entry -->
-    <dimen name="tag_entry_height">48dp</dimen>
-    <dimen name="tag_entry_delete_button_size">32dp</dimen>
-    <dimen name="tag_entry_tag_icon_text_size">40sp</dimen>
-
-
 </resources>
