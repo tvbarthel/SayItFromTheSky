@@ -79,6 +79,17 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
     private boolean mIsCurrentPointInCurrentPath;
     private Callback mCallback;
 
+    /**
+     * Default Constructor.
+     * <p/>
+     * lint [ValidFragment]
+     * http://developer.android.com/reference/android/app/Fragment.html#Fragment()
+     * Every fragment must have an empty constructor, so it can be instantiated when restoring its activity's state.
+     */
+    public DrawingFragment() {
+        super();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
