@@ -171,7 +171,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
      * @return a Loader<Cursor>
      */
     private Loader<Cursor> createDrawingLoader() {
-        return new CursorLoader(this, DrawingContract.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(this, DrawingContract.CONTENT_URI, null, null, null, DrawingContract.Columns.COLUMN_CREATION_TIME + " DESC");
     }
 
     /**
