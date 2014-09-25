@@ -64,7 +64,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
 
         // Create a PolylineOptions to draw the paths
         mPathOptions = new PolylineOptions();
-        mPathOptions.color(Color.BLUE);
+        mPathOptions.color(getResources().getColor(R.color.primary_color));
 
         mDrawing = getDrawing();
         createMapFragment();

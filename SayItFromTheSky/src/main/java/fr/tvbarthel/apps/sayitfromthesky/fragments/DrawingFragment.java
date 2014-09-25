@@ -3,6 +3,7 @@ package fr.tvbarthel.apps.sayitfromthesky.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -109,6 +110,7 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Resources resources = getResources();
         mLastKnownZoom = DEFAULT_VALUE_ZOOM;
         setHasOptionsMenu(true);
 
@@ -119,11 +121,11 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
 
         // Create the polyline used for the current path.
         mPolylineOptionsCurrent = new PolylineOptions();
-        mPolylineOptionsCurrent.color(Color.BLUE);
+        mPolylineOptionsCurrent.color(resources.getColor(R.color.primary_color));
 
         // Create the polyline for the preview path.
         mPolylineOptionsPreview = new PolylineOptions();
-        mPolylineOptionsPreview.color(Color.RED);
+        mPolylineOptionsPreview.color(resources.getColor(R.color.accent_color));
 
         // The current point/position is not in the current path yet.
         mIsCurrentPointInCurrentPath = false;
