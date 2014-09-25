@@ -8,7 +8,8 @@
     <dimen name="default_padding_half">8dp</dimen>
     <dimen name="default_padding_dialog">24dp</dimen>
     <dimen name="minimum_list_height">72dp</dimen>
-    <dimen name="circular_button_size">56dp</dimen>
+    <!-- circular button backgrounds have a 3.5dp shadow : 56dp (standard FAB size) + 3.5dp -> 59.5dp -->
+    <dimen name="circular_button_size">59.5dp</dimen>
 
     <dimen name="btn_dialog_min_width">88dp</dimen>
     <dimen name="btn_dialog_height">36dp</dimen>
