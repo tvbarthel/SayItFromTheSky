@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +40,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     @InjectView(R.id.activity_main_root)
     View mRootView;
 
+    @InjectView(R.id.activity_main_header_logo)
+    View mHeaderLogo;
+
     @InjectView(R.id.activity_main_header_container)
     View mHeaderContainer;
 
@@ -57,6 +59,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     private DrawingAdapter mDrawingAdapter;
     private AlphaForegroundColorSpan mActionBarTitleColorSpan;
     private SpannableString mActionBarTitleSpannable;
+    private int mHeaderLogoMaxTranslationX;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +80,11 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
             vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
+                    ViewHelper.removeOnGlobalLayoutListener(mRootView, this);
                     final int headerHeight = (int) (mRootView.getHeight() / 3.5);
                     mHeaderContainer.getLayoutParams().height = headerHeight;
                     mListView.setPadding(0, headerHeight - mActionBarSize, 0, 0);
-                    ViewHelper.removeOnGlobalLayoutListener(mRootView, this);
+                    mHeaderLogoMaxTranslationX = (mHeaderContainer.getWidth() - mHeaderLogo.getWidth()) / 2;
                 }
 
             });
@@ -138,6 +142,10 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
                     final float scrollingPercent = ((float) realTop) / mListView.getPaddingTop();
                     setActionBarTitleAlpha(scrollingPercent);
+
+                    final float headerLogoTranslationX = (float) Math.pow(scrollingPercent, 3)
+                            * mHeaderLogoMaxTranslationX - mHeaderLogoMaxTranslationX;
+                    mHeaderLogo.setTranslationX(headerLogoTranslationX);
                 }
             }
         });
