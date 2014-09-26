@@ -60,6 +60,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     private AlphaForegroundColorSpan mActionBarTitleColorSpan;
     private SpannableString mActionBarTitleSpannable;
     private int mHeaderLogoMaxTranslationX;
+    private float mHeaderLogoFinalScale;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,10 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     final int headerHeight = (int) (mRootView.getHeight() / 3.5);
                     mHeaderContainer.getLayoutParams().height = headerHeight;
                     mListView.setPadding(0, headerHeight - mActionBarSize, 0, 0);
-                    mHeaderLogoMaxTranslationX = (mHeaderContainer.getWidth() - mHeaderLogo.getWidth()) / 2;
+                    final int actionBarLogoSize = getResources().getDimensionPixelSize(R.dimen.action_bar_logo_size);
+                    final int actionBarMarginLeft = getResources().getDimensionPixelOffset(R.dimen.action_bar_margin_left);
+                    mHeaderLogoMaxTranslationX = (mHeaderContainer.getWidth() - actionBarLogoSize) / 2 - actionBarMarginLeft;
+                    mHeaderLogoFinalScale = ((float) actionBarLogoSize) / mHeaderLogo.getWidth();
                 }
 
             });
@@ -141,15 +145,22 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     mHeaderContainer.setTranslationY(translationY);
 
                     final float scrollingPercent = ((float) realTop) / mListView.getPaddingTop();
-                    setActionBarTitleAlpha(scrollingPercent);
+                    setActionBarTitleAlpha(1 - scrollingPercent);
 
                     final float headerLogoTranslationX = (float) Math.pow(scrollingPercent, 3)
                             * mHeaderLogoMaxTranslationX - mHeaderLogoMaxTranslationX;
                     mHeaderLogo.setTranslationX(headerLogoTranslationX);
+
+                    final float currentScale = 1 - (1 - mHeaderLogoFinalScale) * (1 - scrollingPercent);
+                    mHeaderLogo.setScaleX(currentScale);
+                    mHeaderLogo.setScaleY(currentScale);
+
                 } else {
                     mHeaderContainer.setTranslationY(-mListView.getPaddingTop() / 2);
-                    setActionBarTitleAlpha(0);
+                    setActionBarTitleAlpha(1);
                     mHeaderLogo.setTranslationX(-mHeaderLogoMaxTranslationX);
+                    mHeaderLogo.setScaleX(mHeaderLogoFinalScale);
+                    mHeaderLogo.setScaleY(mHeaderLogoFinalScale);
                 }
             }
         });

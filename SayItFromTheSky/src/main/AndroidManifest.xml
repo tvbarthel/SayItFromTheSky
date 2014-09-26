@@ -18,11 +18,12 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:logo="@android:color/transparent"
+        android:logo="@drawable/ic_launcher"
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
+            android:logo="@drawable/ic_transparent"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -32,7 +33,6 @@
         </activity>
         <activity
             android:name=".activities.DrawingViewerActivity"
-            android:logo="@drawable/ic_launcher"
             android:windowSoftInputMode="stateUnchanged">
         </activity>
 
