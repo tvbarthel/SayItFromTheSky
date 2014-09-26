@@ -1,5 +1,6 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -7,6 +8,9 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +29,7 @@ import fr.tvbarthel.apps.sayitfromthesky.helpers.CursorHelper;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 import fr.tvbarthel.apps.sayitfromthesky.providers.contracts.DrawingContract;
+import fr.tvbarthel.apps.sayitfromthesky.ui.AlphaForegroundColorSpan;
 
 public class MainActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -50,12 +55,18 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
      */
     private int mActionBarSize;
     private DrawingAdapter mDrawingAdapter;
+    private AlphaForegroundColorSpan mActionBarTitleColorSpan;
+    private SpannableString mActionBarTitleSpannable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+        mActionBarTitleColorSpan = new AlphaForegroundColorSpan(getResources().getColor(R.color.material_grey_300));
+        mActionBarTitleSpannable = new SpannableString(getString(R.string.app_name));
+        setActionBarTitleAlpha(1);
 
         // Compute the action bar size
         mActionBarSize = ActionBarHelper.getActionBarSize(this);
@@ -74,7 +85,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
 
             });
         }
-
 
         mDrawingAdapter = new DrawingAdapter(this);
         initListView();
@@ -125,6 +135,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     final int realTop = Math.max(mListView.getChildAt(0).getTop(), 0);
                     final int translationY = (realTop - mListView.getPaddingTop()) / 2;
                     mHeaderContainer.setTranslationY(translationY);
+
+                    final float scrollingPercent = ((float) realTop) / mListView.getPaddingTop();
+                    setActionBarTitleAlpha(scrollingPercent);
                 }
             }
         });
@@ -188,5 +201,21 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
      */
     private void resetDrawingLoader() {
         mDrawingAdapter.swapCursor(null);
+    }
+
+    /**
+     * Set the alpha of the action bar title.
+     *
+     * @param alpha a value between 0 and 1 that represents the alpha of the action bar title.
+     */
+    private void setActionBarTitleAlpha(float alpha) {
+        final ActionBar actionBar = getActionBar();
+        if (actionBar != null) {
+            mActionBarTitleColorSpan.setAlpha(alpha);
+            mActionBarTitleSpannable.setSpan(mActionBarTitleColorSpan, 0,
+                    mActionBarTitleSpannable.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            actionBar.setTitle(mActionBarTitleSpannable);
+        }
+
     }
 }
