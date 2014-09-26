@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/activity_main_header_logo"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_launcher"/>
     </FrameLayout>
