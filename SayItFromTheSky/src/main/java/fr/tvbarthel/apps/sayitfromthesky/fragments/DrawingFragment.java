@@ -116,8 +116,6 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
 
         // Create the polyline array used to store the polylines added to the map.
         mEncodedPolylines = new ArrayList<String>();
-        // Fake a polyline
-        mEncodedPolylines.add("qixvGyhqFKRs@P");
 
         // Create the polyline used for the current path.
         mPolylineOptionsCurrent = new PolylineOptions();
