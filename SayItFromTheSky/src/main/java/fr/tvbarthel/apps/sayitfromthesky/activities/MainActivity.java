@@ -146,6 +146,10 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     final float headerLogoTranslationX = (float) Math.pow(scrollingPercent, 3)
                             * mHeaderLogoMaxTranslationX - mHeaderLogoMaxTranslationX;
                     mHeaderLogo.setTranslationX(headerLogoTranslationX);
+                } else {
+                    mHeaderContainer.setTranslationY(-mListView.getPaddingTop() / 2);
+                    setActionBarTitleAlpha(0);
+                    mHeaderLogo.setTranslationX(-mHeaderLogoMaxTranslationX);
                 }
             }
         });
