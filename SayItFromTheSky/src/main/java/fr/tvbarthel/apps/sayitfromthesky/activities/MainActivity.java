@@ -52,6 +52,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
     @InjectView(R.id.activity_main_empty_view)
     View mEmptyView;
 
+    @InjectView(R.id.activity_main_btn_new_drawing)
+    View mBtnNewDrawing;
+
     /**
      * Private attributes
      */
@@ -89,6 +92,8 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     final int actionBarMarginLeft = getResources().getDimensionPixelOffset(R.dimen.action_bar_margin_left);
                     mHeaderLogoMaxTranslationX = (mHeaderContainer.getWidth() - actionBarLogoSize) / 2 - actionBarMarginLeft;
                     mHeaderLogoFinalScale = ((float) actionBarLogoSize) / mHeaderLogo.getWidth();
+
+                    ViewHelper.slideFromBottom(mBtnNewDrawing, 400, 300);
                 }
 
             });
