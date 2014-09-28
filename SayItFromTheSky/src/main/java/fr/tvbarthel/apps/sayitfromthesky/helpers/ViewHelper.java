@@ -37,24 +37,36 @@ public final class ViewHelper {
      * @param duration The length of the duration, in milliseconds.
      * @param delay    The amount of time, in milliseconds, to delay the animation after the call of this methods.
      */
-    public static void slideFromBottom(View view, int duration, int delay) {
+    public static void slideFromBottom(final View view, final int duration, final int delay) {
         // Get the parent view or the root view.
-        View parentView = null;
-        if (view.getParent() instanceof View) {
-            parentView = (View) view.getParent();
-        } else {
-            parentView = view.getRootView();
+        final View parentView = getParentView(view);
+
+        ViewTreeObserver vto = view.getViewTreeObserver();
+        if (vto.isAlive()) {
+            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    ViewHelper.removeOnGlobalLayoutListener(view, this);
+                    // Compute and initialize the translation
+                    final int translationY = parentView.getHeight() - view.getTop();
+                    view.setTranslationY(translationY);
+
+                    // Animate the translation
+                    final ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", translationY, 0);
+                    animator.setDuration(duration);
+                    animator.setInterpolator(new DecelerateInterpolator());
+                    animator.setStartDelay(delay);
+                    animator.start();
+                }
+            });
         }
+    }
 
-        // Compute and initialize the translation
-        final int translationY = parentView.getHeight() - view.getTop();
-        view.setTranslationY(translationY);
-
-        // Animate the translation
-        final ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationY", translationY, 0);
-        animator.setDuration(duration);
-        animator.setInterpolator(new DecelerateInterpolator());
-        animator.setStartDelay(delay);
-        animator.start();
+    private static View getParentView(View view) {
+        if (view.getParent() instanceof View) {
+            return (View) view.getParent();
+        } else {
+            return view.getRootView();
+        }
     }
 }

@@ -4,7 +4,6 @@ package fr.tvbarthel.apps.sayitfromthesky.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
+import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
 import fr.tvbarthel.apps.sayitfromthesky.models.Drawing;
 
 /**
@@ -66,6 +66,8 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
     Button mAddPointButton;
     @InjectView(R.id.fragment_drawing_progress_bar)
     ProgressBar mProgressBar;
+    @InjectView(R.id.fragment_drawing_button_container)
+    View mButtonContainer;
 
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
@@ -362,6 +364,7 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
         if (mLineStateButton.isChecked()) {
             mAddPointButton.setVisibility(View.VISIBLE);
         }
+        ViewHelper.slideFromBottom(mButtonContainer, 400, 300);
     }
 
     private void initMapLocation() {

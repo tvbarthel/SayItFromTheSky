@@ -92,8 +92,6 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
                     final int actionBarMarginLeft = getResources().getDimensionPixelOffset(R.dimen.action_bar_margin_left);
                     mHeaderLogoMaxTranslationX = (mHeaderContainer.getWidth() - actionBarLogoSize) / 2 - actionBarMarginLeft;
                     mHeaderLogoFinalScale = ((float) actionBarLogoSize) / mHeaderLogo.getWidth();
-
-                    ViewHelper.slideFromBottom(mBtnNewDrawing, 400, 300);
                 }
 
             });
@@ -102,6 +100,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         mDrawingAdapter = new DrawingAdapter(this);
         initListView();
         getLoaderManager().initLoader(LOADER_ID_DRAWINGS, null, this);
+        ViewHelper.slideFromBottom(mBtnNewDrawing, 400, 300);
     }
 
 

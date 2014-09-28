@@ -10,6 +10,7 @@
         android:layout_height="match_parent"/>
 
     <LinearLayout
+        android:id="@+id/fragment_drawing_button_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
