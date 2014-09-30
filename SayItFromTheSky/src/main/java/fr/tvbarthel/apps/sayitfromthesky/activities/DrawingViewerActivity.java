@@ -1,21 +1,15 @@
 package fr.tvbarthel.apps.sayitfromthesky.activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.FileProvider;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.TextView;
@@ -33,12 +27,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.dialogs.EditDrawingDialog;
@@ -55,6 +48,9 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
 
     @InjectView(R.id.activity_drawing_viewer_drawing_length)
     TextView mDrawingLength;
+
+    @InjectView(R.id.activity_drawing_viewer_drawing_title)
+    TextView mDrawingTitle;
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -73,25 +69,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
 
         mDrawing = getDrawing();
         createMapFragment();
-        initActionBar(mDrawing);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.drawing_viewer, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        if (R.id.action_share == id) {
-            return handleShareAction();
-        }
-        if (R.id.action_edit == id) {
-            return handleEditAction();
-        }
-        return super.onOptionsItemSelected(item);
+        mDrawingTitle.setText(mDrawing.getTitle());
     }
 
     @Override
@@ -173,7 +151,8 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
      *
      * @return true to consume the action, false otherwise.
      */
-    private boolean handleShareAction() {
+    @OnClick(R.id.activity_drawing_viewer_share_action)
+    void handleShareAction() {
         // TODO
         if (mGoogleMap != null) {
             mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
@@ -200,7 +179,6 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
                 }
             });
         }
-        return true;
     }
 
     /**
@@ -208,50 +186,9 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
      *
      * @return true to consume the action, false otherwise.
      */
-    private boolean handleEditAction() {
+    @OnClick(R.id.activity_drawing_viewer_edit_action)
+    void handleEditAction() {
         EditDrawingDialog.newInstance(mDrawing).show(getSupportFragmentManager(), null);
-        return true;
-    }
-
-    /**
-     * Init the action bar with a {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing}
-     *
-     * @param drawing the {@link fr.tvbarthel.apps.sayitfromthesky.models.Drawing} used to init the action bar.
-     */
-    private void initActionBar(Drawing drawing) {
-        final ActionBar actionBar = getActionBar();
-        if (actionBar != null) {
-            getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.primary_color)));
-            setActionBarTitle(actionBar, drawing.getTitle());
-            final DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, Locale.getDefault());
-            setActionBarSubtitle(actionBar, dateFormat.format(drawing.getCreationTimeInMillis()));
-        }
-    }
-
-    /**
-     * Set the title of an action bar.
-     *
-     * @param actionBar the {@link android.app.ActionBar} the action bar whose title will be set.
-     * @param title     the title to be set.
-     */
-    private void setActionBarTitle(ActionBar actionBar, String title) {
-        final ForegroundColorSpan colorSpanMaterialGrey300 = new ForegroundColorSpan(getResources().getColor(R.color.material_grey_300));
-        final SpannableString spannableStringTitle = new SpannableString(title);
-        spannableStringTitle.setSpan(colorSpanMaterialGrey300, 0, spannableStringTitle.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        actionBar.setTitle(spannableStringTitle);
-    }
-
-    /**
-     * Set the subtitle of an action bar.
-     *
-     * @param actionbar the {@link android.app.ActionBar} the action bar whose subtitle will be set.
-     * @param subtitle  the subtitle to be set.
-     */
-    private void setActionBarSubtitle(ActionBar actionbar, String subtitle) {
-        final ForegroundColorSpan colorSpanMaterialGrey500 = new ForegroundColorSpan(getResources().getColor(R.color.material_grey_500));
-        final SpannableString spannableStringDate = new SpannableString(subtitle);
-        spannableStringDate.setSpan(colorSpanMaterialGrey500, 0, spannableStringDate.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        actionbar.setSubtitle(spannableStringDate);
     }
 
     /**
@@ -282,6 +219,6 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         // At the moment, only the title can be edited.
         // So we only change the title in the action bar.
         mDrawing = drawing;
-        setActionBarTitle(getActionBar(), mDrawing.getTitle());
+        mDrawingTitle.setText(mDrawing.getTitle());
     }
 }

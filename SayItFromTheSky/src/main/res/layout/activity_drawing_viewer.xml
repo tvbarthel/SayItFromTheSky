@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/activity_drawing_viewer_map_container"
@@ -11,15 +10,83 @@
         android:layout_height="match_parent"
         android:focusableInTouchMode="true" />
 
-    <TextView
-        android:id="@+id/activity_drawing_viewer_drawing_length"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?android:actionBarSize"
-        android:background="@color/primary_color"
-        android:padding="@dimen/default_padding_half"
-        android:textColor="@color/material_grey_500"
-        tools:text="A message of 120 meters" />
+        android:background="@color/primary_color">
+
+        <ImageView
+            android:id="@+id/activity_drawing_viewer_logo"
+            android:layout_width="@dimen/action_bar_logo_size"
+            android:layout_height="@dimen/action_bar_logo_size"
+            android:layout_marginLeft="@dimen/action_bar_margin_left"
+            android:layout_marginStart="@dimen/action_bar_margin_left"
+            android:layout_marginTop="@dimen/default_padding_half"
+            android:src="@drawable/ic_launcher" />
+
+        <TextView
+            android:id="@+id/activity_drawing_viewer_drawing_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/activity_drawing_viewer_logo"
+            android:layout_alignTop="@+id/activity_drawing_viewer_logo"
+            android:layout_toEndOf="@+id/activity_drawing_viewer_logo"
+            android:layout_toLeftOf="@+id/activity_drawing_viewer_edit_action"
+            android:layout_toRightOf="@+id/activity_drawing_viewer_logo"
+            android:layout_toStartOf="@+id/activity_drawing_viewer_edit_action"
+            android:gravity="center_vertical"
+            android:paddingEnd="@dimen/default_padding_half"
+            android:paddingLeft="@dimen/default_padding_half"
+            android:paddingRight="@dimen/default_padding_half"
+            android:paddingStart="@dimen/default_padding_half"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/material_grey_300"
+            tools:text="Default title" />
+
+        <TextView
+            android:id="@+id/activity_drawing_viewer_drawing_length"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_drawing_viewer_logo"
+            android:layout_marginLeft="@dimen/action_bar_margin_left"
+            android:layout_marginStart="@dimen/action_bar_margin_left"
+            android:layout_toLeftOf="@+id/activity_drawing_viewer_edit_action"
+            android:layout_toStartOf="@+id/activity_drawing_viewer_edit_action"
+            android:background="@color/primary_color"
+            android:paddingBottom="@dimen/default_padding_half"
+            android:textColor="@color/material_grey_500"
+            tools:text="A message of 120 meters" />
+
+        <ImageButton
+            android:id="@+id/activity_drawing_viewer_edit_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/activity_drawing_viewer_drawing_length"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/actionBarItemBackground"
+            android:minHeight="?android:actionBarSize"
+            android:minWidth="?android:actionBarSize"
+            android:paddingEnd="12dip"
+            android:paddingStart="12dip"
+            android:src="@android:drawable/ic_menu_edit" />
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/activity_drawing_viewer_share_action"
+        android:layout_width="@dimen/circular_button_size"
+        android:layout_height="@dimen/circular_button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:background="@drawable/bg_btn_circle_accent"
+        android:src="@android:drawable/ic_menu_share" />
+
 
 </RelativeLayout>
 
