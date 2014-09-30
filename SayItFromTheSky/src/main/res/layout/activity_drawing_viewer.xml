@@ -11,6 +11,7 @@
         android:focusableInTouchMode="true" />
 
     <RelativeLayout
+        android:id="@+id/activity_drawing_viewer_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary_color">

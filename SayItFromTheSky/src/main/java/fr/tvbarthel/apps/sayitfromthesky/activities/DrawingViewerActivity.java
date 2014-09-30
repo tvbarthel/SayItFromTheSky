@@ -52,6 +52,12 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
     @InjectView(R.id.activity_drawing_viewer_drawing_title)
     TextView mDrawingTitle;
 
+    @InjectView(R.id.activity_drawing_viewer_header)
+    View mHeader;
+
+    @InjectView(R.id.activity_drawing_viewer_edit_action)
+    View mEditAction;
+
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
@@ -158,6 +164,10 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
             mGoogleMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
                 @Override
                 public void onSnapshotReady(Bitmap bitmap) {
+                    mEditAction.setVisibility(View.INVISIBLE);
+                    final Canvas canvas = new Canvas(bitmap);
+                    mHeader.draw(canvas);
+                    mEditAction.setVisibility(View.VISIBLE);
                     final Uri snapshotUri = saveSnapshotToTempFile(bitmap);
                     if (snapshotUri != null) {
                         Intent intent = new Intent();
