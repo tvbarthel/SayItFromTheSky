@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/activity_drawing_viewer_map_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true"/>
+        android:focusableInTouchMode="true" />
+
+    <TextView
+        android:id="@+id/activity_drawing_viewer_drawing_length"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="?android:actionBarSize"
+        android:background="@color/primary_color"
+        android:padding="@dimen/default_padding_half"
+        android:textColor="@color/material_grey_500"
+        tools:text="A message of 120 meters" />
 
 </RelativeLayout>
 

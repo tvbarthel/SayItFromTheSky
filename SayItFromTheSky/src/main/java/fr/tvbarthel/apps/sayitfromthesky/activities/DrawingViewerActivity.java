@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -36,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.SayItMapFragment;
 import fr.tvbarthel.apps.sayitfromthesky.fragments.dialogs.EditDrawingDialog;
@@ -48,6 +51,10 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
     public static final String EXTRA_KEY_DRAWING = "DrawingViewerActivity.Extra.Key.Drawing";
     private static final String FRAGMENT_TAG_MAP = "DrawingViewerActivity.Fragment.Tag.Map";
     private static final String TAG = DrawingViewerActivity.class.getSimpleName();
+
+
+    @InjectView(R.id.activity_drawing_viewer_drawing_length)
+    TextView mDrawingLength;
 
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
@@ -105,14 +112,17 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
                 // Draw the paths
                 if (!mDrawing.getEncodedPolylines().isEmpty()) {
                     final LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
+                    double drawingLengthInMeter = 0f;
                     for (String encodedPath : mDrawing.getEncodedPolylines()) {
                         final List<LatLng> pathPoints = PolyUtil.decode(encodedPath);
+                        drawingLengthInMeter += SphericalUtil.computeLength(pathPoints);
                         mGoogleMap.addPolyline(mPathOptions).setPoints(pathPoints);
                         for (LatLng point : pathPoints) {
                             boundsBuilder.include(point);
                         }
                     }
                     animateCameraToBounds(boundsBuilder.build());
+                    mDrawingLength.setText(getString(R.string.activity_drawing_viewer_drawing_length, drawingLengthInMeter));
                 }
             }
         }

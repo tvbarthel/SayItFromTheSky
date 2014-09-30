@@ -30,6 +30,7 @@
 
     <!-- Drawing Viewer Activity -->
     <string name="activity_drawing_viewer_chooser_title_snapshots">Share</string>
+    <string name="activity_drawing_viewer_drawing_length">A message of %1$.2f meters</string>
 
     <!-- Tag entry -->
     <string name="tag_entry_tag_icon">#</string>
