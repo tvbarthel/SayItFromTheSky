@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 
@@ -100,7 +98,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
             mGoogleMap = mMapFragment.getMap();
             if (mGoogleMap != null) {
                 // You are good to use the map =)
-                UiSettings uiSettings = mGoogleMap.getUiSettings();
+                final UiSettings uiSettings = mGoogleMap.getUiSettings();
                 uiSettings.setCompassEnabled(false);
                 uiSettings.setZoomControlsEnabled(false);
 
@@ -108,12 +106,11 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
                 if (!mDrawing.getEncodedPolylines().isEmpty()) {
                     final LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
                     for (String encodedPath : mDrawing.getEncodedPolylines()) {
-                        Polyline path = mGoogleMap.addPolyline(mPathOptions);
-                        List<LatLng> pathPoints = PolyUtil.decode(encodedPath);
+                        final List<LatLng> pathPoints = PolyUtil.decode(encodedPath);
+                        mGoogleMap.addPolyline(mPathOptions).setPoints(pathPoints);
                         for (LatLng point : pathPoints) {
                             boundsBuilder.include(point);
                         }
-                        path.setPoints(PolyUtil.decode(encodedPath));
                     }
                     animateCameraToBounds(boundsBuilder.build());
                 }
