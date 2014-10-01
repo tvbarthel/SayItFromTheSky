@@ -58,6 +58,9 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
     @InjectView(R.id.activity_drawing_viewer_edit_action)
     View mEditAction;
 
+    @InjectView(R.id.activity_drawing_viewer_share_action)
+    View mShareAction;
+
     private SayItMapFragment mMapFragment;
     private GoogleMap mGoogleMap;
     private PolylineOptions mPathOptions;
@@ -76,6 +79,7 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
         mDrawing = getDrawing();
         createMapFragment();
         mDrawingTitle.setText(mDrawing.getTitle());
+        ViewHelper.slideFromBottom(mShareAction);
     }
 
     @Override
