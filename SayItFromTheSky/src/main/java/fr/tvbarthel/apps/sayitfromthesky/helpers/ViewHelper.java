@@ -59,6 +59,7 @@ public final class ViewHelper {
                     animator.start();
                 }
             });
+            view.requestLayout();
         }
     }
 
