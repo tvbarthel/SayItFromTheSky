@@ -12,6 +12,9 @@ import android.view.animation.DecelerateInterpolator;
  */
 public final class ViewHelper {
 
+    public static final int DEFAULT_ANIMATION_DURATION = 400;
+    public static final int DEFAULT_ANIMATION_DELAY = 300;
+
     // Non-instantiability
     private ViewHelper() {
     }
@@ -61,6 +64,16 @@ public final class ViewHelper {
             });
             view.requestLayout();
         }
+    }
+
+    /**
+     * Do a slide animation of the view from out of the screen to its position.
+     * Call {@link #slideFromBottom(android.view.View, int, int)} with default values.
+     *
+     * @param view The {@link android.view.View} to animate.
+     */
+    public static void slideFromBottom(View view) {
+        slideFromBottom(view, DEFAULT_ANIMATION_DURATION, DEFAULT_ANIMATION_DELAY);
     }
 
     private static View getParentView(View view) {

@@ -154,7 +154,7 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
                         mPreviewPolyline.setVisible(true);
                         addPointToCurrentPolyline(mLastKnownLatLng);
                         mAddPointButton.setVisibility(View.VISIBLE);
-                        ViewHelper.slideFromBottom(mAddPointButton, 400, 300);
+                        ViewHelper.slideFromBottom(mAddPointButton);
                     } else {
                         if (mCurrentPolyline != null && mCurrentPolyline.getPoints().size() <= 1) {
                             // The current polyline has no interest since it only contains one point.
@@ -365,7 +365,7 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
 
     private void initCircleButtons() {
         mLineStateButton.setVisibility(View.VISIBLE);
-        ViewHelper.slideFromBottom(mLineStateButton, 400, 300);
+        ViewHelper.slideFromBottom(mLineStateButton);
     }
 
     private void initMapLocation() {

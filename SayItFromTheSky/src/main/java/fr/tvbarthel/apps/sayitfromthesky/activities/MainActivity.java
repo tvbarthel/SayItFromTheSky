@@ -100,7 +100,7 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         mDrawingAdapter = new DrawingAdapter(this);
         initListView();
         getLoaderManager().initLoader(LOADER_ID_DRAWINGS, null, this);
-        ViewHelper.slideFromBottom(mBtnNewDrawing, 400, 300);
+        ViewHelper.slideFromBottom(mBtnNewDrawing);
     }
 
 
