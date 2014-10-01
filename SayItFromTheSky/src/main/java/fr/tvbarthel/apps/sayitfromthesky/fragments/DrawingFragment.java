@@ -66,8 +66,6 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
     Button mAddPointButton;
     @InjectView(R.id.fragment_drawing_progress_bar)
     ProgressBar mProgressBar;
-    @InjectView(R.id.fragment_drawing_button_container)
-    View mButtonContainer;
 
     private GoogleMap mGoogleMap;
     private Location mLastKnownLocation;
@@ -156,6 +154,7 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
                         mPreviewPolyline.setVisible(true);
                         addPointToCurrentPolyline(mLastKnownLatLng);
                         mAddPointButton.setVisibility(View.VISIBLE);
+                        ViewHelper.slideFromBottom(mAddPointButton, 400, 300);
                     } else {
                         if (mCurrentPolyline != null && mCurrentPolyline.getPoints().size() <= 1) {
                             // The current polyline has no interest since it only contains one point.
@@ -193,6 +192,11 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.reset(this);
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -361,10 +365,7 @@ public class DrawingFragment extends Fragment implements SayItMapFragment.Callba
 
     private void initCircleButtons() {
         mLineStateButton.setVisibility(View.VISIBLE);
-        if (mLineStateButton.isChecked()) {
-            mAddPointButton.setVisibility(View.VISIBLE);
-        }
-        ViewHelper.slideFromBottom(mButtonContainer, 400, 300);
+        ViewHelper.slideFromBottom(mLineStateButton, 400, 300);
     }
 
     private void initMapLocation() {

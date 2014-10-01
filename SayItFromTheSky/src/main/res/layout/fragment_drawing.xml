@@ -1,54 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <FrameLayout
         android:id="@+id/fragment_drawing_map_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-    <LinearLayout
-        android:id="@+id/fragment_drawing_button_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+
+    <Button
+        android:id="@+id/fragment_drawing_button_add_point"
+        android:layout_width="@dimen/circular_button_size"
+        android:layout_height="@dimen/circular_button_size"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin">
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_toLeftOf="@+id/fragment_drawing_button_line_state"
+        android:layout_toStartOf="@+id/fragment_drawing_button_line_state"
+        android:background="@drawable/bg_btn_circle_accent"
+        android:text="Add"
+        android:textAppearance="?android:textAppearanceButton"
+        android:textColor="@color/material_grey_50"
+        android:visibility="invisible" />
 
-        <Button
-            android:id="@+id/fragment_drawing_button_add_point"
-            android:layout_width="@dimen/circular_button_size"
-            android:layout_height="@dimen/circular_button_size"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginRight="@dimen/default_margin"
-            android:background="@drawable/bg_btn_circle_accent"
-            android:text="Add"
-            android:textAppearance="?android:textAppearanceButton"
-            android:textColor="@color/material_grey_50"
-            android:visibility="invisible"/>
+    <ToggleButton
+        android:id="@+id/fragment_drawing_button_line_state"
+        android:layout_width="@dimen/circular_button_size"
+        android:layout_height="@dimen/circular_button_size"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:background="@drawable/bg_btn_circle_accent"
+        android:textAppearance="?android:textAppearanceButton"
+        android:textColor="@color/material_grey_50"
+        android:textOff="Start"
+        android:textOn="Stop"
+        android:visibility="invisible" />
 
-        <ToggleButton
-            android:id="@+id/fragment_drawing_button_line_state"
-            android:layout_width="@dimen/circular_button_size"
-            android:layout_height="@dimen/circular_button_size"
-            android:layout_gravity="bottom|end"
-            android:background="@drawable/bg_btn_circle_accent"
-            android:textAppearance="?android:textAppearanceButton"
-            android:textColor="@color/material_grey_50"
-            android:textOff="Start"
-            android:textOn="Stop"
-            android:visibility="invisible"/>
-
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/fragment_drawing_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_centerInParent="true" />
 
-</FrameLayout>
+</RelativeLayout>
