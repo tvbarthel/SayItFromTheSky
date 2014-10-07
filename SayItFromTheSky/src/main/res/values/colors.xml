@@ -5,6 +5,7 @@
     <color name="material_grey_500">#9e9e9e</color>
 
     <color name="primary_color">#FF3F51B5</color>
+    <color name="primary_color_light">#FFC5CAE9</color>
     <color name="accent_color">#FFFF5722</color>
     <color name="accent_color_light">#FFFF8A65</color>
 
