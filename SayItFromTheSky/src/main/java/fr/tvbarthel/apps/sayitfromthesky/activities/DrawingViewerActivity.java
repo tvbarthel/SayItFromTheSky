@@ -21,7 +21,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
-import com.google.maps.android.SphericalUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -100,17 +99,15 @@ public class DrawingViewerActivity extends FragmentActivity implements SayItMapF
                 // Draw the paths
                 if (!mDrawing.getEncodedPolylines().isEmpty()) {
                     final LatLngBounds.Builder boundsBuilder = new LatLngBounds.Builder();
-                    double drawingLengthInMeter = 0f;
                     for (String encodedPath : mDrawing.getEncodedPolylines()) {
                         final List<LatLng> pathPoints = PolyUtil.decode(encodedPath);
-                        drawingLengthInMeter += SphericalUtil.computeLength(pathPoints);
                         mGoogleMap.addPolyline(mPathOptions).setPoints(pathPoints);
                         for (LatLng point : pathPoints) {
                             boundsBuilder.include(point);
                         }
                     }
                     animateCameraToBounds(boundsBuilder.build());
-                    mDrawingLength.setText(getString(R.string.activity_drawing_viewer_drawing_length, drawingLengthInMeter));
+                    mDrawingLength.setText(getString(R.string.activity_drawing_viewer_drawing_length, mDrawing.getLength()));
                 }
             }
         }

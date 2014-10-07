@@ -3,6 +3,10 @@ package fr.tvbarthel.apps.sayitfromthesky.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.PolyUtil;
+import com.google.maps.android.SphericalUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +22,33 @@ public final class Drawing implements Parcelable {
     private String mTitle;
     private long mCreationTimeInMillis;
     private List<String> mEncodedPolylines;
+    private double mLength;
 
     public Drawing(String title, long creationTimeInMillis, List<String> encodedPolylines) {
         mId = NON_VALID_ID;
         mTitle = title;
         mCreationTimeInMillis = creationTimeInMillis;
         mEncodedPolylines = encodedPolylines;
+        mLength = computeDrawingLength();
+    }
+
+    /**
+     * Compute the length of the drawing in meters.
+     *
+     * @return the length of the drawing in meters.
+     */
+    private double computeDrawingLength() {
+        double length = 0d;
+        for (String encodedPath : mEncodedPolylines) {
+            final List<LatLng> path = PolyUtil.decode(encodedPath);
+            length += SphericalUtil.computeLength(path);
+        }
+        return length;
     }
 
     public Drawing(Parcel in) {
         readFromParcel(in);
+        mLength = computeDrawingLength();
     }
 
     public String getTitle() {
@@ -48,6 +69,10 @@ public final class Drawing implements Parcelable {
 
     public void setId(int id) {
         mId = id;
+    }
+
+    public double getLength() {
+        return mLength;
     }
 
 
