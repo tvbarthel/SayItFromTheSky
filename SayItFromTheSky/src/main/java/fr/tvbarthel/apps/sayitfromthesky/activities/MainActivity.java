@@ -23,6 +23,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import fr.tvbarthel.apps.sayitfromthesky.R;
 import fr.tvbarthel.apps.sayitfromthesky.adapters.DrawingAdapter;
+import fr.tvbarthel.apps.sayitfromthesky.fragments.dialogs.AboutDialog;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ActionBarHelper;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.CursorHelper;
 import fr.tvbarthel.apps.sayitfromthesky.helpers.ViewHelper;
@@ -118,6 +119,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_about) {
+            new AboutDialog().show(getFragmentManager(), null);
             return true;
         }
         return super.onOptionsItemSelected(item);

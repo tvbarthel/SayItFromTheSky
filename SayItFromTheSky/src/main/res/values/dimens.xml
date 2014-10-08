@@ -6,6 +6,8 @@
     <dimen name="action_bar_margin_left">12dip</dimen>
 
     <dimen name="default_margin">16dp</dimen>
+    <dimen name="default_margin_half">8dp</dimen>
+    <dimen name="default_margin_dialog">24dp</dimen>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="default_padding_half">8dp</dimen>
     <dimen name="default_padding_dialog">24dp</dimen>

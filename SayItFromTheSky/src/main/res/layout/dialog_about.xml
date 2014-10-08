@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/dialog_about_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/default_margin_dialog"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/primary_color"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/dialog_about_version_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:layout_marginEnd="@dimen/default_margin_dialog"
+        android:layout_marginLeft="@dimen/default_margin_dialog"
+        android:layout_marginRight="@dimen/default_margin_dialog"
+        android:layout_marginStart="@dimen/default_margin_dialog"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_black_secondary"
+        tools:text="Version 1.0.0" />
+
+    <TextView
+        android:id="@+id/dialog_about_source_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/default_margin_half"
+        android:layout_marginEnd="@dimen/default_margin_dialog"
+        android:layout_marginLeft="@dimen/default_margin_dialog"
+        android:layout_marginRight="@dimen/default_margin_dialog"
+        android:layout_marginStart="@dimen/default_margin_dialog"
+        android:gravity="center"
+        android:text="@string/dialog_about_source_code"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/text_black_primary" />
+
+    <TextView
+        android:id="@+id/dialog_about_made_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginEnd="@dimen/default_margin_dialog"
+        android:layout_marginLeft="@dimen/default_margin_dialog"
+        android:layout_marginRight="@dimen/default_margin_dialog"
+        android:layout_marginStart="@dimen/default_margin_dialog"
+        android:gravity="center"
+        android:text="@string/dialog_about_made_by"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/text_black_secondary" />
+
+    <Button
+        android:id="@+id/dialog_about_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/btn_dialog_height"
+        android:layout_gravity="end"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin_dialog"
+        android:background="@drawable/bg_btn_flat"
+        android:minWidth="@dimen/btn_dialog_min_width"
+        android:text="@android:string/ok"
+        android:textAllCaps="true"
+        android:textColor="@color/accent_color" />
+
+</LinearLayout>
