@@ -123,6 +123,9 @@ public class MainActivity extends Activity implements LoaderManager.LoaderCallba
         } else if (id == R.id.action_about) {
             new AboutDialog().show(getFragmentManager(), null);
             return true;
+        } else if (id == R.id.action_licenses) {
+            startActivity(new Intent(this, LicensesActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

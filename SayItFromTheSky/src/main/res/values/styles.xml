@@ -7,8 +7,11 @@
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:buttonBarStyle">@android:style/Holo.Light.ButtonBar.AlertDialog</item>
-        <item name="android:borderlessButtonStyle">@android:style/Widget.Holo.Light.Button.Borderless.Small</item>
+        <item name="android:borderlessButtonStyle">
+            @android:style/Widget.Holo.Light.Button.Borderless.Small
+        </item>
     </style>
+
 
     <style name="AppTheme.ActionBar" parent="android:Widget.ActionBar">
         <item name="android:background">@android:color/transparent</item>
@@ -19,4 +22,13 @@
         <item name="android:textColor">@color/material_grey_300</item>
     </style>
 
+    <style name="AppTheme.Standard" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/AppTheme.Standard.ActionBar</item>
+    </style>
+
+    <style name="AppTheme.Standard.ActionBar" parent="android:Widget.ActionBar">
+        <item name="android:background">@color/primary_color</item>
+        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleText</item>
+    </style>
 </resources>
