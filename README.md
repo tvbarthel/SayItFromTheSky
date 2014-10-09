@@ -9,9 +9,9 @@ SayItFromTheSky
 * Finalize the material UI
 * Add hint to buttons
 * Add subtle animations
-* Add licenses
 * Add support/donation
 * Add a tutorial
+* Clean the styles~
 
 
 License
